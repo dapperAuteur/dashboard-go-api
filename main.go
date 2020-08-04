@@ -8,9 +8,19 @@ import (
 
 func main() {
 
-	h := http.HandlerFunc(Echo)
+	// ===
 
-	if err := http.ListenAndServe("localhost:8080", h); err != nil {
+	log.Printf("main : Started")
+	defer log.Println("main : Completed")
+
+	// ==
+	// Start API Service
+	api := http.Server{
+		Addr:         "localhost:8080",
+		Handler:      http.HandlerFunc(Echo),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
+	}
 		log.Fatalf("error: listening and serving: %s", err)
 	}
 }
