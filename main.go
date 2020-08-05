@@ -2,9 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,23 +13,27 @@ import (
 
 func main() {
 
-	// ===
+	// =========================================================================
 	// App Starting
 
 	log.Printf("main : Started")
 	defer log.Println("main : Completed")
 
-	// ==
+	// =========================================================================
 	// Start API Service
+
 	api := http.Server{
 		Addr:         "localhost:8080",
-		Handler:      http.HandlerFunc(Echo),
+		Handler:      http.HandlerFunc(ListTransactions),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
 
+	// Make a channel to listen for errors coming from the listener. Use a
+	// buffered channel so the goroutine can exit if we don't collect this error.
 	serverErrors := make(chan error, 1)
 
+	// Start the service listening for requests.
 	go func() {
 		log.Printf("main : API listening on %s", api.Addr)
 		serverErrors <- api.ListenAndServe()
@@ -41,7 +44,7 @@ func main() {
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
-	// ==
+	// =========================================================================
 	// Shutdown
 
 	// Blocking main and waiting for shutdown.
@@ -70,19 +73,38 @@ func main() {
 	}
 }
 
-// Echo is a basic HTTP Handler.
-// If you open localhost:8000 in your browser, you may notice
-// double requets being made. This happens because the browser
-// sends a request in the background for a website favicon.
-func Echo(w http.ResponseWriter, r *http.Request) {
+// Transaction is a line item on a balance sheet.
+type Transaction struct {
+	Budget           string  `json:"budget"`
+	Currency         string  `json:"currency"`
+	FinancialAccount string  `json:"financial_account"`
+	Media            string  `json:"media"`
+	Note             string  `json:"note"`
+	Occurrence       string  `json:"occurrence"`
+	Participant      string  `json:"participant"`
+	Tag              string  `json:"tag"`
+	TransactionEvent string  `json:"transaction_event"`
+	TransactionValue float64 `json:"transaction_value"`
+	Vendor           string  `json:"vendor"`
+}
 
-	// Print a random number at the beginning and end of each request.
-	n := rand.Intn(1000)
-	log.Println("start", n)
-	defer log.Println("end", n)
+// ListTransactions is an HTTP Handler for returning a list of Transactions.
+func ListTransactions(w http.ResponseWriter, r *http.Request) {
+	list := []Transaction{
+		{Budget: "Food", TransactionValue: 14.39, Vendor: "Fry's"},
+		{Budget: "Tools", TransactionValue: 1400.39, Vendor: "System76"},
+	}
 
-	// Simulate a long-running reqeust.
-	time.Sleep(3 * time.Second)
+	data, err := json.Marshal(list)
+	if err != nil {
+		log.Println("error marshalling result", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	fmt.Fprintf(w, "You asked to %s %s\n", r.Method, r.URL.Path)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(data); err != nil {
+		log.Println("error writing result", err)
+	}
 }
