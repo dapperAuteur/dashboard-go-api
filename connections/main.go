@@ -9,7 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 func main() {
@@ -28,14 +27,16 @@ func main() {
 		log.Fatal(err)
 	}
 	defer client.Disconnect(ctx)
-	err = client.Ping(ctx, readpref.Primary())
+
+	quickstartDatabase := client.Database("quickstart")
+	podcastsCollection := quickstartDatabase.Collection("podcasts")
+	// episodesCollection := quickstartDatabase.Collection("episodes")
+	podcastResult, err := podcastsCollection.InsertOne(ctx, bson.D{
+		{Key: "title", Value: "The Polyglot Developer Podcast"},
+		{Key: "author", Value: "Nic Raboy"},
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	// print the names of the dbs to terminal
-	databases, err := client.ListDatabaseNames(ctx, bson.M{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(databases)
+	fmt.Println(podcastResult.InsertedID)
 }
