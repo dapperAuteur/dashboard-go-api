@@ -30,7 +30,7 @@ func main() {
 
 	quickstartDatabase := client.Database("quickstart")
 	podcastsCollection := quickstartDatabase.Collection("podcasts")
-	// episodesCollection := quickstartDatabase.Collection("episodes")
+	episodesCollection := quickstartDatabase.Collection("episodes")
 	podcastResult, err := podcastsCollection.InsertOne(ctx, bson.D{
 		{"title", "The Polyglot Developer Podcast"},
 		{"author", "Nic Raboy"},
@@ -40,4 +40,24 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Println(podcastResult.InsertedID)
+
+	episodeResult, err := episodesCollection.InsertMany(ctx, []interface{}{
+		bson.D{
+			{"podcast", podcastResult.InsertedID},
+			{"title", "Episode #1"},
+			{"description", "This is the first episode"},
+			{"duration", 25},
+		},
+		bson.D{
+			{"podcast", podcastResult.InsertedID},
+			{"title", "Episode #2"},
+			{"description", "This is the second episode"},
+			{"duration", 55},
+		},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(episodeResult.InsertedIDs)
+	fmt.Println(*episodeResult)
 }
