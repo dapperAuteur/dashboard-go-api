@@ -34,6 +34,7 @@ func main() {
 	podcastResult, err := podcastsCollection.InsertOne(ctx, bson.D{
 		{"title", "The Polyglot Developer Podcast"},
 		{"author", "Nic Raboy"},
+		{"tags", bson.A{"development", "programming", "coding"}},
 	})
 	if err != nil {
 		log.Fatal(err)
