@@ -32,8 +32,8 @@ func main() {
 	podcastsCollection := quickstartDatabase.Collection("podcasts")
 	// episodesCollection := quickstartDatabase.Collection("episodes")
 	podcastResult, err := podcastsCollection.InsertOne(ctx, bson.D{
-		{Key: "title", Value: "The Polyglot Developer Podcast"},
-		{Key: "author", Value: "Nic Raboy"},
+		{"title", "The Polyglot Developer Podcast"},
+		{"author", "Nic Raboy"},
 	})
 	if err != nil {
 		log.Fatal(err)
