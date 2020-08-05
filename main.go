@@ -9,6 +9,9 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
@@ -18,6 +21,22 @@ func main() {
 
 	log.Printf("main : Started")
 	defer log.Println("main : Completed")
+
+	// ==
+	// Start Database
+
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://awe:XjtsRQPAjyDbokQE@palabras-express-api-shard-00-00.whbeh.mongodb.net:27017,palabras-express-api-shard-00-01.whbeh.mongodb.net:27017,palabras-express-api-shard-00-02.whbeh.mongodb.net:27017/palabras-express-api?ssl=true&replicaSet=atlas-12h93v-shard-0&authSource=admin&retryWrites=true&w=majority"))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Disconnect(ctx)
 
 	// =========================================================================
 	// Start API Service
