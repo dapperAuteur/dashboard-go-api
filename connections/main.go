@@ -41,6 +41,6 @@ func main() {
 		log.Fatal(err)
 	}
 	for _, episode := range episodes {
-		fmt.Println(episode)
+		fmt.Println(episode["title"])
 	}
 }
