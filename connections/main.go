@@ -67,5 +67,19 @@ func main() {
 	if err = filterCursor.All(ctx, &episodesFiltered); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(episodesFiltered)
+	// fmt.Println(episodesFiltered)
+
+	opts := options.Find()
+	opts.SetSort(bson.D{{"duration", -1}})
+
+	sortCursor, err := episodesCollection.Find(ctx, bson.D{
+		{"duration", bson.D{
+			{"$gt", 24},
+		}},
+	}, opts)
+	var episodesSorted []bson.M
+	if err = sortCursor.All(ctx, &episodesSorted); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(episodesSorted)
 }
