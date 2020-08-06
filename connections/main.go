@@ -6,9 +6,25 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+type Podcast struct {
+	ID     primitive.ObjectID `bson: "_id, omitempty"`
+	Title  string             `bson: "title, omitempty"`
+	Author string             `bson: "author, omitempty"`
+	Tags   []string           `bson: "tags, omitempty"`
+}
+
+type Episode struct {
+	ID          primitive.ObjectID `bson: "_id, omitempty"`
+	Podcast     primitive.ObjectID `bson: "podcast, omitempty"`
+	Title       string             `bson: "title, omitempty"`
+	Description string             `bson: "description, omitempty"`
+	Duration    int32              `bson: "duration, omitempty"`
+}
 
 func main() {
 	// connect to db
@@ -29,7 +45,7 @@ func main() {
 	podcastsCollection := database.Collection("podcasts")
 	episodesCollection := database.Collection("episodes")
 
-	var podcasts []bson.M
+	var podcasts []Podcast
 	podcastCursor, err := podcastsCollection.Find(ctx, bson.M{})
 	if err != nil {
 		panic(err)
@@ -40,8 +56,24 @@ func main() {
 	}
 	fmt.Println(podcasts)
 
-	var episodes []bson.M
-	episodeCursor, err := episodesCollection.Find(ctx, bson.M{})
+	// create Podcast
+	podcast := Podcast{
+		Title:  "The Polyglot Developer",
+		Author: "Nic Raboy",
+		Tags:   []string{"development", "programming", "coding"},
+	}
+	// insert new podcast into db
+	insertResult, err := podcastsCollection.InsertOne(ctx, podcast)
+	if err != nil {
+		panic(err)
+	}
+	// print id of inserted id
+	fmt.Println(insertResult.InsertedID)
+
+	var episodes []Episode
+	episodeCursor, err := episodesCollection.Find(ctx, bson.M{
+		"duration": bson.D{{"$gt", 25}},
+	})
 	if err != nil {
 		panic(err)
 	}
