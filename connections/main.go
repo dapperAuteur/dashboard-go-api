@@ -29,7 +29,7 @@ func main() {
 	defer client.Disconnect(ctx)
 
 	quickstartDatabase := client.Database("quickstart")
-	// podcastsCollection := quickstartDatabase.Collection("podcasts")
+	podcastsCollection := quickstartDatabase.Collection("podcasts")
 	episodesCollection := quickstartDatabase.Collection("episodes")
 
 	cursor, err := episodesCollection.Find(ctx, bson.M{})
@@ -52,4 +52,10 @@ func main() {
 		}
 		fmt.Println(episode)
 	}
+
+	var podcast bson.M
+	if err = podcastsCollection.FindOne(ctx, bson.M{}).Decode(&podcast); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("podcast", podcast)
 }
