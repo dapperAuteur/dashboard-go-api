@@ -57,4 +57,13 @@ func main() {
 	)
 	fmt.Printf("Updated %v Documents!\n", result.ModifiedCount)
 
+	result, err = podcastsCollection.ReplaceOne(
+		ctx,
+		bson.M{"author": "Nic Raboy"},
+		bson.M{
+			"title":  "The Nic Raboy Show",
+			"author": "Nicolas Raboy",
+		},
+	)
+	fmt.Printf("Updated %v Documents!\n", result.ModifiedCount)
 }
