@@ -40,5 +40,7 @@ func main() {
 	if err = cursor.All(ctx, &episodes); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(episodes)
+	for episode := range episodes {
+		fmt.Println(episode)
+	}
 }
