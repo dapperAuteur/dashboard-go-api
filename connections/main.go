@@ -74,7 +74,7 @@ func main() {
 
 	sortCursor, err := episodesCollection.Find(ctx, bson.D{
 		{"duration", bson.D{
-			{"$gt", 24},
+			{"$gt", 30},
 		}},
 	}, opts)
 	var episodesSorted []bson.M
