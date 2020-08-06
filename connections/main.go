@@ -40,7 +40,7 @@ func main() {
 		ctx,
 		bson.M{"_id": id},
 		bson.D{
-			{"$set", bson.D{{"author", "Nicolas Raboy"}}},
+			{"$set", bson.D{{"author", "Nicola Raboy"}, {"favorite", false}, {"mine", false}}},
 		},
 	)
 	if err != nil {
