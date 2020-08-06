@@ -36,11 +36,20 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var episodes []bson.M
-	if err = cursor.All(ctx, &episodes); err != nil {
-		log.Fatal(err)
-	}
-	for _, episode := range episodes {
-		fmt.Println(episode["title"])
+	// var episodes []bson.M
+	// if err = cursor.All(ctx, &episodes); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// for _, episode := range episodes {
+	// 	fmt.Println(episode["title"])
+	// }
+
+	defer cursor.Close(ctx)
+	for cursor.Next(ctx) {
+		var episode bson.M
+		if err = cursor.Decode(&episode); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(episode)
 	}
 }
