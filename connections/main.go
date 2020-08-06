@@ -50,12 +50,22 @@ func main() {
 		if err = cursor.Decode(&episode); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(episode)
+		// fmt.Println(episode)
 	}
 
 	var podcast bson.M
 	if err = podcastsCollection.FindOne(ctx, bson.M{}).Decode(&podcast); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("podcast", podcast)
+	// fmt.Println("podcast", podcast)
+
+	filterCursor, err := episodesCollection.Find(ctx, bson.M{"duration": 25})
+	if err != nil {
+		log.Fatal(err)
+	}
+	var episodesFiltered []bson.M
+	if err = filterCursor.All(ctx, &episodesFiltered); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(episodesFiltered)
 }
