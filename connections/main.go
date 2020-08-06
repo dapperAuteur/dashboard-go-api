@@ -70,11 +70,11 @@ func main() {
 	// fmt.Println(episodesFiltered)
 
 	opts := options.Find()
-	opts.SetSort(bson.D{{"duration", -1}})
+	opts.SetSort(bson.D{{"duration", 1}})
 
 	sortCursor, err := episodesCollection.Find(ctx, bson.D{
 		{"duration", bson.D{
-			{"$gt", 30},
+			{"$gt", 24},
 		}},
 	}, opts)
 	var episodesSorted []bson.M
