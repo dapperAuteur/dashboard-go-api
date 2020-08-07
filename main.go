@@ -26,9 +26,9 @@ func main() {
 	// Start Database
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"))
+	client, err := openDB()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer client.Disconnect(ctx)
 
