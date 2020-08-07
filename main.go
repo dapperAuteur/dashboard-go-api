@@ -109,10 +109,10 @@ type Podcast struct {
 	Tags   []string           `bson:"tags,omitempty" json:"tags,omitempty"`
 }
 
-// Verbo is a Spanish verb
-type Verbo struct {
-	CambiarDeIrregular   string  `json:"cambiar_de_irregular,omitempty"`
-	CategoriaDeIrregular string  `json:"categoria_de_irregular,omitempty"`
+// structure to connect to the mongo db collections
+type Podcasts struct {
+	db *mongo.Collection
+}
 	English              string  `json:"english,omitempty"`
 	Grupo                float64 `json:"grupo,omitempty"`
 	Irregular            bool    `json:"irregular,omitempty"`
