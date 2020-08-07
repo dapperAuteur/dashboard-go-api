@@ -37,6 +37,7 @@ func main() {
 
 	// database := client.Database(("palabras-express-api"))
 	database := client.Database(("quickstart"))
+	podcastsCollection := database.Collection("podcasts")
 	api := http.Server{
 		Addr:         "localhost:8080",
 		Handler:      http.HandlerFunc(ListTransactions),
