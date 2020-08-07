@@ -114,14 +114,14 @@ type Podcasts struct {
 	db *mongo.Collection
 }
 	English              string  `json:"english,omitempty"`
-	Grupo                float64 `json:"grupo,omitempty"`
-	Irregular            bool    `json:"irregular,omitempty"`
-	Media                string  `json:"media,omitempty"`
-	Note                 string  `json:"note,,omitempty"`
-	Reflexive            bool    `json:"reflexive,omitempty"`
-	Spanish              string  `json:"spanish,omitempty"`
-	Terminacion          string  `json:"terminacion,omitempty"`
-}
+// PodcastList gets all the Podcasts from teh db then encodes them in a response client
+func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	podcastList := []Podcast{}
+
+	podcastCursor, err := p.db.Find(ctx, bson.M{})
+	if err != nil {
+	}
 
 // ListTransactions is an HTTP Handler for returning a list of Transactions.
 func ListTransactions(w http.ResponseWriter, r *http.Request) {
