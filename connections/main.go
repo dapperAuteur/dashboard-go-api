@@ -18,7 +18,7 @@ import (
 
 func main() {
 	// connect to db
-	// ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	// // this formats the client
 	// // client, err := mongo.Connect(ctx, options.Client().ApplyURI(os.Getenv("ATLAS_URI")))
@@ -37,12 +37,14 @@ func main() {
 	podcastsCollection := database.Collection("podcasts")
 	// episodesCollection := database.Collection("episodes")
 
+	service := Podcasts{db: podcastsCollection}
+
 	// ==
 	// Start API Service
 
 	api := http.Server{
 		Addr:         "localhost:8080",
-		Handler:      http.HandlerFunc(podcastsCollection),
+		Handler:      http.HandlerFunc(service.PodcastList),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
@@ -142,11 +144,12 @@ type Episode struct {
 }
 
 type Podcasts struct {
-	db *podcastsCollection
+	db *mongo.Collection
 }
 
 // PodcastList gets all the Podcasts from the db then encodes them in a response client
-func (p *Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
+func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	podcastList := []Podcast{}
 
 	podcastCursor, err := p.db.Find(ctx, bson.M{})
@@ -158,16 +161,5 @@ func (p *Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	fmt.Println(podcastList)
-
-	// episodeCursor, err := episodesCollection.Find(ctx, bson.M{
-	// 	"duration": bson.D{{"$gt", 25}},
-	// })
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// if err = episodeCursor.All(ctx, &episodes); err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println(episodes)
 
 }
