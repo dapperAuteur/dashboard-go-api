@@ -9,3 +9,7 @@ The goal is to build a tool that adds value to the users life, mine. And to help
 ## First Version
 
 - track and manage expenses
+
+##
+to run mongodb locally 
+`sudo mongod --dbpath /System/Volumes/Data/data/db`
