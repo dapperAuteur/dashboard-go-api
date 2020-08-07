@@ -101,10 +101,12 @@ func openDB() (*mongo.Client, error) {
 	return client, err
 }
 	Participant      string  `json:"participant,omitempty"`
-	Tag              string  `json:"tag,omitempty"`
-	TransactionEvent string  `json:"transaction_event,omitempty"`
-	TransactionValue float64 `json:"transaction_value,omitempty"`
-	Vendor           string  `json:"vendor,omitempty"`
+// Podcast type is a group of related episodes
+type Podcast struct {
+	ID     primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Title  string             `bson:"title,omitempty" json:"title,omitempty"`
+	Author string             `bson:"author,omitempty" json:"author,omitempty"`
+	Tags   []string           `bson:"tags,omitempty" json:"tags,omitempty"`
 }
 
 // Verbo is a Spanish verb
