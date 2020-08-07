@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -162,4 +163,16 @@ func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(podcastList)
 
+	data, err := json.Marshal(podcastList)
+	if err != nil {
+		log.Println("error marshalling result", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(data); err != nil {
+		log.Println("error writing result", err)
+	}
 }
