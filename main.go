@@ -86,14 +86,14 @@ func main() {
 	}
 }
 
-// Transaction is a line item on a balance sheet.
-type Transaction struct {
-	Budget           string  `json:"budget,omitempty"`
-	Currency         string  `json:"currency,omitempty"`
-	FinancialAccount string  `json:"financial_account,omitempty"`
-	Media            string  `json:"media,omitempty"`
-	Note             string  `json:"note,omitempty"`
-	Occurrence       string  `json:"occurrence,omitempty"`
+func openDB() (*mongo.Client, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	// formats the client
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"))
+
+	return client, err
+}
 	Participant      string  `json:"participant,omitempty"`
 	Tag              string  `json:"tag,omitempty"`
 	TransactionEvent string  `json:"transaction_event,omitempty"`
