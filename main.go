@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +11,8 @@ import (
 	"syscall"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -100,7 +103,7 @@ func openDB() (*mongo.Client, error) {
 
 	return client, err
 }
-	Participant      string  `json:"participant,omitempty"`
+
 // Podcast type is a group of related episodes
 type Podcast struct {
 	ID     primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
@@ -113,7 +116,7 @@ type Podcast struct {
 type Podcasts struct {
 	db *mongo.Collection
 }
-	English              string  `json:"english,omitempty"`
+
 // PodcastList gets all the Podcasts from teh db then encodes them in a response client
 func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
@@ -121,16 +124,15 @@ func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 
 	podcastCursor, err := p.db.Find(ctx, bson.M{})
 	if err != nil {
+		panic(err)
 	}
 
-// ListTransactions is an HTTP Handler for returning a list of Transactions.
-func ListTransactions(w http.ResponseWriter, r *http.Request) {
-	list := []Transaction{
-		{Budget: "Food", TransactionValue: 14.39, Vendor: "Fry's"},
-		{Budget: "Tools", TransactionValue: 1400.39, Vendor: "System76"},
+	if err = podcastCursor.All(ctx, &podcastList); err != nil {
+		panic(err)
 	}
+	fmt.Println(podcastList)
 
-	data, err := json.Marshal(list)
+	data, err := json.Marshal(podcastList)
 	if err != nil {
 		log.Println("error marshalling result", err)
 		w.WriteHeader(http.StatusInternalServerError)
