@@ -38,9 +38,12 @@ func main() {
 	// database := client.Database(("palabras-express-api"))
 	database := client.Database(("quickstart"))
 	podcastsCollection := database.Collection("podcasts")
+
+	service := Podcasts{db: podcastsCollection}
+
 	api := http.Server{
 		Addr:         "localhost:8080",
-		Handler:      http.HandlerFunc(ListTransactions),
+		Handler:      http.HandlerFunc(service.PodcastList),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
