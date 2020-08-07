@@ -129,19 +129,19 @@ func openDB() (*mongo.Client, error) {
 
 // Podcast type is a group of related episodes
 type Podcast struct {
-	ID     primitive.ObjectID `bson: "_id, omitempty" json:"_id, omitempty"`
-	Title  string             `bson: "title, omitempty" json: "title, omitempty"`
-	Author string             `bson: "author, omitempty" json: "author, omitempty"`
-	Tags   []string           `bson: "tags, omitempty" json: "tags, omitempty"`
+	ID     primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Title  string             `bson:"title,omitempty" json:"title,omitempty"`
+	Author string             `bson:"author,omitempty" json:"author,omitempty"`
+	Tags   []string           `bson:"tags,omitempty" json:"tags,omitempty"`
 }
 
 // Episode is the video or audio content
 type Episode struct {
-	ID          primitive.ObjectID `bson: "_id, omitempty" json: "_id, omitempty"`
-	Podcast     primitive.ObjectID `bson: "podcast, omitempty" json: "podcast, omitempty"`
-	Title       string             `bson: "title, omitempty" json: "title, omitempty"`
-	Description string             `bson: "description, omitempty" json: "description, omitempty"`
-	Duration    int32              `bson: "duration, omitempty" json: "duration, omitempty"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Podcast     primitive.ObjectID `bson:"podcast,omitempty" json:"podcast,omitempty"`
+	Title       string             `bson:"title,omitempty" json:"title,omitempty"`
+	Description string             `bson:"description,omitempty" json:"description,omitempty"`
+	Duration    int32              `bson:"duration,omitempty" json:"duration,omitempty"`
 }
 
 type Podcasts struct {
