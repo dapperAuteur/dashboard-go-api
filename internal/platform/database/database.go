@@ -8,6 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Do I want to use a Config struct to input database configuration data?
+
 // Open knows how to open a database connection
 func Open() (*mongo.Client, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
