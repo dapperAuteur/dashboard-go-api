@@ -62,6 +62,7 @@ func main() {
 	// 	log.Fatalf("error: connecting to db: %s", err)
 	// }
 
+	// is it ok to do this twice
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	client, err := database.Open(database.Config{
