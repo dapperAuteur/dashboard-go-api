@@ -23,6 +23,7 @@ func main() {
 }
 
 func run() error {
+	log := log.New(os.Stdout, "dashboard :", log.LstdFlags)
 
 	// ==
 	// Configuration
@@ -86,7 +87,7 @@ func run() error {
 	database := client.Database(("quickstart"))
 	podcastsCollection := database.Collection("podcasts")
 
-	service := handlers.Podcasts{DB: podcastsCollection}
+	service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
@@ -149,12 +150,12 @@ func run() error {
 // }
 
 // // structure to connect to the mongo db collections
-// type Podcasts struct {
+// type Podcast struct {
 // 	db *mongo.Collection
 // }
 
-// // PodcastList gets all the Podcasts from teh db then encodes them in a response client
-// func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
+// // PodcastList gets all the Podcast from teh db then encodes them in a response client
+// func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
 // 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 // 	podcastList, err := podcast.List(p.db)
