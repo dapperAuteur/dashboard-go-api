@@ -36,7 +36,7 @@ func run() error {
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasUri string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
 		}
 	}
 
@@ -73,7 +73,7 @@ func run() error {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	client, err := database.Open(database.Config{
-		AtlasUri: cfg.DB.AtlasUri,
+		AtlasURI: cfg.DB.AtlasURI,
 	})
 	if err != nil {
 		panic(err)
