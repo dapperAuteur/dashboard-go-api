@@ -47,6 +47,7 @@ func main() {
 	log.Printf("main : Started")
 	defer log.Println("main : Completed")
 
+	// print config values when app starts
 	out, err := conf.String(&cfg)
 	if err != nil {
 		log.Fatalf("error : generating config for output : %v", err)
