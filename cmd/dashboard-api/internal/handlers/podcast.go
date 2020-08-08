@@ -14,12 +14,13 @@ import (
 )
 
 // structure to connect to the mongo db collections
-type Podcasts struct {
-	DB *mongo.Collection
+type Podcast struct {
+	DB  *mongo.Collection
+	Log *log.Logger
 }
 
-// PodcastList gets all the Podcasts from the db then encodes them in a response client
-func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
+// PodcastList gets all the Podcast from the db then encodes them in a response client
+func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	podcastList, err := podcast.List(p.DB)
@@ -39,7 +40,7 @@ func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 
 	data, err := json.Marshal(podcastList)
 	if err != nil {
-		log.Println("error marshalling result", err)
+		p.Log.Println("error marshalling result", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -47,6 +48,6 @@ func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write(data); err != nil {
-		log.Println("error writing result", err)
+		p.Log.Println("error writing result", err)
 	}
 }
