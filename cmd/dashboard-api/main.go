@@ -54,9 +54,7 @@ func main() {
 	// Start Database
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, err := database.Open(database.Config{
-		AtlasUri: cfg.DB.AtlasUri,
-	})
+	client, err := db
 	if err != nil {
 		panic(err)
 	}
