@@ -17,20 +17,17 @@ import (
 
 func main() {
 
+	// ==
+	// Configuration
+
 	var cfg struct {
 		DB struct {
 			AtlasUri string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
 		}
 	}
 
-	// =========================================================================
-	// App Starting
-
-	log.Printf("main : Started")
-	defer log.Println("main : Completed")
-
 	// ==
-	// Get Configuration
+	// Helpful info in case of error
 
 	if err := conf.Parse(os.Args[1:], "DASHBOARD", &cfg); err != nil {
 		if err == conf.ErrHelpWanted {
@@ -44,17 +41,32 @@ func main() {
 		log.Fatalf("error: parsing config: %s", err)
 	}
 
-	// ==
-	// Setup Dependencies
-	db, err := database.Open(database.Config{
-		AtlasUri: cfg.DB.AtlasUri,
-	})
+	// =========================================================================
+	// App Starting
+
+	log.Printf("main : Started")
+	defer log.Println("main : Completed")
+
+	out, err := conf.String(&cfg)
+	if err != nil {
+		log.Fatalf("error : generating config for output : %v", err)
+	}
+	log.Printf("main : Config :\n%v\n", out)
 
 	// ==
 	// Start Database
+	// db, err := database.Open(database.Config{
+	// 	AtlasUri: cfg.DB.AtlasUri,
+	// })
+	// if err != nil {
+	// 	log.Fatalf("error: connecting to db: %s", err)
+	// }
+
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, err := db
+	client, err := database.Open(database.Config{
+		AtlasUri: cfg.DB.AtlasUri,
+	})
 	if err != nil {
 		panic(err)
 	}
