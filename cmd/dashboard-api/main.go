@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -10,10 +11,17 @@ import (
 	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
 )
 
 func main() {
+
+	var cfg struct {
+		DB struct {
+			AtlasUri string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+		}
+	}
 
 	// =========================================================================
 	// App Starting
@@ -22,10 +30,33 @@ func main() {
 	defer log.Println("main : Completed")
 
 	// ==
+	// Get Configuration
+
+	if err := conf.Parse(os.Args[1:], "DASHBOARD", &cfg); err != nil {
+		if err == conf.ErrHelpWanted {
+			usage, err := conf.Usage("DASHBOARD", &cfg)
+			if err != nil {
+				log.Fatalf("error : generating config usage : %v", err)
+			}
+			fmt.Println(usage)
+			return
+		}
+		log.Fatalf("error: parsing config: %s", err)
+	}
+
+	// ==
+	// Setup Dependencies
+	db, err := database.Open(database.Config{
+		AtlasUri: cfg.DB.AtlasUri,
+	})
+
+	// ==
 	// Start Database
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, err := database.Open()
+	client, err := database.Open(database.Config{
+		AtlasUri: cfg.DB.AtlasUri,
+	})
 	if err != nil {
 		panic(err)
 	}
