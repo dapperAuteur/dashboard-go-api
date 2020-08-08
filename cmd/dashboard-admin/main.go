@@ -46,6 +46,13 @@ func run() error {
 		return errors.Wrap(err, "parsing config")
 	}
 
+	// print config values when app starts
+	out, err := conf.String(&cfg)
+	if err != nil {
+		return errors.Wrap(err, "generating config for output")
+	}
+	log.Printf("main : Config :\n%v\n", out)
+
 	// ==
 	// Start Database
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
