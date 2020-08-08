@@ -21,6 +21,12 @@ func main() {
 	// Configuration
 
 	var cfg struct {
+		Web struct {
+			Address         string        `conf:"default:localhost:8080"`
+			ReadTimeout     time.Duration `conf:"default:5s"`
+			WriteTimeout    time.Duration `conf:"default:5s"`
+			ShutdownTimeout time.Duration `conf:"default:5s"`
+		}
 		DB struct {
 			AtlasUri string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
 		}
@@ -84,10 +90,10 @@ func main() {
 	service := handlers.Podcasts{DB: podcastsCollection}
 
 	api := http.Server{
-		Addr:         "localhost:8080",
+		Addr:         cfg.Web.Address,
 		Handler:      http.HandlerFunc(service.PodcastList),
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
+		ReadTimeout:  cfg.Web.ReadTimeout,
+		WriteTimeout: cfg.Web.WriteTimeout,
 	}
 
 	// Make a channel to listen for errors coming from the listener. Use a
@@ -117,14 +123,13 @@ func main() {
 		log.Println("main : Start shutdown")
 
 		// Give outstanding requests a deadline for completion.
-		const timeout = 5 * time.Second
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		ctx, cancel := context.WithTimeout(context.Background(), cfg.Web.ShutdownTimeout)
 		defer cancel()
 
 		// Asking listener to shutdown and load shed.
 		err := api.Shutdown(ctx)
 		if err != nil {
-			log.Printf("main : Graceful shutdown did not complete in %v : %v", timeout, err)
+			log.Printf("main : Graceful shutdown did not complete in %v : %v", cfg.Web.ShutdownTimeout, err)
 			err = api.Close()
 		}
 
