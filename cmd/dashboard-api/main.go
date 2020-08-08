@@ -12,10 +12,10 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
+	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 )
 
 func main() {
@@ -105,14 +105,6 @@ func main() {
 // 	return client, err
 // }
 
-// Podcast type is a group of related episodes
-type Podcast struct {
-	ID     primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Title  string             `bson:"title,omitempty" json:"title,omitempty"`
-	Author string             `bson:"author,omitempty" json:"author,omitempty"`
-	Tags   []string           `bson:"tags,omitempty" json:"tags,omitempty"`
-}
-
 // structure to connect to the mongo db collections
 type Podcasts struct {
 	db *mongo.Collection
@@ -121,7 +113,11 @@ type Podcasts struct {
 // PodcastList gets all the Podcasts from teh db then encodes them in a response client
 func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	podcastList := []Podcast{}
+
+	podcastList, err := podcast.List(p.db)
+	if err != nil {
+		panic(err)
+	}
 
 	podcastCursor, err := p.db.Find(ctx, bson.M{})
 	if err != nil {
