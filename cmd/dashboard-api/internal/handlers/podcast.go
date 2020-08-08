@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
+	"github.com/go-chi/chi"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -56,7 +57,7 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
 func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	_id := "_id"
+	_id := chi.URLParam(r, "_id")
 
 	podcast, err := podcast.Retrieve(p.DB, _id)
 	if err != nil {
