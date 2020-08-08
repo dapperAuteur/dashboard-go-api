@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,11 +9,8 @@ import (
 	"syscall"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-
+	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
-	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 )
 
 func main() {
@@ -43,7 +38,7 @@ func main() {
 	database := client.Database(("quickstart"))
 	podcastsCollection := database.Collection("podcasts")
 
-	service := Podcasts{db: podcastsCollection}
+	service := handlers.Podcasts{DB: podcastsCollection}
 
 	api := http.Server{
 		Addr:         "localhost:8080",
@@ -105,43 +100,43 @@ func main() {
 // 	return client, err
 // }
 
-// structure to connect to the mongo db collections
-type Podcasts struct {
-	db *mongo.Collection
-}
+// // structure to connect to the mongo db collections
+// type Podcasts struct {
+// 	db *mongo.Collection
+// }
 
-// PodcastList gets all the Podcasts from teh db then encodes them in a response client
-func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+// // PodcastList gets all the Podcasts from teh db then encodes them in a response client
+// func (p Podcasts) PodcastList(w http.ResponseWriter, r *http.Request) {
+// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	podcastList, err := podcast.List(p.db)
-	if err != nil {
-		panic(err)
-	}
+// 	podcastList, err := podcast.List(p.db)
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	podcastCursor, err := p.db.Find(ctx, bson.M{})
-	if err != nil {
-		panic(err)
-	}
+// 	podcastCursor, err := p.db.Find(ctx, bson.M{})
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	if err = podcastCursor.All(ctx, &podcastList); err != nil {
-		panic(err)
-	}
-	fmt.Println(podcastList)
+// 	if err = podcastCursor.All(ctx, &podcastList); err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Println(podcastList)
 
-	data, err := json.Marshal(podcastList)
-	if err != nil {
-		log.Println("error marshalling result", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+// 	data, err := json.Marshal(podcastList)
+// 	if err != nil {
+// 		log.Println("error marshalling result", err)
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		return
+// 	}
 
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	if _, err := w.Write(data); err != nil {
-		log.Println("error writing result", err)
-	}
-}
+// 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+// 	w.WriteHeader(http.StatusOK)
+// 	if _, err := w.Write(data); err != nil {
+// 		log.Println("error writing result", err)
+// 	}
+// }
 
 // // Transaction is a line item on a balance sheet.
 // type Transaction struct {
