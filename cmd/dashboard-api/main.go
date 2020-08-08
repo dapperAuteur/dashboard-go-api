@@ -13,9 +13,16 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
+	"github.com/pkg/errors"
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
 
 	// ==
 	// Configuration
@@ -33,18 +40,19 @@ func main() {
 	}
 
 	// ==
+	// Get Configuration
 	// Helpful info in case of error
 
 	if err := conf.Parse(os.Args[1:], "DASHBOARD", &cfg); err != nil {
 		if err == conf.ErrHelpWanted {
 			usage, err := conf.Usage("DASHBOARD", &cfg)
 			if err != nil {
-				log.Fatalf("error : generating config usage : %v", err)
+				return errors.Wrap(err, "generating config usage")
 			}
 			fmt.Println(usage)
-			return
+			return nil
 		}
-		log.Fatalf("error: parsing config: %s", err)
+		return errors.Wrap(err, "parsing config")
 	}
 
 	// =========================================================================
@@ -56,18 +64,9 @@ func main() {
 	// print config values when app starts
 	out, err := conf.String(&cfg)
 	if err != nil {
-		log.Fatalf("error : generating config for output : %v", err)
+		return errors.Wrap(err, "generating config for output")
 	}
 	log.Printf("main : Config :\n%v\n", out)
-
-	// ==
-	// Start Database
-	// db, err := database.Open(database.Config{
-	// 	AtlasUri: cfg.DB.AtlasUri,
-	// })
-	// if err != nil {
-	// 	log.Fatalf("error: connecting to db: %s", err)
-	// }
 
 	// is it ok to do this twice
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
@@ -117,7 +116,7 @@ func main() {
 	// Blocking main and waiting for shutdown.
 	select {
 	case err := <-serverErrors:
-		log.Fatalf("error: listening and serving: %s", err)
+		return errors.Wrap(err, "listening and serving")
 
 	case <-shutdown:
 		log.Println("main : Start shutdown")
@@ -134,9 +133,10 @@ func main() {
 		}
 
 		if err != nil {
-			log.Fatalf("main : could not stop server gracefully : %v", err)
+			return errors.Wrap(err, "graceful shutdown")
 		}
 	}
+	return nil
 }
 
 // func openDB() (*mongo.Client, error) {
