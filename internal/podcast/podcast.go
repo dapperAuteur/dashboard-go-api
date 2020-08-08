@@ -24,3 +24,25 @@ func List(db *mongo.Collection) ([]Podcast, error) {
 
 	return podcastList, nil
 }
+
+func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	var podcast Podcast
+
+	podcastFound := bson.M{"ID": _id}
+	err := db.FindOne(ctx, podcastFound).Decode(&podcast)
+	if err != nil {
+		return nil, err
+	}
+
+	// podcastCursor, err := db.FindOne(ctx, Podcast{ID: _id})
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// if err = podcastCursor.All(ctx, &podcast); err != nil {
+	// 	return nil, err
+	// }
+
+	return &podcast, nil
+}
