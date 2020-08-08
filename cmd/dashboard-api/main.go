@@ -23,7 +23,7 @@ func main() {
 }
 
 func run() error {
-	log := log.New(os.Stdout, "DASHBOARD : ", log.LstdFlags)
+	log := log.New(os.Stdout, "DASHBOARD : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 
 	// ==
 	// Configuration
