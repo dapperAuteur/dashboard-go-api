@@ -87,11 +87,11 @@ func run() error {
 	database := client.Database(("quickstart"))
 	podcastsCollection := database.Collection("podcasts")
 
-	service := handlers.Podcast{DB: podcastsCollection, Log: log}
+	// service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
-		Handler:      http.HandlerFunc(service.PodcastList),
+		Handler:      handlers.API(log, podcastsCollection),
 		ReadTimeout:  cfg.Web.ReadTimeout,
 		WriteTimeout: cfg.Web.WriteTimeout,
 	}
