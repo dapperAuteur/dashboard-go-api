@@ -14,7 +14,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
 )
 
 func main() {
@@ -29,7 +30,7 @@ func main() {
 	// Start Database
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, err := openDB()
+	client, err := database.Open()
 	if err != nil {
 		panic(err)
 	}
@@ -95,14 +96,14 @@ func main() {
 	}
 }
 
-func openDB() (*mongo.Client, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+// func openDB() (*mongo.Client, error) {
+// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	// formats the client
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"))
+// 	// formats the client
+// 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"))
 
-	return client, err
-}
+// 	return client, err
+// }
 
 // Podcast type is a group of related episodes
 type Podcast struct {
