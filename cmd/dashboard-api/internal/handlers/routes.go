@@ -9,17 +9,28 @@ import (
 )
 
 // API constructs a handler that knows about all API routes.
-func API(logger *log.Logger, db *mongo.Collection) http.Handler {
+func API(logger *log.Logger, db *mongo.Database) http.Handler {
 
 	app := web.NewApp(logger)
 
+	// episodesCollection := db.Collection("episodes")
+	podcastsCollection := db.Collection("podcasts")
+
 	podcast := Podcast{
-		DB:  db,
+		DB:  podcastsCollection,
 		Log: logger,
 	}
 
-	app.Handle(http.MethodGet, "/v1/podasts", podcast.PodcastList)
-	app.Handle(http.MethodGet, "/v1/podasts/{_id}", podcast.Retrieve)
+	// episode := Episode{
+	// 	DB: episodesCollection,
+	// 	Log: logger,
+	// }
+
+	// app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList)
+	// app.Handle(http.MethodGet, "/v1/episodes/{_id}", episode.Retrieve)
+
+	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList)
+	app.Handle(http.MethodGet, "/v1/podcasts/{_id}", podcast.Retrieve)
 
 	return app
 }
