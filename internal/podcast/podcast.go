@@ -31,10 +31,10 @@ func List(db *mongo.Collection) ([]Podcast, error) {
 // Retrieve gets the first Podcast in the db with the provided _id
 func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
 	var podcast Podcast
 
 	id, err := primitive.ObjectIDFromHex(_id)
-	err := db.FindOne(ctx, podcastFound).Decode(&podcast)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +49,25 @@ func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
 
 	return &podcast, nil
 }
+
+// RetrieveByTitle gets the first Podcast in the db with the provided title
+func RetrieveByTitle(db *mongo.Collection, title string) (*Podcast, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	var podcast Podcast
+
+	// This works to find the Podcast by title
+	filter := Podcast{
+		Title: "The Nic Raboy Show",
+	}
+
+	if err := db.FindOne(ctx, filter).Decode(&podcast); err != nil {
+		log.Printf("podcast not found: %s", podcast)
+		log.Printf("id sent to podcast.Retrieve podcast}: %s", podcast)
+		return nil, err
+	}
+
+	fmt.Println("result AFTER:", podcast)
 
 	return &podcast, nil
 }
