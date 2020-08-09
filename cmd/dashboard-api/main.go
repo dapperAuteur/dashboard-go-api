@@ -142,53 +142,6 @@ func run() error {
 	return nil
 }
 
-// func openDB() (*mongo.Client, error) {
-// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-
-// 	// formats the client
-// 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"))
-
-// 	return client, err
-// }
-
-// // structure to connect to the mongo db collections
-// type Podcast struct {
-// 	db *mongo.Collection
-// }
-
-// // PodcastList gets all the Podcast from teh db then encodes them in a response client
-// func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
-// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-
-// 	podcastList, err := podcast.List(p.db)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	podcastCursor, err := p.db.Find(ctx, bson.M{})
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	if err = podcastCursor.All(ctx, &podcastList); err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Println(podcastList)
-
-// 	data, err := json.Marshal(podcastList)
-// 	if err != nil {
-// 		log.Println("error marshalling result", err)
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-// 	w.WriteHeader(http.StatusOK)
-// 	if _, err := w.Write(data); err != nil {
-// 		log.Println("error writing result", err)
-// 	}
-// }
-
 // // Transaction is a line item on a balance sheet.
 // type Transaction struct {
 // 	Budget           string  `json:"budget,omitempty"`
@@ -216,42 +169,4 @@ func run() error {
 // 	Reflexive            bool    `json:"reflexive,omitempty"`
 // 	Spanish              string  `json:"spanish,omitempty"`
 // 	Terminacion          string  `json:"terminacion,omitempty"`
-// }
-
-// // ListTransactions is an HTTP Handler for returning a list of Transactions.
-// func ListTransactions(w http.ResponseWriter, r *http.Request) {
-// 	list := []Transaction{
-// 		{Budget: "Food", TransactionValue: 14.39, Vendor: "Fry's"},
-// 		{Budget: "Tools", TransactionValue: 1400.39, Vendor: "System76"},
-// 	}
-
-// 	data, err := json.Marshal(list)
-// 	if err != nil {
-// 		log.Println("error marshalling result", err)
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-// 	w.WriteHeader(http.StatusOK)
-// 	if _, err := w.Write(data); err != nil {
-// 		log.Println("error writing result", err)
-// 	}
-// }
-
-// func ListVerbos(w http.ResponseWriter, r *http.Request) {
-// 	verbos := []Verbo{}
-
-// 	data, err := json.Marshal(verbos)
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		log.Println("error marshalling", err)
-// 		return
-// 	}
-
-// 	w.Header().Set("content-type", "application/json; charset=utf-8")
-// 	w.WriteHeader(http.StatusOK)
-// 	if _, err := w.Write(data); err != nil {
-// 		log.Println("error writing", err)
-// 	}
 // }
