@@ -25,6 +25,6 @@ func (a *App) Handle(method, pattern string, fn http.HandlerFunc) {
 	a.mux.MethodFunc(method, pattern, fn)
 }
 
-func (a *App) ServeHttp(w http.ResponseWriter, r *http.Request) {
+func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	a.mux.ServeHTTP(w, r)
 }
