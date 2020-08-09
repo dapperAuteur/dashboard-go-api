@@ -55,7 +55,7 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
 
 // Retrieve gets the Podcast from the db by _id then encodes them in a response client
 func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	// ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_id := chi.URLParam(r, "_id")
 
@@ -64,14 +64,6 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	podcastCursor, err := p.DB.Find(ctx, bson.M{})
-	if err != nil {
-		panic(err)
-	}
-
-	if err = podcastCursor.All(ctx, &podcast); err != nil {
-		panic(err)
-	}
 	fmt.Println(podcast)
 
 	data, err := json.Marshal(podcast)
