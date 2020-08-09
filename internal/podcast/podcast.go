@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// PodcastList gets all the Podcasts from the db then encodes them in a response client
+// List gets all the Podcasts from the db then encodes them in a response client
 func List(db *mongo.Collection) ([]Podcast, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	podcastList := []Podcast{}
