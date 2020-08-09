@@ -72,6 +72,9 @@ func run() error {
 	// is it ok to do this twice, I think ctx is needed here to close the context later
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
+	// =
+	// Start Database
+
 	client, err := database.Open(database.Config{
 		AtlasURI: cfg.DB.AtlasURI,
 	})
@@ -83,15 +86,14 @@ func run() error {
 	// =========================================================================
 	// Start API Service
 
-	// database := client.Database(("palabras-express-api"))
-	database := client.Database(("quickstart"))
-	podcastsCollection := database.Collection("podcasts")
+	// send the db to the handler and let the router determine which collection to use
+	myDatabase := client.Database(("quickstart"))
 
 	// service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
-		Handler:      handlers.API(log, podcastsCollection),
+		Handler:      handlers.API(log, myDatabase),
 		ReadTimeout:  cfg.Web.ReadTimeout,
 		WriteTimeout: cfg.Web.WriteTimeout,
 	}
