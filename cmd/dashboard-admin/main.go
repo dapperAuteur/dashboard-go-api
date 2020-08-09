@@ -33,7 +33,6 @@ func run() error {
 	// ==
 	// Get Configuration
 	// Helpful info in case of error
-
 	if err := conf.Parse(os.Args[1:], "DASHBOARD", &cfg); err != nil {
 		if err == conf.ErrHelpWanted {
 			usage, err := conf.Usage("DASHBOARD", &cfg)

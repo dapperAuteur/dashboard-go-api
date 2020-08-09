@@ -69,7 +69,7 @@ func run() error {
 	}
 	log.Printf("main : Config :\n%v\n", out)
 
-	// is it ok to do this twice
+	// is it ok to do this twice, I think ctx is needed here to close the context later
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	client, err := database.Open(database.Config{
