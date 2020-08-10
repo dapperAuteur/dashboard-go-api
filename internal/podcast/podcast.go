@@ -54,7 +54,7 @@ func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Podcast, 
 
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&podcast); err != nil {
 		log.Printf("podcast not found: %s", podcast)
-		log.Printf("id sent to podcast.Retrieve podcast}: %s", podcast)
+		log.Printf("id sent to podcast.Retrieve podcast}: %s", id)
 		return nil, ErrNotFound
 	}
 
@@ -74,7 +74,7 @@ func RetrieveByTitle(ctx context.Context, db *mongo.Collection, title string) (*
 	}
 
 	if err := db.FindOne(ctx, filter).Decode(&podcast); err != nil {
-		log.Printf("podcast not found: %s", podcast)
+		log.Printf("podcast title not found: %s", title)
 		log.Printf("id sent to podcast.Retrieve podcast}: %s", podcast)
 		return nil, errors.Wrapf(err, "retrieving podcast by title: %s", title)
 	}
