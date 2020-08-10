@@ -22,3 +22,24 @@ type NewPodcast struct {
 	Author string   `json:"author,omitempty"`
 	Tags   []string `json:"tags,omitempty"`
 }
+
+// Episode is the video or audio content
+type Episode struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Podcast     primitive.ObjectID `bson:"podcast,omitempty" json:"podcast,omitempty"`
+	Title       string             `bson:"title,omitempty" json:"title,omitempty"`
+	Description string             `bson:"description,omitempty" json:"description,omitempty"`
+	Duration    int32              `bson:"duration,omitempty" json:"duration,omitempty"`
+	Tags        []string           `json:"tags,omitempty"`
+	CreatedAt   time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
+	UpdatedAt   time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
+}
+
+// NewEpisode is the video or audio content
+type NewEpisode struct {
+	Podcast     primitive.ObjectID `bson:"podcast,omitempty" json:"podcast,omitempty"`
+	Title       string             `bson:"title,omitempty" json:"title,omitempty"`
+	Description string             `bson:"description,omitempty" json:"description,omitempty"`
+	Duration    int32              `bson:"duration,omitempty" json:"duration,omitempty"`
+	Tags        []string           `json:"tags,omitempty"`
+}
