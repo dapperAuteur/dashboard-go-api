@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 	"github.com/go-chi/chi"
 	"go.mongodb.org/mongo-driver/bson"
@@ -39,17 +40,9 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(podcastList)
 
-	data, err := json.Marshal(podcastList)
-	if err != nil {
-		p.Log.Println("error marshalling result", err)
-		w.WriteHeader(http.StatusInternalServerError)
+	if err := web.Respond(w, podcastList, http.StatusOK); err != nil {
+		p.Log.Println("error responding result", err)
 		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	if _, err := w.Write(data); err != nil {
-		p.Log.Println("error writing result", err)
 	}
 }
 
@@ -66,17 +59,9 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(podcast)
 
-	data, err := json.Marshal(podcast)
-	if err != nil {
-		p.Log.Println("error marshalling result", err)
-		w.WriteHeader(http.StatusInternalServerError)
+	if err := web.Respond(w, podcast, http.StatusOK); err != nil {
+		p.Log.Println("error responding result", err)
 		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	if _, err := w.Write(data); err != nil {
-		p.Log.Println("error writing result", err)
 	}
 }
 
@@ -98,17 +83,9 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(podcast)
 
-	data, err := json.Marshal(podcast)
-	if err != nil {
-		p.Log.Println("error marshalling result", err)
-		w.WriteHeader(http.StatusInternalServerError)
+	if err := web.Respond(w, podcast, http.StatusCreated); err != nil {
+		p.Log.Println("error responding result", err)
 		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusCreated)
-	if _, err := w.Write(data); err != nil {
-		p.Log.Println("error writing result", err)
 	}
 
 }
