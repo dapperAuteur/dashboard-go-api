@@ -9,7 +9,6 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -24,15 +23,6 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
 
 	podcastList, err := podcast.List(r.Context(), p.DB)
 	if err != nil {
-		return err
-	}
-
-	podcastCursor, err := p.DB.Find(r.Context(), bson.M{})
-	if err != nil {
-		return err
-	}
-
-	if err = podcastCursor.All(r.Context(), &podcastList); err != nil {
 		return err
 	}
 
