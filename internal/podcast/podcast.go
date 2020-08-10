@@ -96,7 +96,8 @@ func CreatePodcast(db *mongo.Collection, newPodcast NewPodcast, now time.Time) (
 		Title:     newPodcast.Title,
 		Author:    newPodcast.Author,
 		Tags:      newPodcast.Tags,
-		CreatedAt: now,
+		CreatedAt: now.UTC(),
+		UpdatedAt: now.UTC(),
 	}
 
 	// How do I get MongoDB to return the new Podcast
