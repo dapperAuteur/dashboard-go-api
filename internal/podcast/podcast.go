@@ -92,5 +92,6 @@ func CreatePodcast(db *mongo.Collection, newPodcast NewPodcast, now time.Time) (
 	}
 	fmt.Println("podcastResult : ", podcastResult)
 
+	// doesn't return ObjectID with podcast, find a way to get the _id with the Podcast
 	return &podcast, nil
 }
