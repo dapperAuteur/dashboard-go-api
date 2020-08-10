@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -36,7 +35,6 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
 	if err = podcastCursor.All(r.Context(), &podcastList); err != nil {
 		return err
 	}
-	fmt.Println(podcastList)
 
 	return web.Respond(w, podcastList, http.StatusOK)
 }
@@ -58,8 +56,6 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	fmt.Println(podcastFound)
-
 	return web.Respond(w, podcastFound, http.StatusOK)
 }
 
@@ -77,8 +73,6 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(podcast)
 
 	return web.Respond(w, podcast, http.StatusCreated)
 
