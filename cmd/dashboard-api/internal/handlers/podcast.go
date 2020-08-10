@@ -10,6 +10,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -48,14 +49,21 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
 
 	_id := chi.URLParam(r, "_id")
 
-	podcast, err := podcast.Retrieve(p.DB, _id)
+	podcastFound, err := podcast.Retrieve(p.DB, _id)
 	if err != nil {
-		return err
+		switch err {
+		case podcast.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case podcast.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for podcast %q", _id)
+		}
 	}
 
-	fmt.Println(podcast)
+	fmt.Println(podcastFound)
 
-	return web.Respond(w, podcast, http.StatusOK)
+	return web.Respond(w, podcastFound, http.StatusOK)
 }
 
 // CreatePodcast decode a JSON document from a POST request and create new Podcast
