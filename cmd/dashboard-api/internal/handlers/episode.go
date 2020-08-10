@@ -8,6 +8,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -41,6 +42,25 @@ func (e Episode) PodcastEpisodeList(w http.ResponseWriter, r *http.Request) erro
 	}
 
 	return web.Respond(w, episodeList, http.StatusOK)
+}
+
+// RetrieveEpisode gets the Episode from the db by episodeID then encodes it in a response client
+func (e Episode) RetrieveEpisode(w http.ResponseWriter, r *http.Request) error {
+
+	episodeID := chi.URLParam(r, "episodeID")
+
+	episodeFound, err := podcast.RetrieveEpisode(r.Context(), e.DB, episodeID)
+	if err != nil {
+		switch err {
+		case podcast.ErrEpisodeNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case podcast.ErrEpisodeInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for podcast episode %q", episodeID)
+		}
+	}
+	return web.Respond(w, episodeFound, http.StatusOK)
 }
 
 // AddEpisode decodes a JSON document from a POST request and creates a new Episode for a specific Podcast.
