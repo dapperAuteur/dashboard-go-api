@@ -13,7 +13,7 @@ func API(logger *log.Logger, db *mongo.Database) http.Handler {
 
 	app := web.NewApp(logger)
 
-	// episodesCollection := db.Collection("episodes")
+	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
 
 	podcast := Podcast{
@@ -21,13 +21,14 @@ func API(logger *log.Logger, db *mongo.Database) http.Handler {
 		Log: logger,
 	}
 
-	// episode := Episode{
-	// 	DB: episodesCollection,
-	// 	Log: logger,
-	// }
+	episode := Episode{
+		DB:  episodesCollection,
+		Log: logger,
+	}
 
-	// app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList)
-	// app.Handle(http.MethodGet, "/v1/episodes/{_id}", episode.Retrieve)
+	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/v1/episodes", episode.EpisodeList)
+	app.Handle(http.MethodPost, "/v1/podcasts/{_id}/v1/episodes", episode.AddEpisode)
+	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/v1/episodes/{_id}", episode.Retrieve)
 
 	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList)
 	app.Handle(http.MethodPost, "/v1/podcasts", podcast.CreatePodcast)
