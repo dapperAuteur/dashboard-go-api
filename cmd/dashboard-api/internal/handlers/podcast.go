@@ -21,70 +21,60 @@ type Podcast struct {
 }
 
 // PodcastList gets all the Podcast from the db then encodes them in a response client
-func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) {
+func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	podcastList, err := podcast.List(p.DB)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	podcastCursor, err := p.DB.Find(ctx, bson.M{})
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	if err = podcastCursor.All(ctx, &podcastList); err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println(podcastList)
 
-	if err := web.Respond(w, podcastList, http.StatusOK); err != nil {
-		p.Log.Println("error responding result", err)
-		return
-	}
+	return web.Respond(w, podcastList, http.StatusOK)
 }
 
 // Retrieve gets the Podcast from the db by _id then encodes them in a response client
-func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) {
+func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
 	// ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_id := chi.URLParam(r, "_id")
 
 	podcast, err := podcast.Retrieve(p.DB, _id)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	fmt.Println(podcast)
 
-	if err := web.Respond(w, podcast, http.StatusOK); err != nil {
-		p.Log.Println("error responding result", err)
-		return
-	}
+	return web.Respond(w, podcast, http.StatusOK)
 }
 
 // CreatePodcast decode a JSON document from a POST request and create new Podcast
-func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) {
+// BUG: Will create empty object!!! Validate content before accepting
+func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
 
 	var newPodcast podcast.NewPodcast
 
 	if err := web.Decode(r, &newPodcast); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		p.Log.Println(err)
-		return
+		return err
 	}
 
 	podcast, err := podcast.CreatePodcast(p.DB, newPodcast, time.Now())
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	fmt.Println(podcast)
 
-	if err := web.Respond(w, podcast, http.StatusCreated); err != nil {
-		p.Log.Println("error responding result", err)
-		return
-	}
+	return web.Respond(w, podcast, http.StatusCreated)
 
 }
