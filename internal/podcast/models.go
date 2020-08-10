@@ -35,8 +35,8 @@ type Episode struct {
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Duration    int32              `bson:"duration,omitempty" json:"duration,omitempty"`
 	Spins       int                `bson:"spins,omitempty,default:0" json:"spins,omitempty,default:0`
-	Tags        []string           `bson:"tags,omitempty" json:"tags,omitempty"`
 	Published   bool               `bson:"published,omitempty,default:false" json:"published,omitempty,default:false"`
+	Tags        []string           `bson:"tags,omitempty" json:"tags,omitempty"`
 	CreatedAt   time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
 	UpdatedAt   time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }
