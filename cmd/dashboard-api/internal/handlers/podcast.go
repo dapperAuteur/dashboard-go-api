@@ -79,3 +79,36 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) {
 		p.Log.Println("error writing result", err)
 	}
 }
+
+// CreatePodcast decode a JSON document from a POST request and create new Podcast
+func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) {
+
+	var newPodcast podcast.NewPodcast
+
+	if err := json.NewDecoder(r.Body).Decode(&newPodcast); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		p.Log.Println(err)
+		return
+	}
+
+	podcast, err := podcast.CreatePodcast(p.DB, newPodcast, time.Now())
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(podcast)
+
+	data, err := json.Marshal(podcast)
+	if err != nil {
+		p.Log.Println("error marshalling result", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusCreated)
+	if _, err := w.Write(data); err != nil {
+		p.Log.Println("error writing result", err)
+	}
+
+}
