@@ -49,7 +49,7 @@ func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Podcast, 
 
 	id, err := primitive.ObjectIDFromHex(_id)
 	if err != nil {
-		return nil, errors.Wrapf(err, "converting string to ObjectID")
+		return nil, ErrInvalidID
 	}
 
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&podcast); err != nil {
