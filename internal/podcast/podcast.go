@@ -22,8 +22,7 @@ var (
 )
 
 // List gets all the Podcasts from the db then encodes them in a response client
-func List(db *mongo.Collection) ([]Podcast, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func List(ctx context.Context, db *mongo.Collection) ([]Podcast, error) {
 	podcastList := []Podcast{}
 
 	podcastCursor, err := db.Find(ctx, bson.M{})
@@ -39,8 +38,7 @@ func List(db *mongo.Collection) ([]Podcast, error) {
 }
 
 // Retrieve gets the first Podcast in the db with the provided _id
-func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Podcast, error) {
 
 	var podcast Podcast
 
@@ -66,8 +64,7 @@ func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
 }
 
 // RetrieveByTitle gets the first Podcast in the db with the provided title
-func RetrieveByTitle(db *mongo.Collection, title string) (*Podcast, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func RetrieveByTitle(ctx context.Context, db *mongo.Collection, title string) (*Podcast, error) {
 
 	var podcast Podcast
 
@@ -88,9 +85,7 @@ func RetrieveByTitle(db *mongo.Collection, title string) (*Podcast, error) {
 }
 
 // CreatePodcast will create a new Podcast in the database and returns the new Podcast
-func CreatePodcast(db *mongo.Collection, newPodcast NewPodcast, now time.Time) (*Podcast, error) {
-
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodcast, now time.Time) (*Podcast, error) {
 
 	podcast := Podcast{
 		Title:     newPodcast.Title,
