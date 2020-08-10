@@ -26,9 +26,9 @@ func API(logger *log.Logger, db *mongo.Database) http.Handler {
 		Log: logger,
 	}
 
-	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/v1/episodes", episode.EpisodeList)
-	// app.Handle(http.MethodPost, "/v1/podcasts/{_id}/v1/episodes", episode.AddEpisode)
-	// app.Handle(http.MethodGet, "/v1/podcasts/{_id}/v1/episodes/{_id}", episode.Retrieve)
+	// app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes", episode.EpisodeList)
+	app.Handle(http.MethodPost, "/v1/podcasts/{_id}/episodes", episode.AddEpisode)
+	// app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes/{_id}", episode.Retrieve)
 
 	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList)
 	app.Handle(http.MethodPost, "/v1/podcasts", podcast.CreatePodcast)
