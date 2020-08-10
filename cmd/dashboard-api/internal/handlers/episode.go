@@ -11,21 +11,36 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// structture to connect to the mongo db Episode collection
+// Episode structture to connect to the mongo db Episode collection
 type Episode struct {
 	DB  *mongo.Collection
 	Log *log.Logger
 }
 
-// EpisodeList gets all the Episodes from the db of a specific Podcast.
+// EpisodeList gets all the Episodes from the db of all Podcasts.
 // Then encodes them in a response client.
 func (e Episode) EpisodeList(w http.ResponseWriter, r *http.Request) error {
 
-	// episodeList, err := episode.EpisodeList(r.Context(), e.DB)
-	// if err != nil {
-	// 	return err
-	// }
-	return nil
+	episodeList, err := podcast.EpisodeList(r.Context(), e.DB)
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(w, episodeList, http.StatusOK)
+}
+
+// PodcastEpisodeList gets all the Episodes from the db of a specific Podcast.
+// Then encodes them in a response client.
+func (e Episode) PodcastEpisodeList(w http.ResponseWriter, r *http.Request) error {
+
+	podcastID := chi.URLParam(r, "_id")
+
+	episodeList, err := podcast.PodcastEpisodeList(r.Context(), e.DB, podcastID)
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(w, episodeList, http.StatusOK)
 }
 
 // AddEpisode decodes a JSON document from a POST request and creates a new Episode for a specific Podcast.
