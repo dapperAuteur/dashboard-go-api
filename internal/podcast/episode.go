@@ -59,6 +59,27 @@ func PodcastEpisodeList(ctx context.Context, db *mongo.Collection, podcastID str
 	return episodeList, nil
 }
 
+// RetrieveEpisode gets the first Episode in the db with the provided episodeID
+func RetrieveEpisode(ctx context.Context, db *mongo.Collection, episodeID string) (*Episode, error) {
+
+	var episode Episode
+
+	fmt.Println(episodeID, "episodeID")
+
+	// Check if episodeID is valid ObjectID
+
+	episodeObjectID, err := primitive.ObjectIDFromHex(episodeID)
+	if err != nil {
+		return nil, ErrEpisodeInvalidID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": episodeObjectID}).Decode(&episode); err != nil {
+		return nil, ErrEpisodeNotFound
+	}
+
+	return &episode, nil
+}
+
 // AddEpisode adds an Episode to a Podcast
 func AddEpisode(ctx context.Context, db *mongo.Collection, newEpisode NewEpisode, podcastID string, now time.Time) (*Episode, error) {
 
