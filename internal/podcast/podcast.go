@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive" // for BSON ObjectID
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,11 +19,11 @@ func List(db *mongo.Collection) ([]Podcast, error) {
 
 	podcastCursor, err := db.Find(ctx, bson.M{})
 	if err != nil {
-		panic(err)
+		return nil, errors.Wrapf(err, "getting podcastCursor. retrieving podcast list")
 	}
 
 	if err = podcastCursor.All(ctx, &podcastList); err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "retrieving podcast list")
 	}
 
 	return podcastList, nil
@@ -36,13 +37,13 @@ func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
 
 	id, err := primitive.ObjectIDFromHex(_id)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "converting string to ObjectID")
 	}
 
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&podcast); err != nil {
 		log.Printf("podcast not found: %s", podcast)
 		log.Printf("id sent to podcast.Retrieve podcast}: %s", podcast)
-		return nil, err
+		return nil, errors.Wrapf(err, "retrieving podcast by _id: %s", _id)
 	}
 
 	fmt.Println("result AFTER:", podcast)
@@ -64,7 +65,7 @@ func RetrieveByTitle(db *mongo.Collection, title string) (*Podcast, error) {
 	if err := db.FindOne(ctx, filter).Decode(&podcast); err != nil {
 		log.Printf("podcast not found: %s", podcast)
 		log.Printf("id sent to podcast.Retrieve podcast}: %s", podcast)
-		return nil, err
+		return nil, errors.Wrapf(err, "retrieving podcast by title: %s", title)
 	}
 
 	fmt.Println("result AFTER:", podcast)
