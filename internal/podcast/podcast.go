@@ -73,6 +73,24 @@ func RetrieveByTitle(db *mongo.Collection, title string) (*Podcast, error) {
 	return &podcast, nil
 }
 
-func CreatePodcast(db *mongo.Collection, newPodcast NewPodcast) {
+// CreatePodcast will create a new Podcast in the database and returns the new Podcast
+func CreatePodcast(db *mongo.Collection, newPodcast NewPodcast, now time.Time) (*Podcast, error) {
 
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	podcast := Podcast{
+		Title:     newPodcast.Title,
+		Author:    newPodcast.Author,
+		Tags:      newPodcast.Tags,
+		CreatedAt: now,
+	}
+
+	// How do I get MongoDB to return the new Podcast
+	podcastResult, err := db.InsertOne(ctx, podcast)
+	if err != nil {
+		return nil, errors.Wrapf(err, "inserting Podcast: %v", newPodcast)
+	}
+	fmt.Println("podcastResult : ", podcastResult)
+
+	return &podcast, nil
 }
