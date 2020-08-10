@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,19 +22,18 @@ type Podcast struct {
 
 // PodcastList gets all the Podcast from the db then encodes them in a response client
 func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	podcastList, err := podcast.List(p.DB)
+	podcastList, err := podcast.List(r.Context(), p.DB)
 	if err != nil {
 		return err
 	}
 
-	podcastCursor, err := p.DB.Find(ctx, bson.M{})
+	podcastCursor, err := p.DB.Find(r.Context(), bson.M{})
 	if err != nil {
 		return err
 	}
 
-	if err = podcastCursor.All(ctx, &podcastList); err != nil {
+	if err = podcastCursor.All(r.Context(), &podcastList); err != nil {
 		return err
 	}
 	fmt.Println(podcastList)
@@ -45,11 +43,10 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
 
 // Retrieve gets the Podcast from the db by _id then encodes them in a response client
 func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
-	// ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_id := chi.URLParam(r, "_id")
 
-	podcastFound, err := podcast.Retrieve(p.DB, _id)
+	podcastFound, err := podcast.Retrieve(r.Context(), p.DB, _id)
 	if err != nil {
 		switch err {
 		case podcast.ErrNotFound:
@@ -76,7 +73,7 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	podcast, err := podcast.CreatePodcast(p.DB, newPodcast, time.Now())
+	podcast, err := podcast.CreatePodcast(r.Context(), p.DB, newPodcast, time.Now())
 	if err != nil {
 		return err
 	}
