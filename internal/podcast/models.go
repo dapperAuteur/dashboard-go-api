@@ -15,3 +15,10 @@ type Podcast struct {
 	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
 	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }
+
+// NewPodcast type is what's required from client to create a new Podcast
+type NewPodcast struct {
+	Title  string   `json:"title,omitempty"`
+	Author string   `json:"author,omitempty"`
+	Tags   []string `json:"tags,omitempty"`
+}

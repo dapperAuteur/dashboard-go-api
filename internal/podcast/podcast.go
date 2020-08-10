@@ -71,3 +71,7 @@ func RetrieveByTitle(db *mongo.Collection, title string) (*Podcast, error) {
 
 	return &podcast, nil
 }
+
+func CreatePodcast(db *mongo.Collection, newPodcast NewPodcast) {
+
+}
