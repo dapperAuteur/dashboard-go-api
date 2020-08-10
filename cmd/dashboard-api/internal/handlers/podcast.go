@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -70,7 +69,7 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) {
 
 	var newPodcast podcast.NewPodcast
 
-	if err := json.NewDecoder(r.Body).Decode(&newPodcast); err != nil {
+	if err := web.Decode(r, &newPodcast); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		p.Log.Println(err)
 		return
