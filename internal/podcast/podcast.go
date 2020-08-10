@@ -12,6 +12,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// Predefined errors identify expected failure conditions.
+var (
+	// ErrNotFound is used when a specific Product is requested but does not exist.
+	ErrNotFound = errors.New("product not found")
+
+	// ErrInvalidID is used when an invalid UUID is provided.
+	ErrInvalidID = errors.New("ID is not in its proper form")
+)
+
 // List gets all the Podcasts from the db then encodes them in a response client
 func List(db *mongo.Collection) ([]Podcast, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
@@ -35,6 +44,11 @@ func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
 
 	var podcast Podcast
 
+	// Check if _id is valid ObjectID
+	// if _, err := uuid.Parse(_id); err != nil {
+	// 	return nil, ErrInvalidID
+	// }
+
 	id, err := primitive.ObjectIDFromHex(_id)
 	if err != nil {
 		return nil, errors.Wrapf(err, "converting string to ObjectID")
@@ -43,7 +57,7 @@ func Retrieve(db *mongo.Collection, _id string) (*Podcast, error) {
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&podcast); err != nil {
 		log.Printf("podcast not found: %s", podcast)
 		log.Printf("id sent to podcast.Retrieve podcast}: %s", podcast)
-		return nil, errors.Wrapf(err, "retrieving podcast by _id: %s", _id)
+		return nil, ErrNotFound
 	}
 
 	fmt.Println("result AFTER:", podcast)
