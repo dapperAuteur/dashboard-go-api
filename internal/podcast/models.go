@@ -12,34 +12,38 @@ type Podcast struct {
 	Title     string             `bson:"title,omitempty" json:"title,omitempty"`
 	Author    string             `bson:"author,omitempty" json:"author,omitempty"`
 	Tags      []string           `bson:"tags,omitempty" json:"tags,omitempty"`
+	Published bool               `bson:"published,omitempty,default:false" json:"published,omitempty,default:false"`
 	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
 	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }
 
 // NewPodcast type is what's required from client to create a new Podcast
 type NewPodcast struct {
-	Title  string   `json:"title,omitempty"`
-	Author string   `json:"author,omitempty"`
-	Tags   []string `json:"tags,omitempty"`
+	Title     string   `bson:"_id,omitempty" json:"_id,omitempty"`
+	Author    string   `bson:"title,omitempty" json:"title,omitempty"`
+	Tags      []string `bson:"tags,omitempty" json:"tags,omitempty"`
+	Published bool     `bson:"published,omitempty,default:false" json:"published,omitempty,default:false"`
 }
 
 // Episode is the video or audio content
 type Episode struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Podcast     primitive.ObjectID `bson:"podcast,omitempty" json:"podcast,omitempty"`
+	PodcastID   primitive.ObjectID `bson:"podcastID,omitempty" json:"podcastID,omitempty"`
 	Title       string             `bson:"title,omitempty" json:"title,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Duration    int32              `bson:"duration,omitempty" json:"duration,omitempty"`
-	Tags        []string           `json:"tags,omitempty"`
+	Tags        []string           `bson:"tags,omitempty" json:"tags,omitempty"`
+	Published   bool               `bson:"published,omitempty,default:false" json:"published,omitempty,default:false"`
 	CreatedAt   time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
 	UpdatedAt   time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }
 
 // NewEpisode is the video or audio content
 type NewEpisode struct {
-	Podcast     primitive.ObjectID `bson:"podcast,omitempty" json:"podcast,omitempty"`
+	PodcastID   primitive.ObjectID `bson:"podcastID,omitempty" json:"podcastID,omitempty"`
 	Title       string             `bson:"title,omitempty" json:"title,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Duration    int32              `bson:"duration,omitempty" json:"duration,omitempty"`
-	Tags        []string           `json:"tags,omitempty"`
+	Published   bool               `bson:"published,omitempty,default:false" json:"published,omitempty,default:false"`
+	Tags        []string           `bson:"tags,omitempty" json:"tags,omitempty"`
 }
