@@ -33,7 +33,7 @@ type NewPodcast struct {
 // provided and a field that was provided as explicitly blank. Normally we do not want to
 // use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdatePodcast struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Title       *string            `bson:"title,omitempty" json:"title,omitempty" validate:"required"`
 	Author      *string            `bson:"author,omitempty" json:"author,omitempty" validate:"required"`
 	Subscribers *int               `bson:"subscribers,omitempty" json:"subscribers,omitempty" validate:"gte=0"`
@@ -72,7 +72,7 @@ type NewEpisode struct {
 // provided and a field that was provided as explicitly blank. Normally we do not want to
 // use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateEpisode struct {
-	ID          primitive.ObjectID  `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	ID          primitive.ObjectID  `bson:"_id,omitempty" json:"_id,omitempty"`
 	PodcastID   *primitive.ObjectID `bson:"podcastID,omitempty" json:"podcastID,omitempty" validate:"required"`
 	Title       *string             `bson:"title,omitempty" json:"title,omitempty" validate:"required"`
 	Description *string             `bson:"description,omitempty" json:"description,omitempty" validate:"required"`
