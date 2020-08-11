@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"reflect"
 	"time"
 
 	"github.com/pkg/errors"
@@ -171,8 +170,6 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID strin
 
 	podcast.UpdatedAt = now
 
-	fmt.Printf("podcast changes made %v : \n", podcast)
-
 	updateP := bson.M{
 		"$set": podcast,
 	}
@@ -181,15 +178,10 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID strin
 
 	podcastResult, err := db.UpdateOne(ctx, bson.M{"_id": podcastObjectID}, updateP)
 	if err != nil {
-		fmt.Printf("err updated %v : \n", err)
 		return errors.Wrap(err, "updating podcast")
 	}
 
-	fmt.Printf("podcastResult updated %v : \n", podcastResult.UpsertedID)
-
-	fmt.Println("type of podcastResult : ", reflect.TypeOf(podcastResult).String())
-
-	fmt.Printf("podcastResult updated %v : \n", podcastResult.UpsertedID)
+	fmt.Printf("podcastResult updated %v : \n", podcastResult)
 
 	return nil
 
