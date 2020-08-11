@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"reflect"
 	"time"
 
 	"github.com/pkg/errors"
@@ -104,6 +105,26 @@ func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodc
 	}
 	fmt.Println("podcastResult : ", podcastResult)
 
+	returnedPodcast := db.FindOne(ctx, podcastResult.InsertedID)
+
+	// str := fmt.Sprintf("%v", podcastResult.InsertedID)
+
+	// podcastObjectID, err := primitive.ObjectIDFromHex(str)
+
+	// returnedPodcast := Podcast{
+	// 	ID:          podcastObjectID,
+	// 	Author:      podcast.Author,
+	// 	Title:       podcast.Title,
+	// 	Subscribers: podcast.Subscribers,
+	// 	Tags:        podcast.Tags,
+	// 	Published:   podcast.Published,
+	// }
+
+	// fmt.Println("podcastResult.InsertedID", reflect.TypeOf(podcastResult.InsertedID))
+
+	fmt.Printf("returnedPodcast  %v: ", returnedPodcast)
+	// fmt.Println("podcastObjectID : ", podcastObjectID)
+
 	// doesn't return ObjectID with podcast, find a way to get the _id with the Podcast
 	return &podcast, nil
 }
@@ -150,17 +171,26 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID strin
 
 	podcast.UpdatedAt = now
 
+	fmt.Printf("podcast changes made %v : \n", podcast)
+
 	updateP := bson.M{
 		"$set": podcast,
 	}
 
+	fmt.Printf("podcast changes set %v : \n", updateP)
+
 	podcastResult, err := db.UpdateOne(ctx, bson.M{"_id": podcastObjectID}, updateP)
 	if err != nil {
+		fmt.Printf("err updated %v : \n", err)
 		return errors.Wrap(err, "updating podcast")
 	}
 
-	fmt.Printf("podcast to update found %v : \n", podcastResult)
+	fmt.Printf("podcastResult updated %v : \n", podcastResult.UpsertedID)
 
-	return err
+	fmt.Println("type of podcastResult : ", reflect.TypeOf(podcastResult).String())
+
+	fmt.Printf("podcastResult updated %v : \n", podcastResult.UpsertedID)
+
+	return nil
 
 }
