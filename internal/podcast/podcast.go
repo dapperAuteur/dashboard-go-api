@@ -104,7 +104,7 @@ func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodc
 	}
 	fmt.Println("podcastResult : ", podcastResult)
 
-	returnedPodcast := db.FindOne(ctx, podcastResult.InsertedID)
+	// returnedPodcast := db.FindOne(ctx, podcastResult.InsertedID)
 
 	// str := fmt.Sprintf("%v", podcastResult.InsertedID)
 
@@ -121,7 +121,7 @@ func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodc
 
 	// fmt.Println("podcastResult.InsertedID", reflect.TypeOf(podcastResult.InsertedID))
 
-	fmt.Printf("returnedPodcast  %v: ", returnedPodcast)
+	// fmt.Printf("returnedPodcast  %v: ", returnedPodcast)
 	// fmt.Println("podcastObjectID : ", podcastObjectID)
 
 	// doesn't return ObjectID with podcast, find a way to get the _id with the Podcast
