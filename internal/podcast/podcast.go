@@ -186,3 +186,22 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID strin
 	return nil
 
 }
+
+// DeletePodcast removes the podcast identified by a given ID
+func DeletePodcast(ctx context.Context, db *mongo.Collection, podcastID string) error {
+
+	// Convert string to ObjectID
+	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
+	if err != nil {
+		return ErrInvalidID
+	}
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": podcastObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting podcast %s", podcastID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
