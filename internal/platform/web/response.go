@@ -10,6 +10,11 @@ import (
 // Respond marshals the value to JSON and sends it to the client
 func Respond(w http.ResponseWriter, val interface{}, statusCode int) error {
 
+	if statusCode == http.StatusNoContent {
+		w.WriteHeader(statusCode)
+		return nil
+	}
+
 	data, err := json.Marshal(val)
 	if err != nil {
 		return errors.Wrapf(err, "marshaling val %val to json ", val)
