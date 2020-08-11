@@ -89,5 +89,5 @@ func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
 		}
 	}
-	return web.Respond(w, nil, http.StatusNoContent)
+	return web.Respond(w, nil, http.StatusOK)
 }
