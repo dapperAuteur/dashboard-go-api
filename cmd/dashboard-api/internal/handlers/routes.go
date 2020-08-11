@@ -13,6 +13,11 @@ func API(logger *log.Logger, db *mongo.Database) http.Handler {
 
 	app := web.NewApp(logger)
 
+	c := Check{DB: db.Collection("podcasts")}
+
+	app.Handle(http.MethodGet, "/v1/health", c.Health)
+
+	// episodesCollection := db.Collection("episodes")
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
 
