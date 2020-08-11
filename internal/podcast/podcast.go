@@ -15,7 +15,7 @@ import (
 // Predefined errors identify expected failure conditions.
 var (
 	// ErrNotFound is used when a specific Product is requested but does not exist.
-	ErrNotFound = errors.New("product not found")
+	ErrNotFound = errors.New("podcast not found")
 
 	// ErrInvalidID is used when an invalid UUID is provided.
 	ErrInvalidID = errors.New("ID is not in its proper form")
@@ -106,4 +106,61 @@ func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodc
 
 	// doesn't return ObjectID with podcast, find a way to get the _id with the Podcast
 	return &podcast, nil
+}
+
+// UpdateOnePodcast modifies data about an Episode.
+// It will ERROR if the specified podcastID is invalid or does NOT reference an existing Podcast
+func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID string, updatePodcast UpdatePodcast, now time.Time) error {
+
+	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
+	if err != nil {
+		return ErrInvalidID
+	}
+
+	foundPodcast, err := Retrieve(ctx, db, podcastID)
+	if err != nil {
+		return ErrNotFound
+	}
+
+	fmt.Printf("podcast to update found %v : \n", foundPodcast)
+
+	podcast := Podcast{}
+
+	if updatePodcast.Author != nil {
+		podcast.Author = *updatePodcast.Author
+	}
+
+	if updatePodcast.Published != nil {
+		podcast.Published = *updatePodcast.Published
+	}
+
+	if updatePodcast.Subscribers != nil {
+		podcast.Subscribers = *updatePodcast.Subscribers
+	}
+
+	if updatePodcast.Tags != nil {
+		podcast.Tags = *updatePodcast.Tags
+	}
+
+	if updatePodcast.Title != nil {
+		podcast.Title = *updatePodcast.Title
+	}
+
+	podcast.ID = podcastObjectID
+
+	podcast.UpdatedAt = now
+
+	updateP := bson.M{
+		"$set": podcast,
+	}
+
+	podcastResult, err := db.UpdateOne(ctx, bson.M{"_id": podcastObjectID}, updateP)
+	if err != nil {
+		return errors.Wrap(err, "updating podcast")
+	}
+
+	fmt.Printf("podcast to update found %v : \n", podcastResult)
+
+	return err
+
 }
