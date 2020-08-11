@@ -36,7 +36,7 @@ type UpdatePodcast struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Title       *string            `bson:"title,omitempty" json:"title,omitempty" validate:"required"`
 	Author      *string            `bson:"author,omitempty" json:"author,omitempty" validate:"required"`
-	Subscribers *int               `bson:"subscribers,omitempty,default:0" json:"subscribers,omitempty,default:0" validate:"gte=0"`
+	Subscribers *int               `bson:"subscribers,omitempty" json:"subscribers,omitempty" validate:"gte=0" default:"0"`
 	Tags        *[]string          `bson:"tags,omitempty" json:"tags,omitempty"`
 	Published   *bool              `bson:"published,omitempty,default:false" json:"published,omitempty,default:false"`
 }
