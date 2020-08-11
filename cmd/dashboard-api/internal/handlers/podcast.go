@@ -67,3 +67,27 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
 	return web.Respond(w, podcast, http.StatusCreated)
 
 }
+
+// UpdateOnePodcast decodes the body of a request to update an existing podcast.
+// The ID of the podcast is part of the request URL
+func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error {
+
+	podcastID := chi.URLParam(r, "_id")
+
+	var podcastUpdate podcast.UpdatePodcast
+	if err := web.Decode(r, &podcastUpdate); err != nil {
+		return errors.Wrap(err, "decoding podcast update")
+	}
+
+	if err := podcast.UpdateOnePodcast(r.Context(), p.DB, podcastID, podcastUpdate, time.Now()); err != nil {
+		switch err {
+		case podcast.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case podcast.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "updating podcast %q", podcastID)
+		}
+	}
+	return web.Respond(w, nil, http.StatusNoContent)
+}
