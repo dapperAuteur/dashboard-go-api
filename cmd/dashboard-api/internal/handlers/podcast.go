@@ -26,7 +26,7 @@ func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	return web.Respond(w, podcastList, http.StatusOK)
+	return web.Respond(r.Context(), w, podcastList, http.StatusOK)
 }
 
 // Retrieve gets the Podcast from the db by _id then encodes them in a response client
@@ -46,7 +46,7 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	return web.Respond(w, podcastFound, http.StatusOK)
+	return web.Respond(r.Context(), w, podcastFound, http.StatusOK)
 }
 
 // CreatePodcast decode a JSON document from a POST request and create new Podcast
@@ -64,7 +64,7 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	return web.Respond(w, podcast, http.StatusCreated)
+	return web.Respond(r.Context(), w, podcast, http.StatusCreated)
 
 }
 
@@ -89,7 +89,7 @@ func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
 		}
 	}
-	return web.Respond(w, nil, http.StatusOK)
+	return web.Respond(r.Context(), w, nil, http.StatusOK)
 }
 
 // DeletePodcast removes a single podcast identified by an podcastID in the request URL
@@ -107,5 +107,5 @@ func (p *Podcast) DeletePodcast(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	return web.Respond(w, nil, http.StatusNoContent)
+	return web.Respond(r.Context(), w, nil, http.StatusNoContent)
 }

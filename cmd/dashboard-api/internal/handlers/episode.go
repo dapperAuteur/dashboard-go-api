@@ -27,7 +27,7 @@ func (e Episode) EpisodeList(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	return web.Respond(w, episodeList, http.StatusOK)
+	return web.Respond(r.Context(), w, episodeList, http.StatusOK)
 }
 
 // PodcastEpisodeList gets all the Episodes from the db of a specific Podcast.
@@ -41,7 +41,7 @@ func (e Episode) PodcastEpisodeList(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	return web.Respond(w, episodeList, http.StatusOK)
+	return web.Respond(r.Context(), w, episodeList, http.StatusOK)
 }
 
 // RetrieveEpisode gets the Episode from the db by episodeID then encodes it in a response client
@@ -60,7 +60,7 @@ func (e Episode) RetrieveEpisode(w http.ResponseWriter, r *http.Request) error {
 			return errors.Wrapf(err, "looking for podcast episode %q", episodeID)
 		}
 	}
-	return web.Respond(w, episodeFound, http.StatusOK)
+	return web.Respond(r.Context(), w, episodeFound, http.StatusOK)
 }
 
 // AddEpisode decodes a JSON document from a POST request and creates a new Episode for a specific Podcast.
@@ -80,5 +80,5 @@ func (e Episode) AddEpisode(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	return web.Respond(w, episode, http.StatusCreated)
+	return web.Respond(r.Context(), w, episode, http.StatusCreated)
 }
