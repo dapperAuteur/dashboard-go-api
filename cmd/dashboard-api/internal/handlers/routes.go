@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/mid"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -11,7 +12,7 @@ import (
 // API constructs a handler that knows about all API routes.
 func API(logger *log.Logger, db *mongo.Database) http.Handler {
 
-	app := web.NewApp(logger)
+	app := web.NewApp(logger, mid.Errors(logger))
 
 	c := Check{DB: db.Collection("podcasts")}
 
