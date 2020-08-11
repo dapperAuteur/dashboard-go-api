@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"time"
@@ -19,22 +20,22 @@ type Podcast struct {
 }
 
 // PodcastList gets all the Podcast from the db then encodes them in a response client
-func (p Podcast) PodcastList(w http.ResponseWriter, r *http.Request) error {
+func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
-	podcastList, err := podcast.List(r.Context(), p.DB)
+	podcastList, err := podcast.List(ctx, p.DB)
 	if err != nil {
 		return err
 	}
 
-	return web.Respond(r.Context(), w, podcastList, http.StatusOK)
+	return web.Respond(ctx, w, podcastList, http.StatusOK)
 }
 
 // Retrieve gets the Podcast from the db by _id then encodes them in a response client
-func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
+func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	_id := chi.URLParam(r, "_id")
 
-	podcastFound, err := podcast.Retrieve(r.Context(), p.DB, _id)
+	podcastFound, err := podcast.Retrieve(ctx, p.DB, _id)
 	if err != nil {
 		switch err {
 		case podcast.ErrNotFound:
@@ -46,12 +47,12 @@ func (p Podcast) Retrieve(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	return web.Respond(r.Context(), w, podcastFound, http.StatusOK)
+	return web.Respond(ctx, w, podcastFound, http.StatusOK)
 }
 
 // CreatePodcast decode a JSON document from a POST request and create new Podcast
 // BUG: Will create empty object!!! Validate content before accepting
-func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
+func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	var newPodcast podcast.NewPodcast
 
@@ -59,18 +60,18 @@ func (p Podcast) CreatePodcast(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	podcast, err := podcast.CreatePodcast(r.Context(), p.DB, newPodcast, time.Now())
+	podcast, err := podcast.CreatePodcast(ctx, p.DB, newPodcast, time.Now())
 	if err != nil {
 		return err
 	}
 
-	return web.Respond(r.Context(), w, podcast, http.StatusCreated)
+	return web.Respond(ctx, w, podcast, http.StatusCreated)
 
 }
 
 // UpdateOnePodcast decodes the body of a request to update an existing podcast.
 // The ID of the podcast is part of the request URL
-func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error {
+func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	podcastID := chi.URLParam(r, "_id")
 
@@ -79,7 +80,7 @@ func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error
 		return errors.Wrap(err, "decoding podcast update")
 	}
 
-	if err := podcast.UpdateOnePodcast(r.Context(), p.DB, podcastID, podcastUpdate, time.Now()); err != nil {
+	if err := podcast.UpdateOnePodcast(ctx, p.DB, podcastID, podcastUpdate, time.Now()); err != nil {
 		switch err {
 		case podcast.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
@@ -89,14 +90,14 @@ func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
 		}
 	}
-	return web.Respond(r.Context(), w, nil, http.StatusOK)
+	return web.Respond(ctx, w, nil, http.StatusOK)
 }
 
 // DeletePodcast removes a single podcast identified by an podcastID in the request URL
-func (p *Podcast) DeletePodcast(w http.ResponseWriter, r *http.Request) error {
+func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	podcastID := chi.URLParam(r, "_id")
 
-	if err := podcast.DeletePodcast(r.Context(), p.DB, podcastID); err != nil {
+	if err := podcast.DeletePodcast(ctx, p.DB, podcastID); err != nil {
 		switch err {
 		case podcast.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
@@ -107,5 +108,5 @@ func (p *Podcast) DeletePodcast(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	return web.Respond(r.Context(), w, nil, http.StatusNoContent)
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
 }
