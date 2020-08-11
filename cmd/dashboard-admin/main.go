@@ -7,8 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
+	"github.com/dapperAuteur/dashboard-go-api/internal/user"
 	"github.com/pkg/errors"
 )
 
@@ -28,6 +30,7 @@ func run() error {
 		DB struct {
 			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
 		}
+		Args conf.Args
 	}
 
 	// ==
@@ -45,6 +48,19 @@ func run() error {
 		return errors.Wrap(err, "parsing config")
 	}
 
+	// This is used for multiple commands below.
+	dbConfig := database.Config{
+		AtlasURI: cfg.DB.AtlasURI,
+	}
+
+	var err error
+	switch cfg.Args.Num(0) {
+	case "useradd":
+		err = useradd(dbConfig, cfg.Args.Num(1), cfg.Args.Num(2))
+	default:
+		err = errors.New("Must specify a command from the list: 'adduser'")
+	}
+
 	// print config values when app starts
 	out, err := conf.String(&cfg)
 	if err != nil {
@@ -54,27 +70,61 @@ func run() error {
 
 	// ==
 	// Start Database
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	// ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, err := database.Open(database.Config{
-		AtlasURI: cfg.DB.AtlasURI,
-	})
-	if err != nil {
-		return errors.Wrap(err, "connecting to db")
-	}
-	defer client.Disconnect(ctx)
+	// client, err := database.Open(dbConfig)
+	// if err != nil {
+	// 	return errors.Wrap(err, "connecting to db")
+	// }
+	// defer client.Disconnect(ctx)
 
 	return nil
 
 }
 
-// Do we have a use for a switch statement to run admin commands?
+func useradd(cfg database.Config, email, password string) error {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-// func openDB() (*mongo.Client, error) {
-// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client, err := database.Open(cfg)
+	if err != nil {
+		return err
+	}
+	defer client.Disconnect(ctx)
 
-// 	// formats the client
-// 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"))
+	if email == "" || password == "" {
+		return errors.New("useradd command must be called with two additional arguments for email and password")
+	}
 
-// 	return client, err
-// }
+	fmt.Printf("Admin user will be created with email %q and password %q\n", email, password)
+	fmt.Print("Continue? (1/0)")
+
+	var confirm bool
+	if _, err := fmt.Scanf("%t\n", &confirm); err != nil {
+		return errors.Wrap(err, "processing response")
+	}
+
+	if !confirm {
+		fmt.Println("Canceling")
+		return nil
+	}
+
+	nu := user.NewUser{
+		Email:           email,
+		Password:        password,
+		PasswordConfirm: password,
+		Roles:           []string{auth.RoleAdmin, auth.RoleUser},
+	}
+
+	// send the db to the handler and let the router determine which collection to use
+	myDatabase := client.Database(("quickstart"))
+
+	userCollection := myDatabase.Collection("users")
+
+	u, err := user.CreateUser(ctx, userCollection, nu, time.Now())
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("User created with _id:", u.ID)
+	return nil
+}
