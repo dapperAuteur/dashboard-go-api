@@ -91,3 +91,21 @@ func (p *Podcast) UpdateOnePodcast(w http.ResponseWriter, r *http.Request) error
 	}
 	return web.Respond(w, nil, http.StatusOK)
 }
+
+// DeletePodcast removes a single podcast identified by an podcastID in the request URL
+func (p *Podcast) DeletePodcast(w http.ResponseWriter, r *http.Request) error {
+	podcastID := chi.URLParam(r, "_id")
+
+	if err := podcast.DeletePodcast(r.Context(), p.DB, podcastID); err != nil {
+		switch err {
+		case podcast.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case podcast.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "updating podcast %q", podcastID)
+		}
+	}
+
+	return web.Respond(w, nil, http.StatusNoContent)
+}
