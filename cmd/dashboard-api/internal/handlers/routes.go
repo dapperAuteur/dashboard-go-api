@@ -35,6 +35,7 @@ func API(logger *log.Logger, db *mongo.Database) http.Handler {
 	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList)
 	app.Handle(http.MethodPost, "/v1/podcasts", podcast.CreatePodcast)
 	app.Handle(http.MethodGet, "/v1/podcasts/{_id}", podcast.Retrieve)
+	app.Handle(http.MethodPut, "/v1/podcasts/{_id}", podcast.UpdateOnePodcast)
 
 	return app
 }
