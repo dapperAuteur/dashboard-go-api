@@ -5,9 +5,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
+)
+
+var (
+	// ErrAuthenticationFailure occurs when a user attempts to authenticate but anything goes wrong.
+	ErrAuthenticationFailure = errors.New("Authentication Failed")
 )
 
 // CreateUser inserts a new user into the database.
@@ -37,4 +44,30 @@ func CreateUser(ctx context.Context, db *mongo.Collection, n NewUser, now time.T
 	fmt.Printf("returnedUser  %v: ", returnedUser)
 
 	return &u, nil
+}
+
+// Authenticate finds a user by their email and verifies their password.
+// On success it returns a Claims value representing this user.
+// The claims can be used to generate a token for future authentication.
+func Authenticate(ctx context.Context, db *mongo.Collection, now time.Time, email, password string) (auth.Claims, error) {
+
+	var u User
+	if err := db.FindOne(ctx, bson.M{"email": email}).Decode(&u); err != nil {
+
+		// Normally we would return ErrNotFound in this scenario
+		// but we do NOT want to an unauthenticated user which emails are in the system.
+		return auth.Claims{}, ErrAuthenticationFailure
+	}
+	fmt.Println("found user", u)
+
+	// Compare the provided password with the saved hash.
+	// Use the bcrypt comparison function so it is cryptographically secure.
+	if err := bcrypt.CompareHashAndPassword(u.PasswordHash, []byte(password)); err != nil {
+		return auth.Claims{}, ErrAuthenticationFailure
+	}
+
+	// If we are this far the request is valid.
+	// Create some claims for the user and generate their token.
+	claims := auth.NewClaims(u.ID, u.Roles, now, time.Hour)
+	return claims, nil
 }
