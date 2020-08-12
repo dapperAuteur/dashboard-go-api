@@ -5,18 +5,23 @@ import (
 	"net/http"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/mid"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // API constructs a handler that knows about all API routes.
-func API(logger *log.Logger, db *mongo.Database) http.Handler {
+func API(logger *log.Logger, db *mongo.Database, authenticator *auth.Authenticator) http.Handler {
 
 	app := web.NewApp(logger, mid.Logger(logger), mid.Errors(logger), mid.Metrics())
 
 	c := Check{DB: db.Collection("podcasts")}
 
 	app.Handle(http.MethodGet, "/v1/health", c.Health)
+
+	u := Users{DB: db.Collection("users"), authenticator: authenticator}
+
+	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
 
 	// episodesCollection := db.Collection("episodes")
 	episodesCollection := db.Collection("episodes")
