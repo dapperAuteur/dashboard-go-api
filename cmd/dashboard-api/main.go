@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/rsa"
 	_ "expvar" // Register the expvar handlers
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	_ "net/http/pprof" // register the /debug/pprof handlers
@@ -13,8 +15,10 @@ import (
 	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/pkg/errors"
 )
 
@@ -40,6 +44,11 @@ func run() error {
 		}
 		DB struct {
 			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+		}
+		Auth struct {
+			KeyID          string `conf:"default:1"`
+			PrivateKeyFile string `conf:"default:private.pem"`
+			Algorithm      string `conf:"default:RS256"`
 		}
 	}
 
@@ -75,6 +84,16 @@ func run() error {
 	// is it ok to do this twice, I think ctx is needed here to close the context later
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
+	// ==
+	// Initialize authentication support
+	authenticator, err := createAuth(
+		cfg.Auth.PrivateKeyFile,
+		cfg.Auth.KeyID,
+		cfg.Auth.Algorithm,
+	)
+	if err != nil {
+		return errors.Wrap(err, "constructing authenticator")
+	}
 	// =
 	// Start Database
 
@@ -104,7 +123,7 @@ func run() error {
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
-		Handler:      handlers.API(log, myDatabase),
+		Handler:      handlers.API(log, myDatabase, authenticator),
 		ReadTimeout:  cfg.Web.ReadTimeout,
 		WriteTimeout: cfg.Web.WriteTimeout,
 	}
@@ -151,6 +170,23 @@ func run() error {
 		}
 	}
 	return nil
+}
+
+func createAuth(privateKeyFile, keyID, algorithm string) (*auth.Authenticator, error) {
+
+	keyContents, err := ioutil.ReadFile(privateKeyFile)
+	if err != nil {
+		return nil, errors.Wrap(err, "reading auth private key")
+	}
+
+	key, err := jwt.ParseRSAPrivateKeyFromPEM(keyContents)
+	if err != nil {
+		return nil, errors.Wrap(err, "parsing auth private key")
+	}
+
+	public := auth.NewSimpleKeyLookupFunc(keyID, key.Public().(*rsa.PublicKey))
+
+	return auth.NewAuthenticator(key, keyID, algorithm, public)
 }
 
 // // Transaction is a line item on a balance sheet.
