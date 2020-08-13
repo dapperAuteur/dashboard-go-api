@@ -37,17 +37,17 @@ func API(logger *log.Logger, db *mongo.Database, authenticator *auth.Authenticat
 		Log: logger,
 	}
 
-	app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList)
-	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes", episode.PodcastEpisodeList)
-	app.Handle(http.MethodGet, "/v1/episodes/{episodeID}", episode.RetrieveEpisode)
-	app.Handle(http.MethodPost, "/v1/podcasts/{_id}/episodes", episode.AddEpisode)
-	// app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes/{_id}", episode.Retrieve)
+	app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList, mid.Authenticate(authenticator))
+	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes", episode.PodcastEpisodeList, mid.Authenticate(authenticator))
+	app.Handle(http.MethodGet, "/v1/episodes/{episodeID}", episode.RetrieveEpisode, mid.Authenticate(authenticator))
+	app.Handle(http.MethodPost, "/v1/podcasts/{_id}/episodes", episode.AddEpisode, mid.Authenticate(authenticator))
+	// app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes/{_id}", episode.Retrieve, mid.Authenticate(authenticator))
 
-	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList)
-	app.Handle(http.MethodPost, "/v1/podcasts", podcast.CreatePodcast)
-	app.Handle(http.MethodGet, "/v1/podcasts/{_id}", podcast.Retrieve)
-	app.Handle(http.MethodPut, "/v1/podcasts/{_id}", podcast.UpdateOnePodcast)
-	app.Handle(http.MethodDelete, "/v1/podcasts/{_id}", podcast.DeletePodcast)
+	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList, mid.Authenticate(authenticator))
+	app.Handle(http.MethodPost, "/v1/podcasts", podcast.CreatePodcast, mid.Authenticate(authenticator))
+	app.Handle(http.MethodGet, "/v1/podcasts/{_id}", podcast.Retrieve, mid.Authenticate(authenticator))
+	app.Handle(http.MethodPut, "/v1/podcasts/{_id}", podcast.UpdateOnePodcast, mid.Authenticate(authenticator))
+	app.Handle(http.MethodDelete, "/v1/podcasts/{_id}", podcast.DeletePodcast, mid.Authenticate(authenticator))
 
 	return app
 }
