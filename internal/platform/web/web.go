@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
+	"go.opencensus.io/trace"
 )
 
 // ctxKey represents the type of value for the context key.
@@ -56,13 +57,16 @@ func (a *App) Handle(method, pattern string, h Handler, mw ...Middleware) {
 	// This is the first thing that will be executed when this route is called.
 	fn := func(w http.ResponseWriter, r *http.Request) {
 
+		ctx, span := trace.StartSpan(r.Context(), "internal.platform.web")
+		defer span.End()
+
 		// Create a Values struct to record state for the request. Store the
 		// address in the request's context so it is sent down the call chain.
 		v := Values{
 			Start: time.Now(),
 		}
 
-		ctx := context.WithValue(r.Context(), KeyValues, &v)
+		ctx = context.WithValue(r.Context(), KeyValues, &v)
 
 		// Run the handler chain and catch any propagated error.
 		if err := h(ctx, w, r); err != nil {

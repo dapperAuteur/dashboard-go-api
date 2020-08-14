@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.opencensus.io/trace"
 )
 
 // Podcast structure to connect to the mongo db collections
@@ -23,6 +24,9 @@ type Podcast struct {
 
 // PodcastList gets all the Podcast from the db then encodes them in a response client
 func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	ctx, span := trace.StartSpan(ctx, "handlers.Podcast.PodcastList")
+	defer span.End()
 
 	podcastList, err := podcast.List(ctx, p.DB)
 	if err != nil {

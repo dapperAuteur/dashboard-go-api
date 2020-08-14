@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
+	"go.opencensus.io/trace"
 )
 
 // Logger will log a line for every request.
@@ -20,6 +21,9 @@ func Logger(log *log.Logger) web.Middleware {
 
 		// Create the handler that will be attached in the middleware chain.
 		h := func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+			ctx, span := trace.StartSpan(ctx, "internal.mid.Logger")
+			defer span.End()
 
 			v, ok := ctx.Value(web.KeyValues).(*web.Values)
 			if !ok {

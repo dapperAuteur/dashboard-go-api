@@ -8,6 +8,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/user"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.opencensus.io/trace"
 
 	"github.com/pkg/errors"
 )
@@ -22,6 +23,9 @@ type Users struct {
 // The client must include an email and password for the request using HTTP Basic Auth.
 // The user will be identified by email and authenticated by their password.
 func (u *Users) Token(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	ctx, span := trace.StartSpan(ctx, "Handlers.Users.Token")
+	defer span.End()
 
 	v, ok := ctx.Value(web.KeyValues).(*web.Values)
 	if !ok {
