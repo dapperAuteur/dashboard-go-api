@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive" // for BSON ObjectID
@@ -19,6 +19,10 @@ var (
 
 	// ErrInvalidID is used when an invalid UUID is provided.
 	ErrInvalidID = errors.New("ID is not in its proper form")
+
+	// ErrForbidden occurs when a user tries to do something that is forbidden to
+	// them according to our access control policies.
+	ErrForbidden = errors.New("Attempted action is not allowed")
 )
 
 // List gets all the Podcasts from the db then encodes them in a response client
@@ -85,10 +89,11 @@ func RetrieveByTitle(ctx context.Context, db *mongo.Collection, title string) (*
 }
 
 // CreatePodcast will create a new Podcast in the database and returns the new Podcast
-func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodcast, now time.Time) (*Podcast, error) {
+func CreatePodcast(ctx context.Context, db *mongo.Collection, user auth.Claims, newPodcast NewPodcast, now time.Time) (*Podcast, error) {
 
 	podcast := Podcast{
 		Title:       newPodcast.Title,
+		UserID: user.Subject,
 		Author:      newPodcast.Author,
 		Subscribers: newPodcast.Subscribers,
 		Tags:        newPodcast.Tags,
@@ -130,7 +135,7 @@ func CreatePodcast(ctx context.Context, db *mongo.Collection, newPodcast NewPodc
 
 // UpdateOnePodcast modifies data about an Episode.
 // It will ERROR if the specified podcastID is invalid or does NOT reference an existing Podcast
-func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID string, updatePodcast UpdatePodcast, now time.Time) error {
+func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claims, podcastID string, updatePodcast UpdatePodcast, now time.Time) error {
 
 	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
 	if err != nil {
@@ -142,7 +147,34 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, podcastID strin
 		return ErrNotFound
 	}
 
-	fmt.Printf("podcast to update found %v : \n", foundPodcast)
+	fmt.Printf("podcast to update found %+v : \n", foundPodcast)
+
+	fmt.Print("*****    foundPodcast.UserID      *****",foundPodcast.UserID,"\n")
+	fmt.Print("*****    user.Subject      *****",user.Subject,"\n")
+
+	// If you do NOT have the admin role ...
+	// and you are NOT the owner of this podcast ...
+	// then you're NOT allowed to update this podcast.
+	// if !user.HasRole(auth.RoleAdmin) && foundPodcast.UserID == user.Subject {
+	// 	fmt.Print("*****    Return ErrForbidden    *****\n")
+	// 	return ErrForbidden
+	// }
+
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+	var isOwner = foundPodcast.UserID == user.Subject
+	var canView = isAdmin && isOwner
+	// fmt.Print("*****    isAdmin      *****",isAdmin,"\n")
+	// fmt.Print("*****    isOwner      *****",isOwner,"\n")
+	// fmt.Print("*****    canView      *****",canView,"\n")
+
+	if !canView {
+		return ErrForbidden
+	}
+
+	// if 5 == 5 {
+	// 	fmt.Print("*****    Return ErrForbidden    *****\n")
+	// 	return ErrForbidden
+	// }
 
 	podcast := Podcast{}
 
