@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"fmt"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 	"github.com/go-chi/chi"
@@ -13,7 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// structure to connect to the mongo db collections
+// Podcast structure to connect to the mongo db collections
 type Podcast struct {
 	DB  *mongo.Collection
 	Log *log.Logger
@@ -54,13 +56,18 @@ func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Re
 // BUG: Will create empty object!!! Validate content before accepting
 func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
 	var newPodcast podcast.NewPodcast
 
 	if err := web.Decode(r, &newPodcast); err != nil {
 		return err
 	}
 
-	podcast, err := podcast.CreatePodcast(ctx, p.DB, newPodcast, time.Now())
+	podcast, err := podcast.CreatePodcast(ctx, p.DB, claims, newPodcast, time.Now())
 	if err != nil {
 		return err
 	}
@@ -73,6 +80,14 @@ func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *ht
 // The ID of the podcast is part of the request URL
 func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
+	fmt.Print("*****    UpdateOnePodcast   *****\n")
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+	fmt.Print("*****    claims    *****\n")
+
 	podcastID := chi.URLParam(r, "_id")
 
 	var podcastUpdate podcast.UpdatePodcast
@@ -80,12 +95,14 @@ func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r
 		return errors.Wrap(err, "decoding podcast update")
 	}
 
-	if err := podcast.UpdateOnePodcast(ctx, p.DB, podcastID, podcastUpdate, time.Now()); err != nil {
+	if err := podcast.UpdateOnePodcast(ctx, p.DB, claims, podcastID, podcastUpdate, time.Now()); err != nil {
 		switch err {
 		case podcast.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
 		case podcast.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
+		case podcast.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
 		}
