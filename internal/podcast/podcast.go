@@ -164,7 +164,7 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 
 	var isAdmin = user.HasRole(auth.RoleAdmin)
 	var isOwner = foundPodcast.UserID == user.Subject
-	var canView = isAdmin && isOwner
+	var canView = isAdmin || isOwner
 	// fmt.Print("*****    isAdmin      *****",isAdmin,"\n")
 	// fmt.Print("*****    isOwner      *****",isOwner,"\n")
 	// fmt.Print("*****    canView      *****",canView,"\n")
@@ -172,11 +172,6 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 	if !canView {
 		return ErrForbidden
 	}
-
-	// if 5 == 5 {
-	// 	fmt.Print("*****    Return ErrForbidden    *****\n")
-	// 	return ErrForbidden
-	// }
 
 	podcast := Podcast{}
 
@@ -222,12 +217,25 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 }
 
 // DeletePodcast removes the podcast identified by a given ID
-func DeletePodcast(ctx context.Context, db *mongo.Collection, podcastID string) error {
+func DeletePodcast(ctx context.Context, db *mongo.Collection, user auth.Claims, podcastID string) error {
 
 	// Convert string to ObjectID
 	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
 	if err != nil {
 		return ErrInvalidID
+	}
+
+	foundPodcast, err := Retrieve(ctx, db, podcastID)
+	if err != nil {
+		return ErrNotFound
+	}
+
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+	var isOwner = foundPodcast.UserID == user.Subject
+	var canView = isAdmin || isOwner
+
+	if !canView {
+		return ErrForbidden
 	}
 
 	result, err := db.DeleteOne(ctx, bson.M{"_id": podcastObjectID})

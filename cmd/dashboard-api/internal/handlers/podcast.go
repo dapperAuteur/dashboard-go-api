@@ -139,6 +139,12 @@ func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r
 
 // DeletePodcast removes a single podcast identified by an podcastID in the request URL
 func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
 	podcastID := chi.URLParam(r, "_id")
 
 	if err := podcast.DeletePodcast(ctx, p.DB, podcastID); err != nil {
@@ -147,6 +153,8 @@ func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *h
 			return web.NewRequestError(err, http.StatusNotFound)
 		case podcast.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
+		case podcast.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
 		}
