@@ -75,7 +75,7 @@ func RetrieveByTitle(ctx context.Context, db *mongo.Collection, title string) (*
 
 	// This works to find the Podcast by title
 	filter := Podcast{
-		Title: "The Nic Raboy Show",
+		Title: title,
 	}
 
 	if err := db.FindOne(ctx, filter).Decode(&podcast); err != nil {
