@@ -45,7 +45,7 @@ func (b Budget) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Req
 		switch err {
 		case budget.ErrBudgetNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case budget.ErrBudgetInvalID:
+		case budget.ErrBudgetInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for budget %q", _id)
@@ -64,7 +64,7 @@ func (b Budget) RetrieveByName(ctx context.Context, w http.ResponseWriter, r *ht
 		switch err {
 		case budget.ErrBudgetNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case budget.ErrBudgetInvalID:
+		case budget.ErrBudgetInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for budget %q", name)
@@ -93,4 +93,35 @@ func (b Budget) Create(ctx context.Context, w http.ResponseWriter, r *http.Reque
 	}
 
 	return web.Respond(ctx, w, budget, http.StatusCreated)
+}
+
+// UpdateOne decodes the body of a request to update an existing budget.
+// The _id of the budget is part of the request URL.
+func (b *Budget) UpdateOne(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	budgetID := chi.URLParam(r, "_id")
+
+	var budgetUpdate budget.UpdateBudget
+	if err := web.Decode(r, &budgetUpdate); err != nil {
+		return errors.Wrap(err, "decoding budget update")
+	}
+
+	if err := budget.UpdateOne(ctx, b.DB, claims, budgetID, budgetUpdate, time.Now()); err != nil {
+		switch err {
+		case budget.ErrBudgetNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case budget.ErrBudgetInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case budget.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating budget %q", budgetID)
+		}
+	}
+	return web.Respond(ctx, w, nil, http.StatusOK)
 }
