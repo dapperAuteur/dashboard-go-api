@@ -59,6 +59,26 @@ func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Re
 	return web.Respond(ctx, w, podcastFound, http.StatusOK)
 }
 
+// RetrieveByTitle gets the Podcast from the db identified by an title in the request URL, then encodes it in a response client
+func (p Podcast) RetrieveByTitle(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	title := chi.URLParam(r, "title")
+
+	podcastFound, err := podcast.Retrieve(ctx, p.DB, title)
+	if err != nil {
+		switch err {
+		case podcast.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case podcast.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for podcast %q", title)
+		}
+	}
+
+	return web.Respond(ctx, w, podcastFound, http.StatusOK)
+}
+
 // CreatePodcast decodes the body of a request to create a new podcast.
 // The full podcast with generated fields is sent back in the response.
 func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
