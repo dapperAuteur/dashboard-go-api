@@ -59,8 +59,8 @@ func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Re
 	return web.Respond(ctx, w, podcastFound, http.StatusOK)
 }
 
-// CreatePodcast decode a JSON document from a POST request and create new Podcast
-// BUG: Will create empty object!!! Validate content before accepting
+// CreatePodcast decodes the body of a request to create a new podcast.
+// The full podcast with generated fields is sent back in the response.
 func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
