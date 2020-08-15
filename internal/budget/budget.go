@@ -8,7 +8,17 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson" // for BSON ObjectID
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// Predefined Errors indentify expected failure conditions.
+var (
+	// ErrBudgetNotFound is used when a specific Budget is requested but does not exist.
+	ErrBudgetNotFound = errors.New("budget NOT found")
+
+	// ErrBudgetInvalID is used when an invalid ID is provided.
+	ErrBudgetInvalID = errors.New("_id is NOT in its proper form")
 )
 
 // List gets all the Budgets from the db then encodes them in a response client
@@ -26,6 +36,23 @@ func List(ctx context.Context, db *mongo.Collection) ([]Budget, error) {
 
 	return list, nil
 
+}
+
+// Get finds the budget identified by a given _id.
+func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Budget, error) {
+
+	var budget Budget
+
+	id, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+		return nil, ErrBudgetInvalID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&budget); err != nil {
+		return nil, ErrBudgetNotFound
+	}
+
+	return &budget, nil
 }
 
 // Create adds a Budget to the database.
