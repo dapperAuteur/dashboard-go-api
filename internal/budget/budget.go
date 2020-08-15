@@ -145,3 +145,34 @@ func UpdateOne(ctx context.Context, db *mongo.Collection, user auth.Claims, budg
 
 	return nil
 }
+
+// Delete removes the budget identified by a given _id
+func Delete(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetID string) error {
+
+	budgetObjectID, err := primitive.ObjectIDFromHex(budgetID)
+	if err != nil {
+		return ErrBudgetInvalidID
+	}
+
+	// foundBudget, err := Retrieve(ctx, db, budgetID)
+	// if err != nil {
+	// 	return ErrBudgetNotFound
+	// }
+
+	// var isAdmin = user.HasRole(auth.RoleAdmin)
+	// var isOwner = foundBudget.UserID == user.Subject
+	// var canView = isAdmin && isOwner
+
+	// if !canView {
+	// 	return ErrForbidden
+	// }
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": budgetObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting budget %s", budgetID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
