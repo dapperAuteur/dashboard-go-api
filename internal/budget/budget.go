@@ -79,6 +79,7 @@ func RetrieveByName(ctx context.Context, db *mongo.Collection, name string) (*Bu
 func Create(ctx context.Context, db *mongo.Collection, user auth.Claims, newBudget NewBudget, now time.Time) (*Budget, error) {
 
 	budget := Budget{
+		UserID:      user.Subject,
 		BudgetName:  newBudget.BudgetName,
 		BudgetValue: newBudget.BudgetValue,
 		CreatedAt:   now.UTC(),
@@ -110,13 +111,13 @@ func UpdateOne(ctx context.Context, db *mongo.Collection, user auth.Claims, budg
 
 	fmt.Printf("budget to update found %+v : \n", foundBudget)
 
-	// var isAdmin = user.HasRole(auth.RoleAdmin)
-	// var isOwner = foundBudget.UserID == user.Subject
-	// var canView = isAdmin && isOwner
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+	var isOwner = foundBudget.UserID == user.Subject
+	var canView = isAdmin || isOwner
 
-	// if !canView {
-	// 	return ErrForbidden
-	// }
+	if !canView {
+		return ErrForbidden
+	}
 
 	budget := Budget{}
 
@@ -154,18 +155,18 @@ func Delete(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetI
 		return ErrBudgetInvalidID
 	}
 
-	// foundBudget, err := Retrieve(ctx, db, budgetID)
-	// if err != nil {
-	// 	return ErrBudgetNotFound
-	// }
+	foundBudget, err := Retrieve(ctx, db, budgetID)
+	if err != nil {
+		return ErrBudgetNotFound
+	}
 
-	// var isAdmin = user.HasRole(auth.RoleAdmin)
-	// var isOwner = foundBudget.UserID == user.Subject
-	// var canView = isAdmin && isOwner
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+	var isOwner = foundBudget.UserID == user.Subject
+	var canView = isAdmin || isOwner
 
-	// if !canView {
-	// 	return ErrForbidden
-	// }
+	if !canView {
+		return ErrForbidden
+	}
 
 	result, err := db.DeleteOne(ctx, bson.M{"_id": budgetObjectID})
 	if err != nil {
