@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
-	"fmt"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
@@ -16,17 +16,18 @@ import (
 	"go.opencensus.io/trace"
 )
 
-// Podcast structure to connect to the mongo db collections
+// Podcasts defines all of the handlers related to podcasts. It holds the
+// application state needed by the handler methods.
 type Podcast struct {
 	DB  *mongo.Collection
 	Log *log.Logger
 }
 
-// PodcastList gets all the Podcast from the db then encodes them in a response client
+// PodcastList gets all the Podcast from the service layer.
 func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
-	// create an artificial PANIC
-	// panic("OH NO!!!")
+	// panic("OH NO!!!") // create an artificial PANIC
+
 	ctx, span := trace.StartSpan(ctx, "handlers.Podcast.PodcastList")
 	defer span.End()
 
