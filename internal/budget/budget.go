@@ -55,6 +55,22 @@ func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Budget, e
 	return &budget, nil
 }
 
+// RetrieveByName gets the first Budget in the db identified by a given name
+func RetrieveByName(ctx context.Context, db *mongo.Collection, name string) (*Budget, error) {
+
+	var budget Budget
+
+	filter := Budget{
+		BudgetName: name,
+	}
+
+	if err := db.FindOne(ctx, filter).Decode(&budget); err != nil {
+		return nil, errors.Wrapf(err, "retrieving budget by name: %s", name)
+	}
+
+	return &budget, nil
+}
+
 // Create adds a Budget to the database.
 // It returns the created Budget with fields like ID and CreatedAt populated.
 func Create(ctx context.Context, db *mongo.Collection, user auth.Claims, newBudget NewBudget, now time.Time) (*Budget, error) {
