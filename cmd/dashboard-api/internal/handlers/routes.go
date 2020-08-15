@@ -49,6 +49,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/budgets/{_id}", budget.Retrieve)
 	app.Handle(http.MethodGet, "/v1/budgets/{name}", budget.RetrieveByName)
 	app.Handle(http.MethodPost, "/v1/budgets", budget.Create, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodPut, "/v1/budgets/{_id}", budget.UpdateOne, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	// Episode Routes
 	app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList)
