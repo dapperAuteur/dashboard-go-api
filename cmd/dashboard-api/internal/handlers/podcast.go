@@ -39,7 +39,7 @@ func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http
 	return web.Respond(ctx, w, podcastList, http.StatusOK)
 }
 
-// Retrieve gets the Podcast from the db by _id then encodes them in a response client
+// Retrieve gets the Podcast from the db identified by an _id in the request URL, then encodes it in a response client
 func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	_id := chi.URLParam(r, "_id")
