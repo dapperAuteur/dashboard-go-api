@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
+	"syscall"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -34,14 +36,17 @@ type App struct {
 	log *log.Logger
 	mw  []Middleware
 	och *ochttp.Handler
+	shutdown chan os.Signal
 }
 
-// NewApp knows how to construct internal state for an App
-func NewApp(logger *log.Logger, mw ...Middleware) *App {
+// NewApp constructs an App to handle a set of routes.
+// Any Middleware provided will be ran for every request.
+func NewApp(shutdown chan os.Signal, logger *log.Logger, mw ...Middleware) *App {
 	app := App{
 		mux: chi.NewRouter(),
 		log: logger,
 		mw:  mw,
+		shutdown: shutdown,
 	}
 
 	// Create an OpenCensus HTTP Handler which wraps the router.
@@ -83,11 +88,14 @@ func (a *App) Handle(method, pattern string, h Handler, mw ...Middleware) {
 			Start: time.Now(),
 		}
 
-		ctx = context.WithValue(ctx, KeyValues, &v)
+		ctx = context.WithValue(ctx, KeyValues, &v) // commenting out this line will cause an integrity shutdown. used to test self-shutdown works when app integrity is compromised
 
 		// Run the handler chain and catch any propagated error.
 		if err := h(ctx, w, r); err != nil {
-			a.log.Printf("ERROR : Unhandled error %+v", err)
+			a.log.Printf("%s : Unhandled error %+v", v.TraceID, err)
+			if IsShutdown(err) {
+				a.SignalShutdown()
+			}
 
 		}
 	}
@@ -97,4 +105,10 @@ func (a *App) Handle(method, pattern string, h Handler, mw ...Middleware) {
 // ServeHTTP implements the http.Handler interface.
 func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	a.och.ServeHTTP(w, r)
+}
+
+// SignalShutdown is used to gracefully shutdown the app when an integrity issue is identified.
+func (a *App) SignalShutdown() {
+	a.log.Println("error returned from handler indicated integrity issue, shutting down service")
+	a.shutdown <- syscall.SIGSTOP
 }
