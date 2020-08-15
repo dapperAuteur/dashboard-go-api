@@ -9,6 +9,8 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/budget"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
+	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
 )
@@ -31,6 +33,25 @@ func (b Budget) List(ctx context.Context, w http.ResponseWriter, r *http.Request
 	}
 
 	return web.Respond(ctx, w, list, http.StatusOK)
+}
+
+// Retrieve get the Budget from the db identified by an _id in the request URL, then encodes it in a response client.
+func (b Budget) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	budgetFound, err := budget.Retrieve(ctx, b.DB, _id)
+	if err != nil {
+		switch err {
+		case budget.ErrBudgetNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case budget.ErrBudgetInvalID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for budget %q", _id)
+		}
+	}
+	return web.Respond(ctx, w, budgetFound, http.StatusOK)
 }
 
 // Create decodes the body of a request to create a new budget.
