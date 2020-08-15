@@ -64,7 +64,7 @@ func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *ht
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
 	if !ok {
-		return errors.New("claims missing from context")
+		return web.NewShutdownError("auth claims missing from context")
 	}
 
 	var newPodcast podcast.NewPodcast
