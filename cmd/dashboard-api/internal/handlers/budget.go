@@ -54,6 +54,25 @@ func (b Budget) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Req
 	return web.Respond(ctx, w, budgetFound, http.StatusOK)
 }
 
+// RetrieveByName gets the first Budget in the db with the provided name in the URL, then encodes it in a response client
+func (b Budget) RetrieveByName(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	name := chi.URLParam(r, "name")
+
+	budgetFound, err := budget.RetrieveByName(ctx, b.DB, name)
+	if err != nil {
+		switch err {
+		case budget.ErrBudgetNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case budget.ErrBudgetInvalID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for budget %q", name)
+		}
+	}
+	return web.Respond(ctx, w, budgetFound, http.StatusOK)
+}
+
 // Create decodes the body of a request to create a new budget.
 // The full budget with generated fields is sent back in the response.
 func (b Budget) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
