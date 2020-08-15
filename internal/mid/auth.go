@@ -42,8 +42,10 @@ func Authenticate(authenticator *auth.Authenticator) web.Middleware {
 			}
 			span.End()
 
+			// _ = claims // add this line to use claims to test that errors bubble up to web.go when app integrity is compromised.
+
 			// Add claims to the context so they can be retrieved later.
-			ctx = context.WithValue(ctx, auth.Key, claims)
+			ctx = context.WithValue(ctx, auth.Key, claims)  //comment out to test that errors bubble up to web.go when app integrity is compromised.
 
 			return after(ctx, w, r)
 		}
