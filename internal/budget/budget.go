@@ -18,7 +18,10 @@ var (
 	ErrBudgetNotFound = errors.New("budget NOT found")
 
 	// ErrBudgetInvalID is used when an invalid ID is provided.
-	ErrBudgetInvalID = errors.New("_id is NOT in its proper form")
+	ErrBudgetInvalidID = errors.New("_id is NOT in its proper form")
+
+	// ErrForbidden occurs when a user tries to do something that is forbidden to them according to our access control policies.
+	ErrForbidden = errors.New("Attempted action is NOT allowed")
 )
 
 // List gets all the Budgets from the db then encodes them in a response client
@@ -45,7 +48,7 @@ func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Budget, e
 
 	id, err := primitive.ObjectIDFromHex(_id)
 	if err != nil {
-		return nil, ErrBudgetInvalID
+		return nil, ErrBudgetInvalidID
 	}
 
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&budget); err != nil {
@@ -89,4 +92,56 @@ func Create(ctx context.Context, db *mongo.Collection, user auth.Claims, newBudg
 	fmt.Println("podcastResult : ", budgetResult)
 
 	return &budget, nil
+}
+
+// UpdateOne modifies data about a Budget.
+// It will error if the specified _id is invalid or does NOT reference an existing Budget.
+func UpdateOne(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetID string, updateBudget UpdateBudget, now time.Time) error {
+
+	budgetObjectID, err := primitive.ObjectIDFromHex(budgetID)
+	if err != nil {
+		return ErrBudgetInvalidID
+	}
+
+	foundBudget, err := Retrieve(ctx, db, budgetID)
+	if err != nil {
+		return ErrBudgetNotFound
+	}
+
+	fmt.Printf("budget to update found %+v : \n", foundBudget)
+
+	// var isAdmin = user.HasRole(auth.RoleAdmin)
+	// var isOwner = foundBudget.UserID == user.Subject
+	// var canView = isAdmin && isOwner
+
+	// if !canView {
+	// 	return ErrForbidden
+	// }
+
+	budget := Budget{}
+
+	if updateBudget.BudgetName != nil {
+		budget.BudgetName = *updateBudget.BudgetName
+	}
+
+	if updateBudget.BudgetValue != nil {
+		budget.BudgetValue = *updateBudget.BudgetValue
+	}
+
+	budget.ID = budgetObjectID
+
+	budget.UpdatedAt = now
+
+	updateB := bson.M{
+		"$set": budget,
+	}
+
+	budgetResult, err := db.UpdateOne(ctx, bson.M{"_id": budgetObjectID}, updateB)
+	if err != nil {
+		return errors.Wrap(err, "updating budget")
+	}
+
+	fmt.Printf("budgetResult updated %v : \n", budgetResult)
+
+	return nil
 }
