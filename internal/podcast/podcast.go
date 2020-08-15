@@ -18,7 +18,7 @@ var (
 	// ErrNotFound is used when a specific Product is requested but does not exist.
 	ErrNotFound = errors.New("podcast not found")
 
-	// ErrInvalidID is used when an invalid UUID is provided.
+	// ErrInvalidID is used when an invalid ID is provided.
 	ErrInvalidID = errors.New("ID is not in its proper form")
 
 	// ErrForbidden occurs when a user tries to do something that is forbidden to
@@ -151,8 +151,8 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 
 	fmt.Printf("podcast to update found %+v : \n", foundPodcast)
 
-	fmt.Print("*****    foundPodcast.UserID      *****",foundPodcast.UserID,"\n")
-	fmt.Print("*****    user.Subject      *****",user.Subject,"\n")
+	// fmt.Print("*****    foundPodcast.UserID      *****", foundPodcast.UserID, "\n")
+	// fmt.Print("*****    user.Subject      *****", user.Subject, "\n")
 
 	// If you do NOT have the admin role ...
 	// and you are NOT the owner of this podcast ...
