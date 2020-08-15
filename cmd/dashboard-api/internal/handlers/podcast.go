@@ -25,6 +25,8 @@ type Podcast struct {
 // PodcastList gets all the Podcast from the db then encodes them in a response client
 func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
+	// create an artificial PANIC
+	// panic("OH NO!!!")
 	ctx, span := trace.StartSpan(ctx, "handlers.Podcast.PodcastList")
 	defer span.End()
 
