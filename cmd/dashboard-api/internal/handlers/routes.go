@@ -13,7 +13,7 @@ import (
 // API constructs a handler that knows about all API routes.
 func API(logger *log.Logger, db *mongo.Database, authenticator *auth.Authenticator) http.Handler {
 
-	app := web.NewApp(logger, mid.Logger(logger), mid.Errors(logger), mid.Metrics())
+	app := web.NewApp(logger, mid.Logger(logger), mid.Errors(logger), mid.Metrics(), mid.Panics(logger))
 
 	c := Check{DB: db.Collection("podcasts")}
 
