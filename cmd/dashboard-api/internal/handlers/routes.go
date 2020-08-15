@@ -44,14 +44,18 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 		Log: logger,
 	}
 
-	app.Handle(http.MethodGet, "/v1/budgets/", budget.List)
+	// Budget Routes
+	app.Handle(http.MethodGet, "/v1/budgets", budget.List)
+	app.Handle(http.MethodPost, "/v1/budgets", budget.Create, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
+	// Episode Routes
 	app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList, mid.Authenticate(authenticator))
 	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes", episode.PodcastEpisodeList, mid.Authenticate(authenticator))
 	app.Handle(http.MethodGet, "/v1/episodes/{episodeID}", episode.RetrieveEpisode, mid.Authenticate(authenticator))
 	app.Handle(http.MethodPost, "/v1/podcasts/{_id}/episodes", episode.AddEpisode, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	// app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes/{_id}", episode.Retrieve, mid.Authenticate(authenticator))
 
+	// Podcast Routes
 	app.Handle(http.MethodGet, "/v1/podcasts", podcast.PodcastList, mid.Authenticate(authenticator))
 	app.Handle(http.MethodPost, "/v1/podcasts", podcast.CreatePodcast, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodGet, "/v1/podcasts/{_id}", podcast.Retrieve, mid.Authenticate(authenticator))
