@@ -125,3 +125,29 @@ func (b *Budget) UpdateOne(ctx context.Context, w http.ResponseWriter, r *http.R
 	}
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
+
+// Delete removes a single budget identified by an budgetID in the request URL
+func (b *Budget) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	budgetID := chi.URLParam(r, "_id")
+
+	if err := budget.Delete(ctx, b.DB, claims, budgetID); err != nil {
+		switch err {
+		case budget.ErrBudgetNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case budget.ErrBudgetInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case budget.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "deleting budget %q", budgetID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
+}
