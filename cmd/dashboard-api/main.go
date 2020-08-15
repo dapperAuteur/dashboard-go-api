@@ -139,6 +139,11 @@ func run() error {
 	// =========================================================================
 	// Start API Service
 
+	// Make a channel to listen for an interrupt or terminate signal from the OS.
+	// Use a buffered channel because the signal package requires it.
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
+
 	// send the db to the handler and let the router determine which collection to use
 	myDatabase := client.Database(("quickstart"))
 
@@ -146,7 +151,7 @@ func run() error {
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
-		Handler:      handlers.API(log, myDatabase, authenticator),
+		Handler:      handlers.API(shutdown,log, myDatabase, authenticator),
 		ReadTimeout:  cfg.Web.ReadTimeout,
 		WriteTimeout: cfg.Web.WriteTimeout,
 	}
@@ -161,11 +166,6 @@ func run() error {
 		serverErrors <- api.ListenAndServe()
 	}()
 
-	// Make a channel to listen for an interrupt or terminate signal from the OS.
-	// Use a buffered channel because the signal package requires it.
-	shutdown := make(chan os.Signal, 1)
-	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
-
 	// =========================================================================
 	// Shutdown
 
@@ -174,8 +174,8 @@ func run() error {
 	case err := <-serverErrors:
 		return errors.Wrap(err, "listening and serving")
 
-	case <-shutdown:
-		log.Println("main : Start shutdown")
+	case sig := <-shutdown:
+		log.Println("main : Start shutdown", sig)
 
 		// Give outstanding requests a deadline for completion.
 		ctx, cancel := context.WithTimeout(context.Background(), cfg.Web.ShutdownTimeout)
@@ -190,6 +190,10 @@ func run() error {
 
 		if err != nil {
 			return errors.Wrap(err, "graceful shutdown")
+		}
+
+		if sig == syscall.SIGSTOP {
+			return errors.New("integrity error detectecd, asking for self shutdown")
 		}
 	}
 	return nil
