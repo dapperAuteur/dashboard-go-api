@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"log"
-	"os"
 	"net/http"
+	"os"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/mid"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
@@ -12,9 +12,9 @@ import (
 )
 
 // API constructs a handler that knows about all API routes.
-func API(shutdown chan os.Signal,logger *log.Logger, db *mongo.Database, authenticator *auth.Authenticator) http.Handler {
+func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authenticator *auth.Authenticator) http.Handler {
 
-	app := web.NewApp(shutdown,logger, mid.Logger(logger), mid.Errors(logger), mid.Metrics(), mid.Panics(logger))
+	app := web.NewApp(shutdown, logger, mid.Logger(logger), mid.Errors(logger), mid.Metrics(), mid.Panics(logger))
 
 	c := Check{DB: db.Collection("podcasts")}
 
@@ -25,8 +25,14 @@ func API(shutdown chan os.Signal,logger *log.Logger, db *mongo.Database, authent
 	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
 
 	// episodesCollection := db.Collection("episodes")
+	budgetsCollection := db.Collection("budgets")
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
+
+	budget := Budget{
+		DB:  budgetsCollection,
+		Log: logger,
+	}
 
 	podcast := Podcast{
 		DB:  podcastsCollection,
@@ -37,6 +43,8 @@ func API(shutdown chan os.Signal,logger *log.Logger, db *mongo.Database, authent
 		DB:  episodesCollection,
 		Log: logger,
 	}
+
+	app.Handle(http.MethodGet, "/v1/budgets/", budget.List)
 
 	app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList, mid.Authenticate(authenticator))
 	app.Handle(http.MethodGet, "/v1/podcasts/{_id}/episodes", episode.PodcastEpisodeList, mid.Authenticate(authenticator))
