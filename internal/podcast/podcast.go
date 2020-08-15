@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"time"
+
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -88,12 +89,13 @@ func RetrieveByTitle(ctx context.Context, db *mongo.Collection, title string) (*
 	return &podcast, nil
 }
 
-// CreatePodcast will create a new Podcast in the database and returns the new Podcast
+// CreatePodcast adds a Podcast to the database.
+// It returns the created Podcast with fields like ID and CreatedAt populated.
 func CreatePodcast(ctx context.Context, db *mongo.Collection, user auth.Claims, newPodcast NewPodcast, now time.Time) (*Podcast, error) {
 
 	podcast := Podcast{
 		Title:       newPodcast.Title,
-		UserID: user.Subject,
+		UserID:      user.Subject,
 		Author:      newPodcast.Author,
 		Subscribers: newPodcast.Subscribers,
 		Tags:        newPodcast.Tags,
