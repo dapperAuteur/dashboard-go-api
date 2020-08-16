@@ -24,13 +24,21 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
 
-	// episodesCollection := db.Collection("episodes")
+	// Budget Related
 	budgetsCollection := db.Collection("budgets")
+	financialAccountsCollection := db.Collection("financialaccounts")
+
+	// Podcast Related
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
 
 	budget := Budget{
 		DB:  budgetsCollection,
+		Log: logger,
+	}
+
+	financialAccount := FinancialAccount{
+		DB:  financialAccountsCollection,
 		Log: logger,
 	}
 
@@ -51,6 +59,9 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodPost, "/v1/budgets", budget.Create, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodPut, "/v1/budgets/{_id}", budget.UpdateOne, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/budgets/{_id}", budget.Delete, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// FinancialAccount Routes
+	app.Handle(http.MethodGet, "/v1/financial-accounts", financialAccount.ListFinancialAccounts)
 
 	// Episode Routes
 	app.Handle(http.MethodGet, "/v1/episodes", episode.EpisodeList)
