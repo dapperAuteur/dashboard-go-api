@@ -147,7 +147,7 @@ func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *h
 
 	podcastID := chi.URLParam(r, "_id")
 
-	if err := podcast.DeletePodcast(ctx, p.DB, podcastID); err != nil {
+	if err := podcast.DeletePodcast(ctx, p.DB, claims, podcastID); err != nil {
 		switch err {
 		case podcast.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
