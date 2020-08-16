@@ -87,12 +87,17 @@ func (b Budget) Create(ctx context.Context, w http.ResponseWriter, r *http.Reque
 		return err
 	}
 
-	budget, err := budget.Create(ctx, b.DB, claims, newBudget, time.Now())
+	budgetCreated, err := budget.Create(ctx, b.DB, claims, newBudget, time.Now())
 	if err != nil {
-		return err
+		switch err {
+		case budget.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating budget %q", newBudget)
+		}
 	}
 
-	return web.Respond(ctx, w, budget, http.StatusCreated)
+	return web.Respond(ctx, w, budgetCreated, http.StatusCreated)
 }
 
 // UpdateOne decodes the body of a request to update an existing budget.
