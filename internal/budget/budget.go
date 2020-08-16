@@ -78,8 +78,14 @@ func RetrieveByName(ctx context.Context, db *mongo.Collection, name string) (*Bu
 // It returns the created Budget with fields like ID and CreatedAt populated.
 func Create(ctx context.Context, db *mongo.Collection, user auth.Claims, newBudget NewBudget, now time.Time) (*Budget, error) {
 
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return nil, ErrForbidden
+	}
+
 	budget := Budget{
-		UserID:      user.Subject,
+		ManagerID:   user.Subject,
 		BudgetName:  newBudget.BudgetName,
 		BudgetValue: newBudget.BudgetValue,
 		CreatedAt:   now.UTC(),
@@ -112,7 +118,7 @@ func UpdateOne(ctx context.Context, db *mongo.Collection, user auth.Claims, budg
 	fmt.Printf("budget to update found %+v : \n", foundBudget)
 
 	var isAdmin = user.HasRole(auth.RoleAdmin)
-	var isOwner = foundBudget.UserID == user.Subject
+	var isOwner = foundBudget.ManagerID == user.Subject
 	var canView = isAdmin || isOwner
 
 	if !canView {
@@ -161,7 +167,7 @@ func Delete(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetI
 	}
 
 	var isAdmin = user.HasRole(auth.RoleAdmin)
-	var isOwner = foundBudget.UserID == user.Subject
+	var isOwner = foundBudget.ManagerID == user.Subject
 	var canView = isAdmin || isOwner
 
 	if !canView {
