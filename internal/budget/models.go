@@ -9,16 +9,16 @@ import (
 // Budget type is a group of related financial transactions
 type Budget struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
-	UserID      string             `bson:"userID,omitempty" json:"userID,omitempty"`
+	ManagerID   string             `bson:"manager_id,omitempty" json:"manager_id,omitempty"`
 	BudgetName  string             `bson:"budget_name,omitempty" json:"budget_name,omitempty" validate:"required"`
 	BudgetValue float64            `bson:"budget_value,omitempty" json:"budget_value,omitempty" default:"0"` // default doesn't give desired result
-	CreatedAt   time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty" validate:"datetime"`
-	UpdatedAt   time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty" validate:"datetime"`
+	CreatedAt   time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt   time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
 }
 
 // NewBudget type is what's required from the client to create a new Budget
 type NewBudget struct {
-	UserID      string  `bson:"userID,omitempty" json:"userID,omitempty"`
+	ManagerID   string  `bson:"manager_id,omitempty" json:"manager_id,omitempty"`
 	BudgetName  string  `bson:"budget_name,omitempty" json:"budget_name,omitempty" validate:"required"`
 	BudgetValue float64 `bson:"budget_value,omitempty" json:"budget_value,omitempty" default:"0"` // default doesn't give desired result
 }
@@ -30,7 +30,7 @@ type NewBudget struct {
 // Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateBudget struct {
 	ID          *primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	UserID      *string             `bson:"userID,omitempty" json:"userID,omitempty"`
+	ManagerID   *string             `bson:"manager_id,omitempty" json:"manager_id,omitempty"`
 	BudgetName  *string             `bson:"budget_name,omitempty" json:"budget_name,omitempty"`
 	BudgetValue *float64            `bson:"budget_value,omitempty" json:"budget_value,omitempty" default:"0"` // default doesn't give desired result
 }
@@ -41,7 +41,15 @@ type FinancialAccount struct {
 	AccountName          string             `bson:"account_name,omitempty" json:"account_name,omitempty" validate:"required"`
 	CurrentValue         float64            `bson:"current_value,omitempty" json:"current_value,omitempty" validate:"required"`
 	FinancialInstitution string             `bson:"financial_institution,omitempty" json:"financial_institution,omitempty" validate:"required"`
-	Owner                *string            `bson:"owner,omitempty" json:"owner,omitempty" validate:"required"`
-	CreatedAt            time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty" validate:"datetime"`
-	UpdatedAt            time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty" validate:"datetime"`
+	MangerID             string             `bson:"manger_id,omitempty" json:"manger_id,omitempty" validate:"required"`
+	CreatedAt            time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt            time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
+}
+
+// NewFinancialAccount type is used to track balance record transactions
+type NewFinancialAccount struct {
+	AccountName          string  `bson:"account_name,omitempty" json:"account_name,omitempty" validate:"required"`
+	CurrentValue         float64 `bson:"current_value,omitempty" json:"current_value,omitempty" validate:"required"`
+	FinancialInstitution string  `bson:"financial_institution,omitempty" json:"financial_institution,omitempty" validate:"required"`
+	MangerID             string  `bson:"manger_id,omitempty" json:"manger_id,omitempty" validate:"required"`
 }
