@@ -34,3 +34,14 @@ type UpdateBudget struct {
 	BudgetName  *string             `bson:"budget_name,omitempty" json:"budget_name,omitempty"`
 	BudgetValue *float64            `bson:"budget_value,omitempty" json:"budget_value,omitempty" default:"0"` // default doesn't give desired result
 }
+
+// FinancialAccount type is used to track balance record transactions
+type FinancialAccount struct {
+	ID                   primitive.ObjectID `bson:"_id,omitempty" json:"_id, omitempty"`
+	AccountName          string             `bson:"account_name,omitempty" json:"account_name,omitempty" validate:"required"`
+	CurrentValue         float64            `bson:"current_value,omitempty" json:"current_value,omitempty" validate:"required"`
+	FinancialInstitution string             `bson:"financial_institution,omitempty" json:"financial_institution,omitempty" validate:"required"`
+	Owner                *string            `bson:"owner,omitempty" json:"owner,omitempty" validate:"required"`
+	CreatedAt            time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty" validate:"datetime"`
+	UpdatedAt            time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty" validate:"datetime"`
+}
