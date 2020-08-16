@@ -47,7 +47,8 @@ func run() error {
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"` // connection string for Mongo Atlas Connection
+			// AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@localhost/palabras-express-api?retryWrites=true&w=majority"` // connection string for docker Mongo image
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`

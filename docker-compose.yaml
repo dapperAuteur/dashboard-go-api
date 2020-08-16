@@ -9,13 +9,13 @@ networks:
 
 services: 
     # This starts a local MongoDB.
-    db:
-        container_name: dashboard_db
-        networks: 
-            - shared-network
-        image: mongo
-        ports:
-            - 27017:27017
+    # db:
+    #     container_name: dashboard_db
+    #     networks: 
+    #         - shared-network
+    #     image: mongo
+    #     ports:
+    #         - 27017:27017
 
     # This sidecar allows for the viewing of traces.
     zipkin:
