@@ -16,7 +16,8 @@ import (
 	"go.opencensus.io/trace"
 )
 
-// Budget structure to connect to the mongo db collections
+// Budget defines all of the handlers related to Budget.
+// It holds the application state needed by the handler methods.
 type Budget struct {
 	DB  *mongo.Collection
 	Log *log.Logger

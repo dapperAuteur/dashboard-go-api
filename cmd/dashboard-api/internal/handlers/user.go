@@ -13,7 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Users holds handlers for dealing with user.
+// Users defines all of the handlers related to users.
+// It holds the application state needed by the handler methods.
 type Users struct {
 	DB            *mongo.Collection
 	authenticator *auth.Authenticator

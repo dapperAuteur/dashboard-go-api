@@ -17,8 +17,8 @@ import (
 	"go.opencensus.io/trace"
 )
 
-// Podcasts defines all of the handlers related to podcasts. It holds the
-// application state needed by the handler methods.
+// Podcast defines all of the handlers related to podcasts.
+// It holds the application state needed by the handler methods.
 type Podcast struct {
 	DB  *mongo.Collection
 	Log *log.Logger

@@ -65,3 +65,27 @@ type UpdateFinancialAccount struct {
 	CurrentValue         *float64            `bson:"current_value,omitempty" json:"current_value,omitempty"`
 	FinancialInstitution *string             `bson:"financial_institution,omitempty" json:"financial_institution,omitempty"`
 }
+
+// Vendor type is a group of vendors that process transactions
+type Vendor struct {
+	ID             primitive.ObjectID   `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	TransactionIDs []primitive.ObjectID `bson:"tranx_id,omitempty" json:"tranx_id,omitempty"`
+	VendorName     string               `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
+	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt      time.Time            `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
+}
+
+// NewVendor type is what's required from the client to create a new vendor
+type NewVendor struct {
+	VendorName string `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
+}
+
+// UpdateVendor defines what information may be provided to modify an existing Vendor.
+// All fields are optional so clients can send just the fields they want
+// changed.
+// It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided as explicitly blank.
+// Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
+type UpdateVendor struct {
+	TransactionIDs *[]primitive.ObjectID `bson:"tranx_id,omitempty" json:"tranx_id,omitempty"`
+	VendorName     *string               `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
+}

@@ -145,7 +145,7 @@ func DeleteFinancialAccount(ctx context.Context, db *mongo.Collection, user auth
 		return apierror.ErrNotFound
 	}
 
-	fmt.Printf("financial account to update found %+v : \n", foundFA)
+	fmt.Printf("financial account to delete found %+v : \n", foundFA)
 
 	var (
 		isAdmin = user.HasRole(auth.RoleAdmin)
