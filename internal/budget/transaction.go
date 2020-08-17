@@ -74,3 +74,77 @@ func RetrieveTransaction(ctx context.Context, db *mongo.Collection, _id string) 
 
 	return &transaction, nil
 }
+
+// UpdateOneTransaction modifies data about a transaction.
+// It will error if the specified _id is invalid or does NOT reference an existing transaction.
+func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.Claims, tranxID string, updateTranx UpdateTransaction, now time.Time) error {
+
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	tObjectID, err := primitive.ObjectIDFromHex(tranxID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundTranx, err := RetrieveTransaction(ctx, db, tranxID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("transaction to update found %+v : \n", foundTranx)
+
+	transaction := Transaction{}
+
+	if updateTranx.BudgetID != nil {
+		transaction.BudgetID = *updateTranx.BudgetID
+	}
+
+	if updateTranx.CurrencyID != nil {
+		transaction.CurrencyID = *updateTranx.CurrencyID
+	}
+
+	if updateTranx.FinancialAccountID != nil {
+		transaction.FinancialAccountID = *updateTranx.FinancialAccountID
+	}
+
+	// if updateTranx.Occurrence != nil {
+	// 	transaction.Occurrence = *updateTranx.Occurrence
+	// }
+
+	if updateTranx.TransactionEvent != nil {
+		transaction.TransactionEvent = *updateTranx.TransactionEvent
+	}
+
+	if updateTranx.TransactionValue != nil {
+		transaction.TransactionValue = *updateTranx.TransactionValue
+	}
+
+	if updateTranx.VendorID != nil {
+		transaction.VendorID = *updateTranx.VendorID
+	}
+
+	if updateTranx.ParticipantID != nil {
+		transaction.ParticipantID = *updateTranx.ParticipantID
+	}
+
+	transaction.ID = tObjectID
+
+	transaction.UpdatedAt = now
+
+	updateTransaction := bson.M{
+		"$set": transaction,
+	}
+
+	tranxResult, err := db.UpdateOne(ctx, bson.M{"_id": tObjectID}, updateTransaction)
+	if err != nil {
+		return errors.Wrap(err, "updating transaction")
+	}
+
+	fmt.Printf("tranxResult updated %v : \n", tranxResult)
+
+	return nil
+}
