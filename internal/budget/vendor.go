@@ -71,3 +71,54 @@ func RetrieveVendor(ctx context.Context, db *mongo.Collection, _id string) (*Ven
 
 	return &vendor, nil
 }
+
+// UpdateOneVendor modifies data about a vendor.
+// It will error if the specified _id is invalid or does NOT reference an existing vendor.
+func UpdateOneVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, vID string, updateVendor UpdateVendor, now time.Time) error {
+
+	vObjectID, err := primitive.ObjectIDFromHex(vID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundVendor, err := RetrieveVendor(ctx, db, vID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("vendor to update found %+v : \n", foundVendor)
+
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	vendor := Vendor{}
+
+	if updateVendor.VendorName != nil {
+		vendor.VendorName = *updateVendor.VendorName
+	}
+
+	// How do I get the existing vendor.TransactionIDs and add the new ones from updateVendor.TransactionIDs
+	if updateVendor.TransactionIDs != nil {
+		vendor.TransactionIDs = *updateVendor.TransactionIDs
+	}
+
+	vendor.ID = vObjectID
+
+	vendor.UpdatedAt = now
+
+	updateV := bson.M{
+		"$set": vendor,
+	}
+
+	vResult, err := db.UpdateOne(ctx, bson.M{"_id": vObjectID}, updateV)
+	if err != nil {
+		return errors.Wrap(err, "updating vendor")
+	}
+
+	fmt.Printf("vResult updated %v : \n", vResult)
+
+	return nil
+}
