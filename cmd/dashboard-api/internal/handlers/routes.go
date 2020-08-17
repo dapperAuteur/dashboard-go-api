@@ -86,6 +86,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/transactions", transaction.ListTransactions)
 	app.Handle(http.MethodPost, "/v1/transactions", transaction.CreateTransaction, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodGet, "/v1/transactions/{_id}", transaction.RetrieveTransaction)
+	app.Handle(http.MethodPut, "/v1/transactions/{_id}", transaction.UpdateOneTransaction, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	// Vendor Routes
 	app.Handle(http.MethodGet, "/v1/vendors", vendor.ListVendors)
