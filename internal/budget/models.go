@@ -86,6 +86,6 @@ type NewVendor struct {
 // It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided as explicitly blank.
 // Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateVendor struct {
-	TransactionIDs []primitive.ObjectID `bson:"tranx_id,omitempty" json:"tranx_id,omitempty"`
-	VendorName     string               `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
+	TransactionIDs *[]primitive.ObjectID `bson:"tranx_id,omitempty" json:"tranx_id,omitempty"`
+	VendorName     *string               `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
 }
