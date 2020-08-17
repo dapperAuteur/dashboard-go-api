@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
 	"github.com/go-chi/chi"
@@ -53,9 +54,9 @@ func (e Episode) RetrieveEpisode(ctx context.Context, w http.ResponseWriter, r *
 	episodeFound, err := podcast.RetrieveEpisode(ctx, e.DB, episodeID)
 	if err != nil {
 		switch err {
-		case podcast.ErrEpisodeNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrEpisodeInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for podcast episode %q", episodeID)

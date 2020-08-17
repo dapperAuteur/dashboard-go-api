@@ -5,19 +5,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-)
-
-// Predefined errors identify expected failure conditions.
-var (
-	// ErrNotFound is used when a specific Product is requested but does not exist.
-	ErrEpisodeNotFound = errors.New("episode not found")
-
-	// ErrInvalidID is used when an invalid UUID is provided.
-	ErrEpisodeInvalidID = errors.New("ID is not in its proper form")
 )
 
 // EpisodeList gets all the Episodes for a specific Podcast from the db then encodes them in a response client
@@ -44,7 +36,7 @@ func PodcastEpisodeList(ctx context.Context, db *mongo.Collection, podcastID str
 	// convert podcastID string from url var to podcastObjectID
 	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
 	if err != nil {
-		return nil, ErrInvalidID
+		return nil, apierror.ErrInvalidID
 	}
 
 	episodeCursor, err := db.Find(ctx, bson.M{"podcastID": podcastObjectID})
@@ -70,11 +62,11 @@ func RetrieveEpisode(ctx context.Context, db *mongo.Collection, episodeID string
 
 	episodeObjectID, err := primitive.ObjectIDFromHex(episodeID)
 	if err != nil {
-		return nil, ErrEpisodeInvalidID
+		return nil, apierror.ErrInvalidID
 	}
 
 	if err := db.FindOne(ctx, bson.M{"_id": episodeObjectID}).Decode(&episode); err != nil {
-		return nil, ErrEpisodeNotFound
+		return nil, apierror.ErrNotFound
 	}
 
 	return &episode, nil

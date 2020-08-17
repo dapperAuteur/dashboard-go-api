@@ -6,24 +6,12 @@ import (
 	"log"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive" // for BSON ObjectID
 	"go.mongodb.org/mongo-driver/mongo"
-)
-
-// Predefined errors identify expected failure conditions.
-var (
-	// ErrNotFound is used when a specific Product is requested but does not exist.
-	ErrNotFound = errors.New("podcast not found")
-
-	// ErrInvalidID is used when an invalid ID is provided.
-	ErrInvalidID = errors.New("ID is not in its proper form")
-
-	// ErrForbidden occurs when a user tries to do something that is forbidden to
-	// them according to our access control policies.
-	ErrForbidden = errors.New("Attempted action is not allowed")
 )
 
 // List gets all the Podcasts from the db then encodes them in a response client
@@ -49,18 +37,18 @@ func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Podcast, 
 
 	// Check if _id is valid ObjectID
 	// if _, err := uuid.Parse(_id); err != nil {
-	// 	return nil, ErrInvalidID
+	// 	return nil, apierror.ErrInvalidID
 	// }
 
 	id, err := primitive.ObjectIDFromHex(_id)
 	if err != nil {
-		return nil, ErrInvalidID
+		return nil, apierror.ErrInvalidID
 	}
 
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&podcast); err != nil {
 		log.Printf("podcast not found: %s", podcast)
 		log.Printf("id sent to podcast.Retrieve podcast}: %s", id)
-		return nil, ErrNotFound
+		return nil, apierror.ErrNotFound
 	}
 
 	fmt.Println("result AFTER:", podcast)
@@ -141,12 +129,12 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 
 	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
 	if err != nil {
-		return ErrInvalidID
+		return apierror.ErrInvalidID
 	}
 
 	foundPodcast, err := Retrieve(ctx, db, podcastID)
 	if err != nil {
-		return ErrNotFound
+		return apierror.ErrNotFound
 	}
 
 	fmt.Printf("podcast to update found %+v : \n", foundPodcast)
@@ -158,8 +146,8 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 	// and you are NOT the owner of this podcast ...
 	// then you're NOT allowed to update this podcast.
 	// if !user.HasRole(auth.RoleAdmin) && foundPodcast.UserID == user.Subject {
-	// 	fmt.Print("*****    Return ErrForbidden    *****\n")
-	// 	return ErrForbidden
+	// 	fmt.Print("*****    Return apierror.ErrForbidden    *****\n")
+	// 	return apierror.ErrForbidden
 	// }
 
 	var isAdmin = user.HasRole(auth.RoleAdmin)
@@ -170,7 +158,7 @@ func UpdateOnePodcast(ctx context.Context, db *mongo.Collection, user auth.Claim
 	// fmt.Print("*****    canView      *****",canView,"\n")
 
 	if !canView {
-		return ErrForbidden
+		return apierror.ErrForbidden
 	}
 
 	podcast := Podcast{}
@@ -222,12 +210,12 @@ func DeletePodcast(ctx context.Context, db *mongo.Collection, user auth.Claims, 
 	// Convert string to ObjectID
 	podcastObjectID, err := primitive.ObjectIDFromHex(podcastID)
 	if err != nil {
-		return ErrInvalidID
+		return apierror.ErrInvalidID
 	}
 
 	foundPodcast, err := Retrieve(ctx, db, podcastID)
 	if err != nil {
-		return ErrNotFound
+		return apierror.ErrNotFound
 	}
 
 	var isAdmin = user.HasRole(auth.RoleAdmin)
@@ -235,7 +223,7 @@ func DeletePodcast(ctx context.Context, db *mongo.Collection, user auth.Claims, 
 	var canView = isAdmin || isOwner
 
 	if !canView {
-		return ErrForbidden
+		return apierror.ErrForbidden
 	}
 
 	result, err := db.DeleteOne(ctx, bson.M{"_id": podcastObjectID})

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
@@ -47,9 +48,9 @@ func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Re
 	podcastFound, err := podcast.Retrieve(ctx, p.DB, _id)
 	if err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for podcast %q", _id)
@@ -67,9 +68,9 @@ func (p Podcast) RetrieveByTitle(ctx context.Context, w http.ResponseWriter, r *
 	podcastFound, err := podcast.Retrieve(ctx, p.DB, title)
 	if err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for podcast %q", title)
@@ -124,11 +125,11 @@ func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r
 
 	if err := podcast.UpdateOnePodcast(ctx, p.DB, claims, podcastID, podcastUpdate, time.Now()); err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
-		case podcast.ErrForbidden:
+		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
@@ -149,11 +150,11 @@ func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *h
 
 	if err := podcast.DeletePodcast(ctx, p.DB, claims, podcastID); err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
-		case podcast.ErrForbidden:
+		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
