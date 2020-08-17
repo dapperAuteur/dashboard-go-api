@@ -84,3 +84,35 @@ func (t Transaction) RetrieveTransaction(ctx context.Context, w http.ResponseWri
 
 	return web.Respond(ctx, w, tranxFound, http.StatusOK)
 }
+
+// UpdateOneTransaction decodes the body of a request to update an existing transaction.
+// The _id of the transaction is part of the request URL.
+func (t *Transaction) UpdateOneTransaction(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	tranxID := chi.URLParam(r, "_id")
+
+	var transactionUpdate budget.UpdateTransaction
+	if err := web.Decode(r, &transactionUpdate); err != nil {
+		return errors.Wrap(err, "decoding transaction update")
+	}
+
+	if err := budget.UpdateOneTransaction(ctx, t.DB, claims, tranxID, transactionUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating transaction %q", tranxID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
