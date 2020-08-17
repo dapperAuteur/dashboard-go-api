@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
-	"fmt"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/podcast"
@@ -16,17 +17,18 @@ import (
 	"go.opencensus.io/trace"
 )
 
-// Podcast structure to connect to the mongo db collections
+// Podcasts defines all of the handlers related to podcasts. It holds the
+// application state needed by the handler methods.
 type Podcast struct {
 	DB  *mongo.Collection
 	Log *log.Logger
 }
 
-// PodcastList gets all the Podcast from the db then encodes them in a response client
+// PodcastList gets all the Podcast from the service layer.
 func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
-	// create an artificial PANIC
-	// panic("OH NO!!!")
+	// panic("OH NO!!!") // create an artificial PANIC
+
 	ctx, span := trace.StartSpan(ctx, "handlers.Podcast.PodcastList")
 	defer span.End()
 
@@ -38,7 +40,7 @@ func (p Podcast) PodcastList(ctx context.Context, w http.ResponseWriter, r *http
 	return web.Respond(ctx, w, podcastList, http.StatusOK)
 }
 
-// Retrieve gets the Podcast from the db by _id then encodes them in a response client
+// Retrieve gets the Podcast from the db identified by an _id in the request URL, then encodes it in a response client
 func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	_id := chi.URLParam(r, "_id")
@@ -46,9 +48,9 @@ func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Re
 	podcastFound, err := podcast.Retrieve(ctx, p.DB, _id)
 	if err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for podcast %q", _id)
@@ -58,8 +60,28 @@ func (p Podcast) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Re
 	return web.Respond(ctx, w, podcastFound, http.StatusOK)
 }
 
-// CreatePodcast decode a JSON document from a POST request and create new Podcast
-// BUG: Will create empty object!!! Validate content before accepting
+// RetrieveByTitle gets the Podcast from the db identified by an title in the request URL, then encodes it in a response client
+func (p Podcast) RetrieveByTitle(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	title := chi.URLParam(r, "title")
+
+	podcastFound, err := podcast.Retrieve(ctx, p.DB, title)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for podcast %q", title)
+		}
+	}
+
+	return web.Respond(ctx, w, podcastFound, http.StatusOK)
+}
+
+// CreatePodcast decodes the body of a request to create a new podcast.
+// The full podcast with generated fields is sent back in the response.
 func (p Podcast) CreatePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
@@ -103,11 +125,11 @@ func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r
 
 	if err := podcast.UpdateOnePodcast(ctx, p.DB, claims, podcastID, podcastUpdate, time.Now()); err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
-		case podcast.ErrForbidden:
+		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
@@ -118,14 +140,22 @@ func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r
 
 // DeletePodcast removes a single podcast identified by an podcastID in the request URL
 func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
 	podcastID := chi.URLParam(r, "_id")
 
-	if err := podcast.DeletePodcast(ctx, p.DB, podcastID); err != nil {
+	if err := podcast.DeletePodcast(ctx, p.DB, claims, podcastID); err != nil {
 		switch err {
-		case podcast.ErrNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case podcast.ErrInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating podcast %q", podcastID)
 		}

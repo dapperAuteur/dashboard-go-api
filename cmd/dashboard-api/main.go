@@ -47,7 +47,8 @@ func run() error {
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"` // connection string for Mongo Atlas Connection
+			// AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@localhost/palabras-express-api?retryWrites=true&w=majority"` // connection string for docker Mongo image
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`
@@ -55,8 +56,8 @@ func run() error {
 			Algorithm      string `conf:"default:RS256"`
 		}
 		Trace struct {
-			URL string `conf:"default:http://localhost:9411/api/v2/spans"`
-			Service string `conf:"default:dashboard-api"`
+			URL         string  `conf:"default:http://localhost:9411/api/v2/spans"`
+			Service     string  `conf:"default:dashboard-api"`
 			Probability float64 `conf:"default:1"`
 		}
 	}
@@ -145,13 +146,14 @@ func run() error {
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
 	// send the db to the handler and let the router determine which collection to use
-	myDatabase := client.Database(("quickstart"))
+	myDatabase := client.Database(("quickstart")) // development database
+	// myDatabase := client.Database(("palabras-express-api")) // production database
 
 	// service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
-		Handler:      handlers.API(shutdown,log, myDatabase, authenticator),
+		Handler:      handlers.API(shutdown, log, myDatabase, authenticator),
 		ReadTimeout:  cfg.Web.ReadTimeout,
 		WriteTimeout: cfg.Web.WriteTimeout,
 	}
@@ -216,7 +218,7 @@ func createAuth(privateKeyFile, keyID, algorithm string) (*auth.Authenticator, e
 	return auth.NewAuthenticator(key, keyID, algorithm, public)
 }
 
-func registerTracer(service, httpAddr, traceURL string, probabilty float64) (func () error, error) {
+func registerTracer(service, httpAddr, traceURL string, probabilty float64) (func() error, error) {
 	localEndpoint, err := openzipkin.NewEndpoint(service, httpAddr)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating the local zipkinEndpoint")
@@ -228,7 +230,7 @@ func registerTracer(service, httpAddr, traceURL string, probabilty float64) (fun
 		DefaultSampler: trace.ProbabilitySampler(probabilty),
 	})
 	return reporter.Close, nil
-	
+
 }
 
 // // Transaction is a line item on a balance sheet.

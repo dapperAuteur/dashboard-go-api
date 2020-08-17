@@ -122,7 +122,8 @@ func useradd(cfg database.Config, email, password string) error {
 	}
 
 	// send the db to the handler and let the router determine which collection to use
-	myDatabase := client.Database(("quickstart"))
+	myDatabase := client.Database(("quickstart")) // development database
+	// myDatabase := client.Database(("palabras-express-api")) // production database
 
 	userCollection := myDatabase.Collection("users")
 
