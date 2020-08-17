@@ -148,3 +148,34 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 
 	return nil
 }
+
+// DeleteTransaction removes the transaction identified by a given _id
+func DeleteTransaction(ctx context.Context, db *mongo.Collection, user auth.Claims, tranxID string) error {
+
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	tranxObjectID, err := primitive.ObjectIDFromHex(tranxID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundTranx, err := RetrieveTransaction(ctx, db, tranxID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("transaction to delelete found %+v : \n", foundTranx)
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": tranxObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting transaction %s", tranxID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
