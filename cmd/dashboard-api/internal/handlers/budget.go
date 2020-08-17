@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/budget"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
@@ -43,9 +44,9 @@ func (b Budget) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Req
 	budgetFound, err := budget.Retrieve(ctx, b.DB, _id)
 	if err != nil {
 		switch err {
-		case budget.ErrBudgetNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case budget.ErrBudgetInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for budget %q", _id)
@@ -62,9 +63,9 @@ func (b Budget) RetrieveByName(ctx context.Context, w http.ResponseWriter, r *ht
 	budgetFound, err := budget.RetrieveByName(ctx, b.DB, name)
 	if err != nil {
 		switch err {
-		case budget.ErrBudgetNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case budget.ErrBudgetInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
 		default:
 			return errors.Wrapf(err, "looking for budget %q", name)
@@ -90,10 +91,10 @@ func (b Budget) Create(ctx context.Context, w http.ResponseWriter, r *http.Reque
 	budgetCreated, err := budget.Create(ctx, b.DB, claims, newBudget, time.Now())
 	if err != nil {
 		switch err {
-		case budget.ErrForbidden:
+		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
-			return errors.Wrapf(err, "updating budget %q", newBudget)
+			return errors.Wrapf(err, "creating budget %q", newBudget)
 		}
 	}
 
@@ -118,11 +119,11 @@ func (b *Budget) UpdateOne(ctx context.Context, w http.ResponseWriter, r *http.R
 
 	if err := budget.UpdateOne(ctx, b.DB, claims, budgetID, budgetUpdate, time.Now()); err != nil {
 		switch err {
-		case budget.ErrBudgetNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case budget.ErrBudgetInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
-		case budget.ErrForbidden:
+		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "updating budget %q", budgetID)
@@ -143,11 +144,11 @@ func (b *Budget) Delete(ctx context.Context, w http.ResponseWriter, r *http.Requ
 
 	if err := budget.Delete(ctx, b.DB, claims, budgetID); err != nil {
 		switch err {
-		case budget.ErrBudgetNotFound:
+		case apierror.ErrNotFound:
 			return web.NewRequestError(err, http.StatusNotFound)
-		case budget.ErrBudgetInvalidID:
+		case apierror.ErrInvalidID:
 			return web.NewRequestError(err, http.StatusBadRequest)
-		case budget.ErrForbidden:
+		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
 			return errors.Wrapf(err, "deleting budget %q", budgetID)

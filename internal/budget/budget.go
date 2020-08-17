@@ -5,23 +5,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson" // for BSON ObjectID
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-)
-
-// Predefined Errors indentify expected failure conditions.
-var (
-	// ErrBudgetNotFound is used when a specific Budget is requested but does not exist.
-	ErrBudgetNotFound = errors.New("budget NOT found")
-
-	// ErrBudgetInvalID is used when an invalid ID is provided.
-	ErrBudgetInvalidID = errors.New("_id is NOT in its proper form")
-
-	// ErrForbidden occurs when a user tries to do something that is forbidden to them according to our access control policies.
-	ErrForbidden = errors.New("Attempted action is NOT allowed")
 )
 
 // List gets all the Budgets from the db then encodes them in a response client
@@ -41,18 +30,18 @@ func List(ctx context.Context, db *mongo.Collection) ([]Budget, error) {
 
 }
 
-// Get finds the budget identified by a given _id.
+// Retrieve finds the budget identified by a given _id.
 func Retrieve(ctx context.Context, db *mongo.Collection, _id string) (*Budget, error) {
 
 	var budget Budget
 
 	id, err := primitive.ObjectIDFromHex(_id)
 	if err != nil {
-		return nil, ErrBudgetInvalidID
+		return nil, apierror.ErrInvalidID
 	}
 
 	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&budget); err != nil {
-		return nil, ErrBudgetNotFound
+		return nil, apierror.ErrNotFound
 	}
 
 	return &budget, nil
@@ -81,7 +70,7 @@ func Create(ctx context.Context, db *mongo.Collection, user auth.Claims, newBudg
 	var isAdmin = user.HasRole(auth.RoleAdmin)
 
 	if !isAdmin {
-		return nil, ErrForbidden
+		return nil, apierror.ErrForbidden
 	}
 
 	budget := Budget{
@@ -107,22 +96,24 @@ func UpdateOne(ctx context.Context, db *mongo.Collection, user auth.Claims, budg
 
 	budgetObjectID, err := primitive.ObjectIDFromHex(budgetID)
 	if err != nil {
-		return ErrBudgetInvalidID
+		return apierror.ErrInvalidID
 	}
 
 	foundBudget, err := Retrieve(ctx, db, budgetID)
 	if err != nil {
-		return ErrBudgetNotFound
+		return apierror.ErrNotFound
 	}
 
 	fmt.Printf("budget to update found %+v : \n", foundBudget)
 
-	var isAdmin = user.HasRole(auth.RoleAdmin)
-	var isOwner = foundBudget.ManagerID == user.Subject
-	var canView = isAdmin || isOwner
+	var (
+		isAdmin = user.HasRole(auth.RoleAdmin)
+		isOwner = foundBudget.ManagerID == user.Subject
+		canView = isAdmin || isOwner
+	)
 
 	if !canView {
-		return ErrForbidden
+		return apierror.ErrForbidden
 	}
 
 	budget := Budget{}
@@ -158,12 +149,12 @@ func Delete(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetI
 
 	budgetObjectID, err := primitive.ObjectIDFromHex(budgetID)
 	if err != nil {
-		return ErrBudgetInvalidID
+		return apierror.ErrInvalidID
 	}
 
 	foundBudget, err := Retrieve(ctx, db, budgetID)
 	if err != nil {
-		return ErrBudgetNotFound
+		return apierror.ErrNotFound
 	}
 
 	var isAdmin = user.HasRole(auth.RoleAdmin)
@@ -171,7 +162,7 @@ func Delete(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetI
 	var canView = isAdmin || isOwner
 
 	if !canView {
-		return ErrForbidden
+		return apierror.ErrForbidden
 	}
 
 	result, err := db.DeleteOne(ctx, bson.M{"_id": budgetObjectID})
