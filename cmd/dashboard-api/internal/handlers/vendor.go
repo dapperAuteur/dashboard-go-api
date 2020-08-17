@@ -115,7 +115,7 @@ func (v *Vendor) UpdateOneVendor(ctx context.Context, w http.ResponseWriter, r *
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
 
-// DeleteVendor removes a single vendor identified by a vendor ID inthe request URL
+// DeleteVendor removes a single vendor identified by a vendor ID in the request URL
 func (v *Vendor) DeleteVendor(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
