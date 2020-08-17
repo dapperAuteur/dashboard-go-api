@@ -9,6 +9,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -50,6 +51,23 @@ func CreateVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, n
 	}
 
 	fmt.Println("vResult : ", vResult)
+
+	return &vendor, nil
+}
+
+// RetrieveVendor finds a single vendor by _id
+func RetrieveVendor(ctx context.Context, db *mongo.Collection, _id string) (*Vendor, error) {
+
+	var vendor Vendor
+
+	id, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+		return nil, apierror.ErrInvalidID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&vendor); err != nil {
+		return nil, apierror.ErrNotFound
+	}
 
 	return &vendor, nil
 }
