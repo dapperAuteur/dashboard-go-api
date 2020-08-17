@@ -157,9 +157,11 @@ func Delete(ctx context.Context, db *mongo.Collection, user auth.Claims, budgetI
 		return apierror.ErrNotFound
 	}
 
-	var isAdmin = user.HasRole(auth.RoleAdmin)
-	var isOwner = foundBudget.ManagerID == user.Subject
-	var canView = isAdmin || isOwner
+	var (
+		isAdmin = user.HasRole(auth.RoleAdmin)
+		isOwner = foundBudget.ManagerID == user.Subject
+		canView = isAdmin || isOwner
+	)
 
 	if !canView {
 		return apierror.ErrForbidden
