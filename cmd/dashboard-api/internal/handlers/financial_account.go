@@ -115,3 +115,29 @@ func (fA *FinancialAccount) UpdateOneFinancialAccount(ctx context.Context, w htt
 	}
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
+
+// DeleteFinancialAccount removes a single financial account identified by an financial account ID in the request URL
+func (fA *FinancialAccount) DeleteFinancialAccount(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	finAccID := chi.URLParam(r, "_id")
+
+	if err := budget.DeleteFinancialAccount(ctx, fA.DB, claims, finAccID); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating financial account %q", finAccID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
+}
