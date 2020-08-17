@@ -51,5 +51,17 @@ type NewFinancialAccount struct {
 	AccountName          string  `bson:"account_name,omitempty" json:"account_name,omitempty" validate:"required"`
 	CurrentValue         float64 `bson:"current_value,omitempty" json:"current_value,omitempty" validate:"required"`
 	FinancialInstitution string  `bson:"financial_institution,omitempty" json:"financial_institution,omitempty" validate:"required"`
-	MangerID             string  `bson:"manger_id,omitempty" json:"manger_id,omitempty" validate:"required"`
+	MangerID             string  `bson:"manger_id,omitempty" json:"manger_id,omitempty"`
+}
+
+// UpdateFinancialAccount defines what information may be provided to modify an existing Financial Account.
+// All fields are optional so clients can send just the fields they want changed.
+// It uses pointer fields so we can differentiate between a field that was NOT provided and a field that was provided as explicitly blank.
+// Normally we do NOT want to use pointers to basic types but we make exceptions around marshalling/unmarshallying.
+type UpdateFinancialAccount struct {
+	ID                   *primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	ManagerID            *string             `bson:"manager_id,omitempty" json:"manager_id,omitempty"`
+	AccountName          *string             `bson:"account_name,omitempty" json:"account_name,omitempty"`
+	CurrentValue         *float64            `bson:"current_value,omitempty" json:"current_value,omitempty"`
+	FinancialInstitution *string             `bson:"financial_institution,omitempty" json:"financial_institution,omitempty"`
 }
