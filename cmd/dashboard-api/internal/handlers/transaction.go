@@ -10,6 +10,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/budget"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
+	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
@@ -62,4 +63,24 @@ func (t Transaction) CreateTransaction(ctx context.Context, w http.ResponseWrite
 	}
 
 	return web.Respond(ctx, w, tranxCreated, http.StatusCreated)
+}
+
+// RetrieveTransaction will get the tranx from the db identified by an _id in the request URL, then encodes it in a response client.
+func (t Transaction) RetrieveTransaction(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	tranxFound, err := budget.RetrieveTransaction(ctx, t.DB, _id)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for transaction %q", _id)
+		}
+	}
+
+	return web.Respond(ctx, w, tranxFound, http.StatusOK)
 }
