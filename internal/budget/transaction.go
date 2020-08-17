@@ -9,6 +9,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -55,4 +56,21 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 	fmt.Println("tranxResult : ", tranxResult)
 
 	return &tranx, nil
+}
+
+// RetrieveTransaction finds a single Transaction by _id
+func RetrieveTransaction(ctx context.Context, db *mongo.Collection, _id string) (*Transaction, error) {
+
+	var transaction Transaction
+
+	id, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+		return nil, apierror.ErrInvalidID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&transaction); err != nil {
+		return nil, apierror.ErrNotFound
+	}
+
+	return &transaction, nil
 }
