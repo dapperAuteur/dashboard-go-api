@@ -14,7 +14,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Episode structture to connect to the mongo db Episode collection
+// Episode  defines all of the handlers related to Episode.
+// It holds the application state needed by the handler methods.
 type Episode struct {
 	DB  *mongo.Collection
 	Log *log.Logger

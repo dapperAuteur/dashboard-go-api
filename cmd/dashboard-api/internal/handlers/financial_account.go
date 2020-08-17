@@ -16,7 +16,8 @@ import (
 	"go.opencensus.io/trace"
 )
 
-// FinancialAccount structure to connect to the mongo db collection
+// FinancialAccount defines all of the handlers related to FinancialAccount.
+// It holds the application state needed by the handler methods.
 type FinancialAccount struct {
 	DB  *mongo.Collection
 	Log *log.Logger
