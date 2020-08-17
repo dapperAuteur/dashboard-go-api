@@ -82,3 +82,35 @@ func (v Vendor) RetrieveVendor(ctx context.Context, w http.ResponseWriter, r *ht
 	}
 	return web.Respond(ctx, w, vFound, http.StatusOK)
 }
+
+// UpdateOneVendor decodes the body of a request to update an existing financial account.
+// The _id of the financial account is part of the request URL.
+func (v *Vendor) UpdateOneVendor(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	vendorID := chi.URLParam(r, "_id")
+
+	var vendorUpdate budget.UpdateVendor
+	if err := web.Decode(r, &vendorUpdate); err != nil {
+		return errors.Wrap(err, "decoding vendor update")
+	}
+
+	if err := budget.UpdateOneVendor(ctx, v.DB, claims, vendorID, vendorUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating vendor %q", vendorID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
