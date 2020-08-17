@@ -131,3 +131,38 @@ func UpdateOneFinancialAccount(ctx context.Context, db *mongo.Collection, user a
 
 	return nil
 }
+
+// DeleteFinancialAccount removes the financial account identified by a given _id
+func DeleteFinancialAccount(ctx context.Context, db *mongo.Collection, user auth.Claims, faID string) error {
+
+	faObjectID, err := primitive.ObjectIDFromHex(faID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundFA, err := RetrieveFinancialAccount(ctx, db, faID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("financial account to update found %+v : \n", foundFA)
+
+	var (
+		isAdmin = user.HasRole(auth.RoleAdmin)
+		isOwner = foundFA.MangerID == user.Subject
+		canView = isAdmin || isOwner
+	)
+
+	if !canView {
+		return apierror.ErrForbidden
+	}
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": faObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting financial account %s", faID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
