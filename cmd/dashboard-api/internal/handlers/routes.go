@@ -24,15 +24,17 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
 
-	// Budget Related
+	// Finance Related
 	budgetsCollection := db.Collection("budgets")
 	financialAccountsCollection := db.Collection("financialaccounts")
 	vendorsCollection := db.Collection("vendors")
+	transactionsCollection := db.Collection("transactions")
 
 	// Podcast Related
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
 
+	// Finance Related
 	budget := Budget{
 		DB:  budgetsCollection,
 		Log: logger,
@@ -43,10 +45,17 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 		Log: logger,
 	}
 
+	transaction := Transaction{
+		DB:  transactionsCollection,
+		Log: logger,
+	}
+
 	vendor := Vendor{
 		DB:  vendorsCollection,
 		Log: logger,
 	}
+
+	// Content Creation
 
 	podcast := Podcast{
 		DB:  podcastsCollection,
@@ -72,6 +81,9 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/financial-accounts/{_id}", financialAccount.RetrieveFinancialAccount)
 	app.Handle(http.MethodPut, "/v1/financial-accounts/{_id}", financialAccount.UpdateOneFinancialAccount, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/financial-accounts/{_id}", financialAccount.DeleteFinancialAccount, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Transaction Routes
+	app.Handle(http.MethodGet, "/v1/transactions", transaction.ListTransactions)
 
 	// Vendor Routes
 	app.Handle(http.MethodGet, "/v1/vendors", vendor.ListVendors)
