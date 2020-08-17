@@ -117,7 +117,7 @@ func (fA *FinancialAccount) UpdateOneFinancialAccount(ctx context.Context, w htt
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
 
-// DeleteFinancialAccount removes a single financial account identified by an financial account ID in the request URL
+// DeleteFinancialAccount removes a single financial account identified by a financial account ID in the request URL
 func (fA *FinancialAccount) DeleteFinancialAccount(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
@@ -136,7 +136,7 @@ func (fA *FinancialAccount) DeleteFinancialAccount(ctx context.Context, w http.R
 		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
-			return errors.Wrapf(err, "updating financial account %q", finAccID)
+			return errors.Wrapf(err, "deleting financial account %q", finAccID)
 		}
 	}
 
