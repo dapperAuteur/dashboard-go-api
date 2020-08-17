@@ -37,7 +37,7 @@ func (v Vendor) ListVendors(ctx context.Context, w http.ResponseWriter, r *http.
 	return web.Respond(ctx, w, list, http.StatusOK)
 }
 
-// CreateVendor decodes the body of a reuqest to create a new vendor.
+// CreateVendor decodes the body of a request to create a new vendor.
 // The full vendor with generated fields is sent back in the response.
 func (v Vendor) CreateVendor(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
