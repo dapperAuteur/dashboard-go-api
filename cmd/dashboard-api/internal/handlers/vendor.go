@@ -10,6 +10,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/budget"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
+	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
@@ -61,4 +62,23 @@ func (v Vendor) CreateVendor(ctx context.Context, w http.ResponseWriter, r *http
 		}
 	}
 	return web.Respond(ctx, w, vendorCreated, http.StatusCreated)
+}
+
+// RetrieveVendor will get the vendor from the db identified by an _id in the request URL, then encodes it in a response client.
+func (v Vendor) RetrieveVendor(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	vFound, err := budget.RetrieveVendor(ctx, v.DB, _id)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for vendor %q", _id)
+		}
+	}
+	return web.Respond(ctx, w, vFound, http.StatusOK)
 }
