@@ -97,13 +97,13 @@ type Transaction struct {
 	BudgetID           []primitive.ObjectID `bson:"budget_id,omitempty" json:"budget_id,omitempty"`
 	CurrencyID         []primitive.ObjectID `bson:"currency_id,omitempty" json:"currency_id,omitempty"`
 	FinancialAccountID []primitive.ObjectID `bson:"fin_acc_id,omitempty" json:"fin_acc_id,omitempty"`
-	Occurrence         time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
-	TransactionEvent   string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
-	TransactionValue   float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
-	VendorID           []primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
-	ParticipantID      []primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
-	CreatedAt          time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
-	UpdatedAt          time.Time            `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
+	// Occurrence         time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
+	TransactionEvent string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
+	TransactionValue float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
+	VendorID         []primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
+	ParticipantID    []primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
+	CreatedAt        time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt        time.Time            `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
 }
 
 // NewTransaction type is what's required from the client to create a new transaction.
@@ -111,11 +111,11 @@ type NewTransaction struct {
 	BudgetID           []primitive.ObjectID `bson:"budget_id,omitempty" json:"budget_id,omitempty"`
 	CurrencyID         []primitive.ObjectID `bson:"currency_id,omitempty" json:"currency_id,omitempty"`
 	FinancialAccountID []primitive.ObjectID `bson:"fin_acc_id,omitempty" json:"fin_acc_id,omitempty"`
-	Occurrence         time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
-	TransactionEvent   string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
-	TransactionValue   float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
-	VendorID           []primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
-	ParticipantID      []primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
+	// Occurrence         time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
+	TransactionEvent string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
+	TransactionValue float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
+	VendorID         []primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
+	ParticipantID    []primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
 }
 
 // UpdateTransaction defines what information may be provided to modify an existing Transaction.
@@ -127,9 +127,9 @@ type UpdateTransaction struct {
 	BudgetID           *[]primitive.ObjectID `bson:"budget_id,omitempty" json:"budget_id,omitempty"`
 	CurrencyID         *[]primitive.ObjectID `bson:"currency_id,omitempty" json:"currency_id,omitempty"`
 	FinancialAccountID *[]primitive.ObjectID `bson:"fin_acc_id,omitempty" json:"fin_acc_id,omitempty"`
-	Occurrence         *time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
-	TransactionEvent   *string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
-	TransactionValue   *float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
-	VendorID           *[]primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
-	ParticipantID      *[]primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
+	// Occurrence         *time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
+	TransactionEvent *string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
+	TransactionValue *float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
+	VendorID         *[]primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
+	ParticipantID    *[]primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
 }
