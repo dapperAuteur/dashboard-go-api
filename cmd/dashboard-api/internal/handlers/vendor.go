@@ -114,3 +114,29 @@ func (v *Vendor) UpdateOneVendor(ctx context.Context, w http.ResponseWriter, r *
 
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
+
+// DeleteVendor removes a single vendor identified by a vendor ID inthe request URL
+func (v *Vendor) DeleteVendor(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	vendorID := chi.URLParam(r, "_id")
+
+	if err := budget.DeleteVendor(ctx, v.DB, claims, vendorID); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "deleting vendor %q", vendorID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
+}
