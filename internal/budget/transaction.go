@@ -38,9 +38,12 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 
 	tranx := Transaction{}
 
-	// pass value from newTranx.
-	finAcctStrings := newTranx.FinancialAccountID
-	finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(finAcctStrings)
+	// convert []newTranx.FinancialAccountID (ObjectID) to []string
+	// finAcctStrings := newTranx.FinancialAccountID
+	finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.FinancialAccountID)
+
+	// participantStrings := newTranx.ParticipantID
+	participantObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.ParticipantID)
 
 	tranx = Transaction{
 		// BudgetID: newTranx.BudgetID,
@@ -50,9 +53,9 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		TransactionEvent: newTranx.TransactionEvent,
 		TransactionValue: newTranx.TransactionValue,
 		// VendorID:         newTranx.VendorID,
-		// ParticipantID:    newTranx.ParticipantID,
-		CreatedAt: now.UTC(),
-		UpdatedAt: now.UTC(),
+		ParticipantID: participantObjectIDs,
+		CreatedAt:     now.UTC(),
+		UpdatedAt:     now.UTC(),
 	}
 
 	tranxResult, err := db.InsertOne(ctx, tranx)
