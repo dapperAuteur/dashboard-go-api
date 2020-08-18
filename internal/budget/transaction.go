@@ -39,10 +39,8 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 	tranx := Transaction{}
 
 	// convert []newTranx.FinancialAccountID (ObjectID) to []string
-	// finAcctStrings := newTranx.FinancialAccountID
 	finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.FinancialAccountID)
 
-	// participantStrings := newTranx.ParticipantID
 	participantObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.ParticipantID)
 
 	tranx = Transaction{
@@ -82,6 +80,9 @@ func RetrieveTransaction(ctx context.Context, db *mongo.Collection, _id string) 
 		return nil, apierror.ErrNotFound
 	}
 
+	// fmt.Println("&transaction.FinancialAccountID", &transaction.FinancialAccountID)
+	// fmt.Printf("***************\n&transaction.FinancialAccountID Type : %T\n", &transaction.FinancialAccountID)
+
 	return &transaction, nil
 }
 
@@ -95,17 +96,17 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 		return apierror.ErrForbidden
 	}
 
-	tObjectID, err := primitive.ObjectIDFromHex(tranxID)
-	if err != nil {
-		return apierror.ErrInvalidID
-	}
-
 	foundTranx, err := RetrieveTransaction(ctx, db, tranxID)
 	if err != nil {
 		return apierror.ErrNotFound
 	}
 
 	fmt.Printf("transaction to update found %+v : \n", foundTranx)
+
+	tObjectID, err := primitive.ObjectIDFromHex(tranxID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
 
 	transaction := Transaction{}
 
@@ -118,7 +119,16 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	}
 
 	if updateTranx.FinancialAccountID != nil {
-		transaction.FinancialAccountID = *updateTranx.FinancialAccountID
+		// take *updateTranx.FinancialAccountID.
+		// convert to []primitive.ObjectID and return
+		finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.FinancialAccountID)
+		objectIDs := append(finAcctObjectIDs, foundTranx.FinancialAccountID...)
+		uniqueFinAccObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		if err != nil {
+			return err
+		}
+
+		transaction.FinancialAccountID = uniqueFinAccObjIDs
 	}
 
 	// if updateTranx.Occurrence != nil {
@@ -138,7 +148,13 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	}
 
 	if updateTranx.ParticipantID != nil {
-		transaction.ParticipantID = *updateTranx.ParticipantID
+		participantObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.ParticipantID)
+		objectIDs := append(participantObjectIDs, foundTranx.ParticipantID...)
+		uniquePartObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		transaction.ParticipantID = uniquePartObjIDs
 	}
 
 	transaction.ID = tObjectID
