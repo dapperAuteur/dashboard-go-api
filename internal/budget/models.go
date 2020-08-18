@@ -124,12 +124,12 @@ type NewTransaction struct {
 // It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided as explicitly blank.
 // Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateTransaction struct {
-	BudgetID           *primitive.ObjectID   `bson:"budget_id,omitempty" json:"budget_id,omitempty"`
-	CurrencyID         *primitive.ObjectID   `bson:"currency_id,omitempty" json:"currency_id,omitempty"`
-	FinancialAccountID *[]primitive.ObjectID `bson:"fin_acc_id,omitempty" json:"fin_acc_id,omitempty"`
+	BudgetID           *primitive.ObjectID `bson:"budget_id,omitempty" json:"budget_id,omitempty"`
+	CurrencyID         *primitive.ObjectID `bson:"currency_id,omitempty" json:"currency_id,omitempty"`
+	FinancialAccountID *[]string           `bson:"fin_acc_id,omitempty" json:"fin_acc_id,omitempty"`
 	// Occurrence         *time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
-	TransactionEvent *string               `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
-	TransactionValue *float64              `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
-	VendorID         *primitive.ObjectID   `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
-	ParticipantID    *[]primitive.ObjectID `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
+	TransactionEvent *string             `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
+	TransactionValue *float64            `bson:"tranx_value,omitempty" json:"tranx_value,omitempty"`
+	VendorID         *primitive.ObjectID `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
+	ParticipantID    *[]string           `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
 }
