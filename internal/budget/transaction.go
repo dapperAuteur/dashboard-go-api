@@ -7,6 +7,7 @@ import (
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
+	"github.com/dapperAuteur/dashboard-go-api/internal/utility"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -35,17 +36,23 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		return nil, apierror.ErrForbidden
 	}
 
-	tranx := Transaction{
-		BudgetID:           newTranx.BudgetID,
-		CurrencyID:         newTranx.CurrencyID,
-		FinancialAccountID: newTranx.FinancialAccountID,
+	tranx := Transaction{}
+
+	// pass value from newTranx.
+	finAcctStrings := newTranx.FinancialAccountID
+	finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(finAcctStrings)
+
+	tranx = Transaction{
+		// BudgetID: newTranx.BudgetID,
+		// CurrencyID:         newTranx.CurrencyID,
+		FinancialAccountID: finAcctObjectIDs,
 		// Occurrence:         now.UTC(),
 		TransactionEvent: newTranx.TransactionEvent,
 		TransactionValue: newTranx.TransactionValue,
-		VendorID:         newTranx.VendorID,
-		ParticipantID:    newTranx.ParticipantID,
-		CreatedAt:        now.UTC(),
-		UpdatedAt:        now.UTC(),
+		// VendorID:         newTranx.VendorID,
+		// ParticipantID:    newTranx.ParticipantID,
+		CreatedAt: now.UTC(),
+		UpdatedAt: now.UTC(),
 	}
 
 	tranxResult, err := db.InsertOne(ctx, tranx)
