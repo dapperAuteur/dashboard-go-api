@@ -46,16 +46,16 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 	participantObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.ParticipantID)
 
 	tranx = Transaction{
-		// BudgetID: newTranx.BudgetID,
-		// CurrencyID:         newTranx.CurrencyID,
+		BudgetID:           newTranx.BudgetID,
+		CurrencyID:         newTranx.CurrencyID,
 		FinancialAccountID: finAcctObjectIDs,
 		// Occurrence:         now.UTC(),
 		TransactionEvent: newTranx.TransactionEvent,
 		TransactionValue: newTranx.TransactionValue,
-		// VendorID:         newTranx.VendorID,
-		ParticipantID: participantObjectIDs,
-		CreatedAt:     now.UTC(),
-		UpdatedAt:     now.UTC(),
+		VendorID:         newTranx.VendorID,
+		ParticipantID:    participantObjectIDs,
+		CreatedAt:        now.UTC(),
+		UpdatedAt:        now.UTC(),
 	}
 
 	tranxResult, err := db.InsertOne(ctx, tranx)
