@@ -84,3 +84,35 @@ func (n Note) RetrieveNote(ctx context.Context, w http.ResponseWriter, r *http.R
 
 	return web.Respond(ctx, w, nFound, http.StatusOK)
 }
+
+// UpdateOneNote decodes the body of a request to update an existing note.
+// The _id of the note is part of the request URL.
+func (n *Note) UpdateOneNote(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	noteID := chi.URLParam(r, "_id")
+
+	var noteUpdate blog.UpdateNote
+	if err := web.Decode(r, &noteUpdate); err != nil {
+		return errors.Wrap(err, "decoding note update")
+	}
+
+	if err := blog.UpdateOneNote(ctx, n.DB, claims, noteID, noteUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating note %q", noteID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
