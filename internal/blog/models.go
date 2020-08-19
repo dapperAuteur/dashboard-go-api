@@ -27,7 +27,7 @@ type NewNote struct {
 // It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided as explicitly blank.
 // Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateNote struct {
-	ID                  *primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
-	PropertyAssociation *[]string           `bson:"prop_assoc,omitempty" json:"prop_assoc,omitempty"`
-	NoteText            *string             `bson:"note_text,omitempty" json:"note_text,omitempty"`
+	// ID                  *primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	PropertyAssociation *[]string `bson:"prop_assoc,omitempty" json:"prop_assoc,omitempty"`
+	NoteText            *string   `bson:"note_text,omitempty" json:"note_text,omitempty"`
 }
