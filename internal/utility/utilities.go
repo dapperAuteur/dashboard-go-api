@@ -43,3 +43,19 @@ func RemoveDuplicateObjectIDValues(objIDSlice []primitive.ObjectID) []primitive.
 	}
 	return list
 }
+
+// RemoveDuplicateStringValues will remove duplicate items from a slice.
+// Then return the slice with all unique values.
+func RemoveDuplicateStringValues(strSlice []string) []string {
+
+	keys := make(map[string]bool)
+	var list []string
+
+	for _, entry := range strSlice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
+}

@@ -24,6 +24,9 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
 
+	// Blog Related
+	notesCollection := db.Collection("notes")
+
 	// Finance Related
 	budgetsCollection := db.Collection("budgets")
 	financialAccountsCollection := db.Collection("financialaccounts")
@@ -33,6 +36,12 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	// Podcast Related
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
+
+	// Note Related
+	note := Note{
+		DB:  notesCollection,
+		Log: logger,
+	}
 
 	// Finance Related
 	budget := Budget{
@@ -81,6 +90,13 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/financial-accounts/{_id}", financialAccount.RetrieveFinancialAccount)
 	app.Handle(http.MethodPut, "/v1/financial-accounts/{_id}", financialAccount.UpdateOneFinancialAccount, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/financial-accounts/{_id}", financialAccount.DeleteFinancialAccount, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Note Routes
+	app.Handle(http.MethodGet, "/v1/notes", note.ListNotes)
+	app.Handle(http.MethodPost, "/v1/notes", note.CreateNote, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodGet, "/v1/notes/{_id}", note.RetrieveNote)
+	app.Handle(http.MethodPut, "/v1/notes/{_id}", note.UpdateOneNote, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/notes/{_id}", note.DeleteNote, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	// Transaction Routes
 	app.Handle(http.MethodGet, "/v1/transactions", transaction.ListTransactions)

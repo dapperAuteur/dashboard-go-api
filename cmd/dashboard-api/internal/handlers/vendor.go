@@ -83,8 +83,8 @@ func (v Vendor) RetrieveVendor(ctx context.Context, w http.ResponseWriter, r *ht
 	return web.Respond(ctx, w, vFound, http.StatusOK)
 }
 
-// UpdateOneVendor decodes the body of a request to update an existing financial account.
-// The _id of the financial account is part of the request URL.
+// UpdateOneVendor decodes the body of a request to update an existing vendor.
+// The _id of the vendor is part of the request URL.
 func (v *Vendor) UpdateOneVendor(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
