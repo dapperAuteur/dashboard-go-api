@@ -10,6 +10,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/utility"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -58,6 +59,23 @@ func CreateNote(ctx context.Context, db *mongo.Collection, user auth.Claims, new
 	}
 
 	fmt.Println("nResult : ", nResult)
+
+	return &note, nil
+}
+
+// RetrieveNote finds a single note by _id
+func RetrieveNote(ctx context.Context, db *mongo.Collection, _id string) (*Note, error) {
+
+	var note Note
+
+	id, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+		return nil, apierror.ErrInvalidID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&note); err != nil {
+		return nil, apierror.ErrNotFound
+	}
 
 	return &note, nil
 }
