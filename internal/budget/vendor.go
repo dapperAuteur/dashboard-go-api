@@ -148,6 +148,12 @@ func UpdateOneVendor(ctx context.Context, db *mongo.Collection, user auth.Claims
 // DeleteVendor removes the vendor identified by a given _id
 func DeleteVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, vendorID string) error {
 
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
 	vObjectID, err := primitive.ObjectIDFromHex(vendorID)
 	if err != nil {
 		return apierror.ErrInvalidID
@@ -159,12 +165,6 @@ func DeleteVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, v
 	}
 
 	fmt.Printf("vendor to delelete found %+v : \n", foundVendor)
-
-	var isAdmin = user.HasRole(auth.RoleAdmin)
-
-	if !isAdmin {
-		return apierror.ErrForbidden
-	}
 
 	result, err := db.DeleteOne(ctx, bson.M{"_id": vObjectID})
 	if err != nil {
