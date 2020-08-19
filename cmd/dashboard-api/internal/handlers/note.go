@@ -10,6 +10,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/blog"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
+	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
@@ -62,4 +63,24 @@ func (n Note) CreateNote(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	return web.Respond(ctx, w, noteCreated, http.StatusCreated)
+}
+
+// RetrieveNote will get the vendor from the db identified by an _id in the request URL, then encodes it in a response client.
+func (n Note) RetrieveNote(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	nFound, err := blog.RetrieveNote(ctx, n.DB, _id)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for vendor %q", _id)
+		}
+	}
+
+	return web.Respond(ctx, w, nFound, http.StatusOK)
 }
