@@ -96,6 +96,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodPost, "/v1/notes", note.CreateNote, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodGet, "/v1/notes/{_id}", note.RetrieveNote)
 	app.Handle(http.MethodPut, "/v1/notes/{_id}", note.UpdateOneNote, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/notes/{_id}", note.DeleteNote, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	// Transaction Routes
 	app.Handle(http.MethodGet, "/v1/transactions", transaction.ListTransactions)
