@@ -69,12 +69,13 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		CurrencyID:         newTranx.CurrencyID,
 		FinancialAccountID: finAcctObjectIDs,
 		// Occurrence:         now.UTC(),
-		TransactionEvent: newTranx.TransactionEvent,
-		TransactionValue: newTranx.TransactionValue,
-		VendorID:         newTranx.VendorID,
-		ParticipantID:    participantObjectIDs,
-		CreatedAt:        now.UTC(),
-		UpdatedAt:        now.UTC(),
+		TransactionEvent:  newTranx.TransactionEvent,
+		TransactionCredit: newTranx.TransactionCredit,
+		TransactionDebit:  newTranx.TransactionDebit,
+		VendorID:          newTranx.VendorID,
+		ParticipantID:     participantObjectIDs,
+		CreatedAt:         now.UTC(),
+		UpdatedAt:         now.UTC(),
 	}
 
 	tranxResult, err := db.InsertOne(ctx, tranx)
@@ -160,8 +161,12 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 		transaction.TransactionEvent = *updateTranx.TransactionEvent
 	}
 
-	if updateTranx.TransactionValue != nil {
-		transaction.TransactionValue = *updateTranx.TransactionValue
+	if updateTranx.TransactionCredit != nil {
+		transaction.TransactionCredit = *updateTranx.TransactionCredit
+	}
+
+	if updateTranx.TransactionDebit != nil {
+		transaction.TransactionDebit = *updateTranx.TransactionDebit
 	}
 
 	if updateTranx.VendorID != nil {
