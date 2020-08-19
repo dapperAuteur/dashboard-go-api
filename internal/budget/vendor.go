@@ -7,6 +7,7 @@ import (
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
+	"github.com/dapperAuteur/dashboard-go-api/internal/utility"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -39,10 +40,24 @@ func CreateVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, n
 		return nil, apierror.ErrForbidden
 	}
 
+	var tranxObjectIDs []primitive.ObjectID
+
+	// check if prop is provided
+	if newVendor.TransactionIDs != nil {
+		// convert []newVendor.TransactionIDs (ObjectID) to []string
+		objIDs, err := utility.SliceStringsToObjectIDs(*newVendor.TransactionIDs)
+		if err != nil {
+			return nil, err
+		}
+		objIDs = append(objIDs, objIDs...)
+		tranxObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+	}
+
 	vendor := Vendor{
-		VendorName: newVendor.VendorName,
-		CreatedAt:  now.UTC(),
-		UpdatedAt:  now.UTC(),
+		VendorName:     newVendor.VendorName,
+		TransactionIDs: tranxObjectIDs,
+		CreatedAt:      now.UTC(),
+		UpdatedAt:      now.UTC(),
 	}
 
 	vResult, err := db.InsertOne(ctx, vendor)
@@ -76,9 +91,10 @@ func RetrieveVendor(ctx context.Context, db *mongo.Collection, _id string) (*Ven
 // It will error if the specified _id is invalid or does NOT reference an existing vendor.
 func UpdateOneVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, vID string, updateVendor UpdateVendor, now time.Time) error {
 
-	vObjectID, err := primitive.ObjectIDFromHex(vID)
-	if err != nil {
-		return apierror.ErrInvalidID
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
 	}
 
 	foundVendor, err := RetrieveVendor(ctx, db, vID)
@@ -88,10 +104,9 @@ func UpdateOneVendor(ctx context.Context, db *mongo.Collection, user auth.Claims
 
 	fmt.Printf("vendor to update found %+v : \n", foundVendor)
 
-	var isAdmin = user.HasRole(auth.RoleAdmin)
-
-	if !isAdmin {
-		return apierror.ErrForbidden
+	vObjectID, err := primitive.ObjectIDFromHex(vID)
+	if err != nil {
+		return apierror.ErrInvalidID
 	}
 
 	vendor := Vendor{}
@@ -100,9 +115,16 @@ func UpdateOneVendor(ctx context.Context, db *mongo.Collection, user auth.Claims
 		vendor.VendorName = *updateVendor.VendorName
 	}
 
-	// How do I get the existing vendor.TransactionIDs and add the new ones from updateVendor.TransactionIDs
 	if updateVendor.TransactionIDs != nil {
-		vendor.TransactionIDs = *updateVendor.TransactionIDs
+		// take *updateVendor.TransactionIDs
+		// convert to []primitive.ObjectID and return
+		vendorObjIDs, err := utility.SliceStringsToObjectIDs(*updateVendor.TransactionIDs)
+		if err != nil {
+			return err
+		}
+		objectIDs := append(vendorObjIDs, foundVendor.TransactionIDs...)
+		uniqueVendorTranxObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		vendor.TransactionIDs = uniqueVendorTranxObjIDs
 	}
 
 	vendor.ID = vObjectID

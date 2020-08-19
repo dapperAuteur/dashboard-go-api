@@ -7,6 +7,7 @@ import (
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
+	"github.com/dapperAuteur/dashboard-go-api/internal/utility"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -35,15 +36,43 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		return nil, apierror.ErrForbidden
 	}
 
-	tranx := Transaction{
+	tranx := Transaction{}
+
+	var (
+		finAcctObjectIDs, participantObjectIDs []primitive.ObjectID
+	)
+
+	// check if prop is provided
+	if newTranx.FinancialAccountID != nil {
+		// convert []newTranx.FinancialAccountID (ObjectID) to []string
+		objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.FinancialAccountID)
+		if err != nil {
+			return nil, err
+		}
+		objIDs = append(objIDs, objIDs...)
+		finAcctObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+	}
+
+	// check if prop is provided
+	if newTranx.ParticipantID != nil {
+		// convert []newTranx.ParticipantID (ObjectID) to []string
+		objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.ParticipantID)
+		if err != nil {
+			return nil, err
+		}
+		objIDs = append(objIDs, objIDs...)
+		participantObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+	}
+
+	tranx = Transaction{
 		BudgetID:           newTranx.BudgetID,
 		CurrencyID:         newTranx.CurrencyID,
-		FinancialAccountID: newTranx.FinancialAccountID,
+		FinancialAccountID: finAcctObjectIDs,
 		// Occurrence:         now.UTC(),
 		TransactionEvent: newTranx.TransactionEvent,
 		TransactionValue: newTranx.TransactionValue,
 		VendorID:         newTranx.VendorID,
-		ParticipantID:    newTranx.ParticipantID,
+		ParticipantID:    participantObjectIDs,
 		CreatedAt:        now.UTC(),
 		UpdatedAt:        now.UTC(),
 	}
@@ -72,6 +101,9 @@ func RetrieveTransaction(ctx context.Context, db *mongo.Collection, _id string) 
 		return nil, apierror.ErrNotFound
 	}
 
+	// fmt.Println("&transaction.FinancialAccountID", &transaction.FinancialAccountID)
+	// fmt.Printf("***************\n&transaction.FinancialAccountID Type : %T\n", &transaction.FinancialAccountID)
+
 	return &transaction, nil
 }
 
@@ -85,17 +117,17 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 		return apierror.ErrForbidden
 	}
 
-	tObjectID, err := primitive.ObjectIDFromHex(tranxID)
-	if err != nil {
-		return apierror.ErrInvalidID
-	}
-
 	foundTranx, err := RetrieveTransaction(ctx, db, tranxID)
 	if err != nil {
 		return apierror.ErrNotFound
 	}
 
 	fmt.Printf("transaction to update found %+v : \n", foundTranx)
+
+	tObjectID, err := primitive.ObjectIDFromHex(tranxID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
 
 	transaction := Transaction{}
 
@@ -108,7 +140,16 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	}
 
 	if updateTranx.FinancialAccountID != nil {
-		transaction.FinancialAccountID = *updateTranx.FinancialAccountID
+		// take *updateTranx.FinancialAccountID.
+		// convert to []primitive.ObjectID and return
+		finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.FinancialAccountID)
+		objectIDs := append(finAcctObjectIDs, foundTranx.FinancialAccountID...)
+		uniqueFinAccObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		if err != nil {
+			return err
+		}
+
+		transaction.FinancialAccountID = uniqueFinAccObjIDs
 	}
 
 	// if updateTranx.Occurrence != nil {
@@ -128,7 +169,13 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	}
 
 	if updateTranx.ParticipantID != nil {
-		transaction.ParticipantID = *updateTranx.ParticipantID
+		participantObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.ParticipantID)
+		objectIDs := append(participantObjectIDs, foundTranx.ParticipantID...)
+		uniquePartObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		transaction.ParticipantID = uniquePartObjIDs
 	}
 
 	transaction.ID = tObjectID
