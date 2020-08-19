@@ -132,3 +132,34 @@ func UpdateOneNote(ctx context.Context, db *mongo.Collection, user auth.Claims, 
 
 	return nil
 }
+
+// DeleteNote removes the note identified by a given _id
+func DeleteNote(ctx context.Context, db *mongo.Collection, user auth.Claims, noteID string) error {
+
+	var isAdmin = user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	nObjectID, err := primitive.ObjectIDFromHex(noteID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundNote, err := RetrieveNote(ctx, db, noteID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("note to delelete found %+v : \n", foundNote)
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": nObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting note %s", noteID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
