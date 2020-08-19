@@ -116,3 +116,29 @@ func (n *Note) UpdateOneNote(ctx context.Context, w http.ResponseWriter, r *http
 
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
+
+// DeleteNote removes a single note identified by a note ID in the request URL
+func (n *Note) DeleteNote(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	noteID := chi.URLParam(r, "_id")
+
+	if err := blog.DeleteNote(ctx, n.DB, claims, noteID); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "deleting note %q", noteID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
+}
