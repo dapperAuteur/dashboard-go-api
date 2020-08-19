@@ -49,7 +49,8 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		if err != nil {
 			return nil, err
 		}
-		finAcctObjectIDs = objIDs
+		objIDs = append(objIDs, objIDs...)
+		finAcctObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
 	}
 
 	// check if prop is provided
@@ -59,7 +60,8 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		if err != nil {
 			return nil, err
 		}
-		participantObjectIDs = objIDs
+		objIDs = append(objIDs, objIDs...)
+		participantObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
 	}
 
 	tranx = Transaction{

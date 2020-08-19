@@ -49,7 +49,8 @@ func CreateVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, n
 		if err != nil {
 			return nil, err
 		}
-		tranxObjectIDs = objIDs
+		objIDs = append(objIDs, objIDs...)
+		tranxObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
 	}
 
 	vendor := Vendor{
