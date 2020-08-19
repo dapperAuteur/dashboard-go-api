@@ -79,3 +79,56 @@ func RetrieveNote(ctx context.Context, db *mongo.Collection, _id string) (*Note,
 
 	return &note, nil
 }
+
+// UpdateOneNote modifies data about a note.
+// It will error if the specified _id is invalid or does NOT reference an existing note.
+func UpdateOneNote(ctx context.Context, db *mongo.Collection, user auth.Claims, nID string, updateNote UpdateNote, now time.Time) error {
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	foundNote, err := RetrieveNote(ctx, db, nID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("note to update found %+v : \n", foundNote)
+
+	nObjectID, err := primitive.ObjectIDFromHex(nID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	note := Note{}
+
+	if updateNote.PropertyAssociation != nil {
+		// take *updateNote.PropertyAssociation
+		// confirm unique values
+		strSlice := utility.RemoveDuplicateStringValues(*updateNote.PropertyAssociation)
+		note.PropertyAssociation = strSlice
+	}
+
+	if updateNote.NoteText != nil {
+		note.NoteText = *updateNote.NoteText
+	}
+
+	note.ID = nObjectID
+
+	note.UpdatedAt = now
+
+	updateN := bson.M{
+		"$set": note,
+	}
+
+	nResult, err := db.UpdateOne(ctx, bson.M{"_id": nObjectID}, updateN)
+	if err != nil {
+		return errors.Wrap(err, "updating note")
+	}
+
+	fmt.Printf("nResult updated %v : \n", nResult)
+
+	return nil
+}
