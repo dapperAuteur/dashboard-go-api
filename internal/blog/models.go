@@ -17,6 +17,7 @@ type Note struct {
 
 // NewNote type is what's required from the client to create a new Note
 type NewNote struct {
+	// is a list of the names of the properties that this note is associated with
 	PropertyAssociation []string `bson:"prop_assoc,omitempty" json:"prop_assoc,omitempty"`
 	NoteText            string   `bson:"note_text,omitempty" json:"note_text,omitempty"`
 }
