@@ -38,10 +38,29 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 
 	tranx := Transaction{}
 
-	// convert []newTranx.FinancialAccountID (ObjectID) to []string
-	finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.FinancialAccountID)
+	var (
+		finAcctObjectIDs, participantObjectIDs []primitive.ObjectID
+	)
 
-	participantObjectIDs, err := utility.SliceStringsToObjectIDs(newTranx.ParticipantID)
+	// check if prop is provided
+	if newTranx.FinancialAccountID != nil {
+		// convert []newTranx.FinancialAccountID (ObjectID) to []string
+		objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.FinancialAccountID)
+		if err != nil {
+			return nil, err
+		}
+		finAcctObjectIDs = objIDs
+	}
+
+	// check if prop is provided
+	if newTranx.ParticipantID != nil {
+		// convert []newTranx.ParticipantID (ObjectID) to []string
+		objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.ParticipantID)
+		if err != nil {
+			return nil, err
+		}
+		participantObjectIDs = objIDs
+	}
 
 	tranx = Transaction{
 		BudgetID:           newTranx.BudgetID,
