@@ -1,0 +1,11 @@
+account_name,financial_institution,manager_id,created_at,updated_at
+Business Checking AZFCU,AZFCU,,,
+cash,my_pocket,,,
+cashapp/biz,cashapp/biz,,,
+credit_card,AZFCU,,,
+credit_card_mamma,FNBO,,,
+gift_card,gift_card,,,
+PayPal ,PayPal ,,,
+PayPal Credit,PayPal ,,,
+Personal Checking AZFCU ,AZFCU,,,
+Special Savings AZFCU,AZFCU,,,

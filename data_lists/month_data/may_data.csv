@@ -1,0 +1,48 @@
+participant_id,vendor_id,vendor,tranx_event,note_text,occurrence_string,budget_id,budget,currency_id,currency,fin_acc_id,fin_acc,tranx_debit,tranx_credit,tranx_credit_old,balance
+5ab055eae67be20014ca5284,Best Buy,Best Buy,"tabletop tripod, usb-c cord","tabletop tripod, usb-c cord",5/1,tools,tools,,USD,paypal,paypal,-$31.25,$0.00,,"$2,850.52"
+5ab055eae67be20014ca5284,Frys,Frys,food,food,5/1,food,food,,USD,personal,personal,-$36.26,$18.13,$18.13,$463.74
+5ab055eae67be20014ca5284,Sweetwater,Sweetwater,mic stand,mic stand,5/1,tools,tools,,USD,paypal,paypal,-$42.05,$0.00,,"$2,808.47"
+5ab055eae67be20014ca5284,CostCo,CostCo,flowers,flowers,5/3,ent,ent,,USD,personal,personal,-$10.77,$0.00,,$389.23
+5ab055eae67be20014ca5284,Lo-Los,Lo-Los,breakfast,breakfast,5/3,food,food,,USD,personal,personal,-$26.00,$13.00,$13.00,$437.74
+5ab055eae67be20014ca5284,CostCo,CostCo,"nikon d7500 camera with clean hdmi out, $19.73 refunded by CostCo for express shipping","nikon d7500 camera with clean hdmi out, $19.73 refunded by CostCo for express shipping",5/5,tools,tools,,USD,personal,personal,"-$1,306.32",$19.73,$19.73,"$1,521.88"
+5ab055eae67be20014ca5284,Urban Intellectuals,Urban Intellectuals,"flashcards of persons of color, stem, women","flashcards of persons of color, stem, women",5/3,ent,ent,,USD,paypal,paypal,-$35.48,$0.00,,$353.75
+5ab055eae67be20014ca5284,JS Tutor,JS Tutor,patreon,patreon,5/1,ent,ent,,USD,paypal,paypal,-$1.00,$0.00,,$352.75
+5ab055eae67be20014ca5284,Malcolm Pitts,Malcolm Pitts,juice,juice,5/3,ent,ent,,USD,cash,cash,-$25.00,$0.00,,$327.75
+5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,mhl hdmi connector,mhl hdmi connector,5/6,tools,tools,,USD,biz,biz,-$21.55,$21.55,$21.55,"$1,521.88"
+5ab055eae67be20014ca5284,Frys,Frys,"guacamole, bananas","guacamole, bananas",5/6,food,food,,USD,personal,personal,-$5.44,$2.72,$2.72,$435.02
+5ab055eae67be20014ca5284,San Brisas,San Brisas,rent,rent,5/5,rent,rent,,USD,personal,personal,-$677.88,$0.00,,$22.12
+5ab055eae67be20014ca5284,Culvers,Culvers,late dinner,late dinner,5/6,food,food,,USD,cash,cash,-$5.93,$0.00,,$429.09
+5ab055eae67be20014ca5284,Subway,Subway,lunch for Christina and I,lunch for Christina and I,5/7,food,food,,USD,paypal,paypal,-$9.07,$4.54,$4.54,$424.56
+5ab055eae67be20014ca5284,Christina,Christina,April share of expenses,April share of expenses,5/7,maintenance,maintenance,,USD,personal,personal,-$14.67,$0.00,,$85.33
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/12,food,food,,USD,personal,personal,-$5.53,$2.77,$2.77,$421.79
+5ab055eae67be20014ca5284,Red Robin/Donatos,Red Robin/Donatos,dinner,dinner,5/12,food,food,,USD,credit_card,credit_card,-$23.05,$11.53,$11.53,$410.27
+5ab055eae67be20014ca5284,Sweetwater,Sweetwater,"RETURNED. mic stand, need","RETURNED. mic stand, need",5/13,tools,tools,,USD,biz via paypal,biz via paypal,-$21.51,-$10.66,-$10.66,"$1,489.71"
+5ab055eae67be20014ca5284,Intuit Turbo Tax,Intuit Turbo Tax,my state & federal taxes,my state & federal taxes,5/13,maintenance,maintenance,,USD,credit_card,credit_card,-$105.00,$0.00,,-$19.67
+5ab055eae67be20014ca5284,Frys,Frys,"pasta, pasta sauce, cheese","pasta, pasta sauce, cheese",5/13,food,food,,USD,personal,personal,-5.57,$2.79,$2.79,407.48
+5ab055eae67be20014ca5284,Frys,Frys,food,food,5/14,food,food,,USD,personal,personal,-$17.67,$8.84,$8.84,398.645
+5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,25 ft hdmi cable,25 ft hdmi cable,5/15,tools,tools,,USD,credit_card,credit_card,-$17.78,$0.00,,"$1,471.93"
+5ab055eae67be20014ca5284,HighTimes,HighTimes,100 shares of stock added to the 50 shares already purchased,100 shares of stock added to the 50 shares already purchased,5/15,selfcare,selfcare,,USD,personal,personal,"-$1,100.00",$0.00,,"-$1,000.00"
+5ab055eae67be20014ca5284,Tidal,Tidal,music,music,5/14,ent,ent,,USD,personal,personal,-$9.99,$0.00,,$317.76
+5ab055eae67be20014ca5284,Christina,Christina,cox bill,cox bill,5/15,utilities,utilities,,USD,personal,personal,-$67.50,$0.00,,$32.50
+5ab055eae67be20014ca5284,Subway,Subway,lunch for Christina and I,lunch for Christina and I,5/8,food,food,,USD,paypal,paypal,-$9.29,$4.65,$4.65,$394.00
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/19,food,food,,USD,personal,personal,-$14.66,$7.33,$7.33,$386.67
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/19,food,food,,USD,cash,cash,-$7.22,$2.13,$2.13,$381.58
+5ab055eae67be20014ca5284,Play It Again Sports,Play It Again Sports,soccer ball size 5,soccer ball size 5,5/19,ent,ent,,USD,cash,cash,-$12.96,$0.00,,$304.80
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/22,food,food,,USD,cash,cash,-$10.42,$5.21,$5.21,$376.37
+5ab055eae67be20014ca5284,Salad & Go,Salad & Go,lunch,lunch,5/23,food,food,,USD,cash,cash,-$8.37,$0.00,,$368.00
+5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,shea moisture for mamma,shea moisture for mamma,5/23,selfcare,selfcare,,USD,biz,biz,-$29.52,$0.00,,"-$1,029.52"
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/26,food,food,,USD,personal,personal,-$5.92,$1.96,$1.96,$364.04
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/26,food,food,,USD,personal,personal,-$12.18,$6.09,$6.09,$357.95
+5ab055eae67be20014ca5284,Post Office,Post Office,"stamps, mailing books to Prez and VP and California Unemployment Insurance docs","stamps, mailing books to Prez and VP and California Unemployment Insurance docs",5/26,tools,tools,,USD,personal,personal,-$20.40,$0.00,,"$1,469.31"
+5ab055eae67be20014ca5284,visible,visible,phone bill,phone bill,5/26,phone,phone,,USD,biz,biz,-$40.00,$0.00,,$0.00
+5ab055eae67be20014ca5284,Christina,Christina,srp bill,srp bill,5/26,utilities,utilities,,USD,personal,personal,-$25.65,$0.00,,$6.85
+5ab055eae67be20014ca5284,Sprouts,Sprouts,groceries,groceries,5/27,food,food,,USD,personal,personal,-$83.84,$41.92,$41.92,$316.03
+5ab055eae67be20014ca5284,CostCo,CostCo,groceries,groceries,5/18,food,food,,USD,personal,personal,-$125.66,$62.83,$62.83,$253.20
+5ab055eae67be20014ca5284,ArlanWasHere,ArlanWasHere,"teachable class ""How to Raise Capital for Your Company from Scratch""","teachable class ""How to Raise Capital for Your Company from Scratch""",5/28,tools,tools,,USD,biz,biz,-$60.00,$0.00,,"$1,409.31"
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,5/29,food,food,,USD,personal,personal,-$8.77,$4.39,$4.39,$248.81
+5ab055eae67be20014ca5284,Arizona Firearms,Arizona Firearms,"berreta apx compact 9, cleaner, 100 rounds","berreta apx compact 9, cleaner, 100 rounds",5/30,tools,tools,,USD,cash,cash,-$479.15,$0.00,,$930.16
+5ab055eae67be20014ca5284,Salad & Go,Salad & Go,drinks,drinks,5/30,food,food,,USD,personal,personal,-$2.16,$0.00,,$246.65
+5ab055eae67be20014ca5284,Teakwoods,Teakwoods,pretzels,pretzels,5/30,food,food,,USD,personal,personal,-$13.00,$0.00,,$233.65
+5ab055eae67be20014ca5284,Palmetto State Armory,Palmetto State Armory,ar-15 kit,ar-15 kit,5/30,tools,tools,,USD,personal,personal,-$808.49,$0.00,,$121.67
+5ab055eae67be20014ca5284,eFax,eFax,electronic fax service,electronic fax service,5/26,tools,tools,,USD,credit_card,credit_card,-$16.95,$0.00,,$104.72
+5ab055eae67be20014ca5284,Google Play,Google Play,movie rental,movie rental,5/22,ent,ent,,USD,paypal,paypal,-$2.99,$0.00,,$301.81

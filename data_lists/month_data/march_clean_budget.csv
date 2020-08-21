@@ -1,0 +1,94 @@
+,participant_id,vendor_id,vendor,tranx_event,note_text,occurrence_string,budget_id,budget,currency_id,currency,fin_acc_id,fin_acc,tranx_debit,tranx_credit,tranx_credit_old,balance
+0,5ab055eae67be20014ca5284,Century Theatre,Century Theatre,movies-Bad Boy For Life,movies-Bad Boy For Life,3/1,5f3e189bd95d06627dc8e931,entertainment,,USD,cash,cash,-$13.25,$0.00,,$386.75
+1,5ab055eae67be20014ca5284,Real Food Company,Real Food Company,groceries: alkalizer & detoxifier supplement,groceries: alkalizer & detoxifier supplement,3/1,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$29.28,$0.00,,$470.72
+2,5ab055eae67be20014ca5284,Cole Hardware Russian Hill,Cole Hardware Russian Hill,tire gauge 120 psi,tire gauge 120 psi,3/1,5f3e189bd95d06627dc8e937,tools,,USD,cash,cash,-$7.20,$0.00,,"$4,992.80"
+3,5ab055eae67be20014ca5284,Crab Shop Pier 39,Crab Shop Pier 39,fish & chips,fish & chips,3/1,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$13.30,$0.00,,$457.42
+4,5ab055eae67be20014ca5284,Ritual,Ritual,Onigilly,Onigilly,3/3,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$1.04,$0.00,,$456.38
+5,5ab055eae67be20014ca5284,AWS,AWS,servers,servers,3/3,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$0.31,$0.00,,"$4,999.69"
+6,5ab055eae67be20014ca5284,Ritual,Ritual,Fish & Farm,Fish & Farm,3/2,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$4.18,$0.00,,$452.20
+7,5ab055eae67be20014ca5284,OpenDoor,OpenDoor,Rent,Rent,3/2,5f3e189bd95d06627dc8e935,rent,,USD,personal,personal,"-$1,510.00",$0.00,,$0.00
+8,5ab055eae67be20014ca5284,B8TA,B8TA,"sunglasses, notebook","sunglasses, notebook",3/1,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-$69.44,$0.00,,"$4,930.25"
+9,5ab055eae67be20014ca5284,NameCheap,NameCheap,"costlip.com, idnkhtw.space","costlip.com, idnkhtw.space",3/1,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$23.22,$0.00,,"$4,907.03"
+10,5ab055eae67be20014ca5284,PayPal,PayPal,PayPal Credit: Brompton,PayPal Credit: Brompton,3/2,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$500.00,$0.00,,"$4,407.03"
+11,5ab055eae67be20014ca5284,CostCo,CostCo,"soup, toothbrushes","soup, toothbrushes",3/3,5f3e189bd95d06627dc8e932,food,,USD,biz,biz,-$24.95,$0.00,,$427.25
+12,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,backpack,backpack,3/3,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$43.06,$0.00,,"$4,363.97"
+13,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,vitamins,vitamins,3/3,5f3e189bd95d06627dc8e936,selfcare,,USD,biz,biz,-$5.06,$0.00,,$194.94
+14,5ab055eae67be20014ca5284,NameCheap,NameCheap,"youngrichandiconic.com, prokickballer.com","youngrichandiconic.com, prokickballer.com",3/1,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$26.32,$0.00,,"$4,337.65"
+15,5ab055eae67be20014ca5284,Brendas French Soul Food,Brendas French Soul Food,"Benets, $1 tip","Benets, $1 tip",3/4,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$10.32,$0.00,,$416.93
+16,5ab055eae67be20014ca5284,Spice Monkey Restaurant & Bar,Spice Monkey Restaurant & Bar,dinner at comedy show,dinner at comedy show,3/5,5f3e189bd95d06627dc8e932,food,,USD,credit_card_mamma,credit_card_mamma,-$33.00,$0.00,,$383.93
+17,5ab055eae67be20014ca5284,Ritual,Ritual,Onigilly,Onigilly,3/5,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$1.22,$0.00,,$382.71
+18,5ab055eae67be20014ca5284,BART,BART,clipper_card,clipper_card,3/5,5f3e189bd95d06627dc8e938,transportation,,USD,cash,cash,-$20.00,$0.00,,$80.00
+19,5ab055eae67be20014ca5284,Ritual,Ritual,Hilal Guys,Hilal Guys,3/6,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$4.75,$0.00,,$377.96
+20,5ab055eae67be20014ca5284,T & L Laundry Cafe,T & L Laundry Cafe,laundry,laundry,3/7,5f3e189bd95d06627dc8e933,maintenance,,USD,cash,cash,-$11.00,$0.00,,$183.94
+21,5ab055eae67be20014ca5284,Costco ,Costco ,Groceries ,Groceries ,3/7,5f3e189bd95d06627dc8e932,food ,,USD,credit_card_mamma,credit_card_mamma,-$41.75,$0.00,,$336.21
+22,5ab055eae67be20014ca5284,Costco ,Costco ,"Nintendo switch, gloves, jeans ","Nintendo switch, gloves, jeans ",3/7,5f3e189bd95d06627dc8e937,tools ,,USD,credit_card_mamma,credit_card_mamma,-$419.84,$0.00,,"$3,917.81"
+23,5ab055eae67be20014ca5284,Lowaunz ,Lowaunz ,Camera & lens,Camera & lens,3/7,5f3e189bd95d06627dc8e937,tools ,,USD,PayPal ,PayPal ,-$700.00,$0.00,,"$3,217.81"
+24,5ab055eae67be20014ca5284,Reds,Reds,burger & fries,burger & fries,3/7,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$10.09,$0.00,,$326.12
+25,5ab055eae67be20014ca5284,Target,Target,RETURNED. blender bottle,RETURNED. blender bottle,3/7,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$11.82,$11.82,$11.82,"$3,217.81"
+26,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,thunderbolt to hdmi adapter,thunderbolt to hdmi adapter,3/7,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$10.84,$0.00,,"$3,206.97"
+27,5ab055eae67be20014ca5284,Lyft,Lyft,ride home from Costco with too much stuff in the rain,ride home from Costco with too much stuff in the rain,3/7,5f3e189bd95d06627dc8e938,transportation,,USD,,,-$7.27,$0.00,,$72.73
+28,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,The Legend of Zelda: Breath of the Wild - Nintendo Switch,The Legend of Zelda: Breath of the Wild - Nintendo Switch,3/7,5f3e189bd95d06627dc8e931,entertainment,,USD,biz,biz,-$53.70,$0.00,,$333.05
+29,5ab055eae67be20014ca5284,Best Buy,Best Buy,NBA 2k20 Nintendo switch,NBA 2k20 Nintendo switch,3/8,5f3e189bd95d06627dc8e931,entertainment,,USD,paypal,paypal,-$36.53,$0.00,,$296.52
+30,5ab055eae67be20014ca5284,Ritual,Ritual,Blue Light: burger & fries,Blue Light: burger & fries,3/8,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$9.77,$0.00,,$316.35
+31,5ab055eae67be20014ca5284,Hot Cookie,Hot Cookie,3 cookies,3 cookies,3/8,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$5.40,$0.00,,$310.95
+32,5ab055eae67be20014ca5284,Fermentation Lab,Fermentation Lab,dinner w Christina,dinner w Christina,3/11,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$44.00,$0.00,,$266.95
+33,5ab055eae67be20014ca5284,Ritual,Ritual,Le Petitt's Kitchen,Le Petitt's Kitchen,3/11,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$1.27,$0.00,,$265.68
+34,5ab055eae67be20014ca5284,Ritual,Ritual,Le Petitt's Kitchen,Le Petitt's Kitchen,3/11,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$0.50,$0.00,,$265.18
+35,5ab055eae67be20014ca5284,Ritual,Ritual,Le Petitt's Kitchen,Le Petitt's Kitchen,3/11,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$4.18,$0.00,,$261.00
+36,5ab055eae67be20014ca5284,CVS,CVS,medicine,medicine,3/13,5f3e189bd95d06627dc8e936,selfcare,,USD,personal,personal,-$18.75,$0.00,,$176.19
+37,5ab055eae67be20014ca5284,Brendas French Soul Food,Brendas French Soul Food,dinner,dinner,3/13,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$61.00,$0.00,,$200.00
+38,5ab055eae67be20014ca5284,Best Buy,Best Buy,RETURNED. cords & cables,RETURNED. cords & cables,3/13,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-$37.95,$37.95,$37.95,"$3,206.97"
+39,5ab055eae67be20014ca5284,La Playa Taqueria,La Playa Taqueria,dinner,dinner,3/12,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$16.53,$0.00,,$183.47
+40,5ab055eae67be20014ca5284,Costco,Costco,supplements,supplements,3/13,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$85.68,$0.00,,$97.79
+41,5ab055eae67be20014ca5284,Ritual,Ritual,Soluna Cafe & Lounge,Soluna Cafe & Lounge,3/13,5f3e189bd95d06627dc8e932,food,,USD,biz,biz,-$0.50,$0.00,,$97.29
+42,5ab055eae67be20014ca5284,Ritual,Ritual,Le Petitt's Kitchen,Le Petitt's Kitchen,3/13,5f3e189bd95d06627dc8e932,food,,USD,biz,biz,-$16.76,$0.00,,$80.53
+43,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,cable mini hdmi to hdmi,cable mini hdmi to hdmi,3/13,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$7.20,$0.00,,"$3,199.77"
+44,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,25 ft hdmi cable,25 ft hdmi cable,3/12,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$16.26,$0.00,,"$3,183.51"
+45,5ab055eae67be20014ca5284,Target,Target,groceries,groceries,3/14,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$12.37,$0.00,,$68.16
+46,5ab055eae67be20014ca5284,In-N-Out,In-N-Out,burger & fries,burger & fries,3/14,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$5.27,$0.00,,$62.89
+47,5ab055eae67be20014ca5284,Costco,Costco,microsd card,microsd card,3/12,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$48.81,$0.00,,"$3,134.70"
+48,5ab055eae67be20014ca5284,Western Union,Western Union,Thomas,Thomas,3/17,5f3e189bd95d06627dc8e936,selfcare,,USD,cash,cash,-$309.95,$0.00,,-$133.76
+49,5ab055eae67be20014ca5284,Square Pie Guys,Square Pie Guys,pizza,pizza,3/17,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$23.71,$0.00,,$39.18
+50,5ab055eae67be20014ca5284,Lyft,Lyft,ride to beach,ride to beach,3/12,5f3e189bd95d06627dc8e938,transportation,,USD,personal,personal,-$13.78,$0.00,,$58.95
+51,5ab055eae67be20014ca5284,Lyft,Lyft,beach to home,beach to home,3/12,5f3e189bd95d06627dc8e938,transportation,,USD,personal,personal,-$14.96,$0.00,,$43.99
+52,5ab055eae67be20014ca5284,Lyft,Lyft,ride to fedex to get atem mini,ride to fedex to get atem mini,3/13,5f3e189bd95d06627dc8e938,transportation,,USD,personal,personal,-$10.80,$0.00,,$33.19
+53,5ab055eae67be20014ca5284,Lyft,Lyft,ride to car rental,ride to car rental,3/14,5f3e189bd95d06627dc8e938,transportation,,USD,personal,personal,-$8.60,$0.00,,$24.59
+54,5ab055eae67be20014ca5284,Ritual,Ritual,drink,drink,3/18,5f3e189bd95d06627dc8e932,food,,USD,biz,biz,-$0.57,$0.00,,$38.61
+55,5ab055eae67be20014ca5284,Hot Cookie,Hot Cookie,lotta cookies,lotta cookies,3/19,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$7.00,$0.00,,$31.61
+56,5ab055eae67be20014ca5284,Market Street Cycles,Market Street Cycles,floor pump,floor pump,3/20,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-$43.35,$0.00,,"$3,091.35"
+57,5ab055eae67be20014ca5284,T & L Laundry Cafe,T & L Laundry Cafe,"Washing, no bedding, large washers too big ","Washing, no bedding, large washers too big ",3/20,5f3e189bd95d06627dc8e933,maintenance,,USD,cash,cash,-$8.25,$0.00,,-$142.01
+58,5ab055eae67be20014ca5284,T & L Laundry Cafe,T & L Laundry Cafe,"Washing, no bedding, large washers too big ","Washing, no bedding, large washers too big ",3/20,5f3e189bd95d06627dc8e933,maintenance,,USD,cash,cash,-$1.75,$0.00,,-$143.76
+59,5ab055eae67be20014ca5284,firstbankcard,firstbankcard,"overpaid mamma's cc, total payment was $500","overpaid mamma's cc, total payment was $500",3/21,5f3e189bd95d06627dc8e936,selfcare,,USD,personal,personal,-$5.41,$0.00,,-$149.17
+60,5ab055eae67be20014ca5284,Walgreens,Walgreens,"first aid kit, make up remover wipes","first aid kit, make up remover wipes",3/21,5f3e189bd95d06627dc8e936,selfcare,,USD,cash,cash,-$5.73,$0.00,,-$154.90
+61,5ab055eae67be20014ca5284,Ritual,Ritual,Patxi's,Patxi's,3/21,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$8.69,$0.00,,$22.92
+62,5ab055eae67be20014ca5284,SF Civic Center Famer's Market,SF Civic Center Famer's Market,"dates, black farmers","dates, black farmers",3/22,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$7.00,$0.00,,$15.92
+63,5ab055eae67be20014ca5284,CostCo,CostCo,groceries,groceries,3/22,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$95.30,$0.00,,-$79.38
+64,5ab055eae67be20014ca5284,CostCo,CostCo,tools,tools,3/22,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-$16.26,$0.00,,"$3,075.09"
+65,5ab055eae67be20014ca5284,CostCo,CostCo,selfcare tools,selfcare tools,3/22,5f3e189bd95d06627dc8e936,selfcare,,USD,personal,personal,-$36.33,$0.00,,-$191.23
+66,5ab055eae67be20014ca5284,Piccadilly Fish & Chips,Piccadilly Fish & Chips,"fish & chips, gifted to local","fish & chips, gifted to local",3/22,5f3e189bd95d06627dc8e936,selfcare,,USD,cash,cash,-$14.00,$0.00,,-$205.23
+67,5ab055eae67be20014ca5284,Split,Split,ok buffalo chicken sandwich & fries,ok buffalo chicken sandwich & fries,3/22,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$19.48,$0.00,,-$98.86
+68,5ab055eae67be20014ca5284,Woods Polk Station,Woods Polk Station,local brewery 4 pack beer,local brewery 4 pack beer,3/22,5f3e189bd95d06627dc8e931,entertainment,,USD,personal,personal,-$12.14,$0.00,,$284.38
+69,5ab055eae67be20014ca5284,Costco,Costco,groceries for lockdown,groceries for lockdown,3/23,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$99.37,$0.00,,-$198.23
+70,5ab055eae67be20014ca5284,Costco,Costco,groceries for lockdown,groceries for lockdown,3/23,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$36.99,$0.00,,-$235.22
+71,5ab055eae67be20014ca5284,Barbary Coast,Barbary Coast,medicine,medicine,3/23,5f3e189bd95d06627dc8e931,entertainment,,USD,cash,cash,-$100.00,$0.00,,$184.38
+72,5ab055eae67be20014ca5284,Golden Farmers,Golden Farmers,"groceries, salsa, potatoes","groceries, salsa, potatoes",3/23,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$14.57,$0.00,,-$249.79
+73,5ab055eae67be20014ca5284,Dick's Sporting Good,Dick's Sporting Good,"weight vest, taser","weight vest, taser",3/24,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$103.05,$0.00,,"$2,972.04"
+74,5ab055eae67be20014ca5284,Target,Target,"chips, hot sauce","chips, hot sauce",3/24,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$5.67,$0.00,,-$255.46
+75,5ab055eae67be20014ca5284,T & L Laundry Cafe,T & L Laundry Cafe,Washing,Washing,3/27,5f3e189bd95d06627dc8e933,maintenance,,USD,cash,cash,-$8.75,$0.00,,-$152.51
+76,5ab055eae67be20014ca5284,T & L Laundry Cafe,T & L Laundry Cafe,Dryer ,Dryer ,3/27,5f3e189bd95d06627dc8e933,maintenance,,USD,cash,cash,-$2.25,$0.00,,-$154.76
+77,5ab055eae67be20014ca5284,Hot Cookie,Hot Cookie,cookies,cookies,3/27,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$2.00,$0.00,,-$257.46
+78,5ab055eae67be20014ca5284,Visible,Visible,phone bill,phone bill,3/29,5f3e189bd95d06627dc8e934,phone,,USD,biz,biz,-$40.00,$0.00,,$0.00
+79,5ab055eae67be20014ca5284,Ritual,Ritual,Fresco Pizza,Fresco Pizza,3/22,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$1.26,$0.00,,-$258.72
+80,5ab055eae67be20014ca5284,Ritual,Ritual,Quetzal,Quetzal,3/23,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$1.82,$0.00,,-$260.54
+81,5ab055eae67be20014ca5284,Ritual,Ritual,Quetzal,Quetzal,3/24,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$0.50,$0.00,,-$261.04
+82,5ab055eae67be20014ca5284,Ritual,Ritual,Organic Coop,Organic Coop,3/25,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$2.32,$0.00,,-$263.36
+83,5ab055eae67be20014ca5284,Ritual,Ritual,Organic Coop,Organic Coop,3/26,5f3e189bd95d06627dc8e932,food,,USD,credit_card,credit_card,-$2.35,$0.00,,-$265.71
+84,5ab055eae67be20014ca5284,U-Haul,U-Haul,Moving boxes,Moving boxes,3/31,5f3e189bd95d06627dc8e937,tools ,,USD,personal ,personal ,-$5.40,$0.00,,"$2,966.64"
+85,5ab055eae67be20014ca5284,Ritual ,Ritual ,Melt,Melt,3/30,5f3e189bd95d06627dc8e932,food ,,USD,credit_card,credit_card,-$1.03,$0.00,,-$266.74
+86,5ab055eae67be20014ca5284,CostCo,CostCo,cooler,cooler,3/31,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-43.39,$0.00,,2923.24585
+87,5ab055eae67be20014ca5284,Target,Target,duct tape,duct tape,3/31,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-$4.28,$0.00,,"$2,918.97"
+88,5ab055eae67be20014ca5284,CostCo,CostCo,food returns,food returns,3/31,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,$0.00,$58.41,$58.41,-$208.33
+89,5ab055eae67be20014ca5284,CostCo,CostCo,return Bullet Whiskey and Chocolate Caramel candy,return Bullet Whiskey and Chocolate Caramel candy,4/2,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,$0.00,$46.47,$46.47,-$161.86
+90,5ab055eae67be20014ca5284,Frys ,Frys ,Chips ,Chips ,4/10,5f3e189bd95d06627dc8e932,food ,,USD,cash ,cash ,-$1.62,$0.00,,
+91,5ab055eae67be20014ca5284,Best Buy,Best Buy,RETURNED. 50 mm lens,RETURNED. 50 mm lens,3/26,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$216.99,$186.99,$186.99,"$2,888.97"
+92,5ab055eae67be20014ca5284,Adorama,Adorama,RETURNED. used 50 mm lens,RETURNED. used 50 mm lens,3/27,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$147.29,$147.29,$147.29,"$2,888.97"

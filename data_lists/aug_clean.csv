@@ -1,0 +1,34 @@
+,participant_id,vendor_id,vendor,tranx_event,note_text,occurrence_string,budget_id,budget,currency_id,currency,fin_acc_id,fin_acc,tranx_debit,tranx_credit,tranx_credit_old,balance
+0,5ab055eae67be20014ca5284,SAFE,SAFE,fingerprinting,fingerprinting,8/1,5f3e189bd95d06627dc8e936,selfcare,,USD,cash,cash,-$20.00,$0.00,,-$20.00
+1,5ab055eae67be20014ca5284,SAFE,SAFE,MyFirstSight membership,MyFirstSight membership,8/1,5f3e189bd95d06627dc8e936,selfcare,,USD,cash,cash,-$50.00,$0.00,,-$70.00
+2,5ab055eae67be20014ca5284,USCCA,USCCA,gold membership for legal weapons issues,gold membership for legal weapons issues,8/1,5f3e189bd95d06627dc8e936,selfcare,,USD,personal_account,personal_account,-$248.89,$0.00,,-$318.89
+3,5ab055eae67be20014ca5284,Teakwoods,Teakwoods,pretzel,pretzel,8/1,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$10.23,$0.00,,-$10.23
+4,5ab055eae67be20014ca5284,Dunkin Donuts,Dunkin Donuts,coffee for Christina,coffee for Christina,8/1,5f3e189bd95d06627dc8e933,maintenance,,USD,personal,personal,-$2.17,$0.00,,-$2.17
+5,5ab055eae67be20014ca5284,USPS,USPS,"book of stamps & envelope, postage to mail CCW application","book of stamps & envelope, postage to mail CCW application",8/3,5f3e189bd95d06627dc8e936,selfcare,,USD,biz,biz,-$12.55,$0.00,,-$331.44
+6,5ab055eae67be20014ca5284,Frys,Frys,$60 money order for CCW application,$60 money order for CCW application,8/3,5f3e189bd95d06627dc8e936,selfcare,,USD,biz,biz,-$60.84,$0.00,,-$392.28
+7,5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,8/3,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$8.12,$4.06,$4.06,-$14.29
+8,5ab055eae67be20014ca5284,CostCo,CostCo,groceries,groceries,8/3,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$12.17,$6.09,$6.09,-$20.38
+9,5ab055eae67be20014ca5284,Target,Target,sandals,sandals,8/3,5f3e189bd95d06627dc8e937,tools,,USD,personal,personal,-$16.16,$0.00,,-$16.16
+10,5ab055eae67be20014ca5284,Namecheap,Namecheap,domain renewals,domain renewals,8/4,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$101.84,$0.00,,-$118.00
+11,5ab055eae67be20014ca5284,CostCo,CostCo,gaming laptop for video editting,gaming laptop for video editting,8/5,5f3e189bd95d06627dc8e937,tools,,USD,mamma_cc,mamma_cc,"-$1,551.94",$0.00,,"-$1,669.94"
+12,5ab055eae67be20014ca5284,Amazon Smiles Smiles,Amazon Smiles Smiles,2 video games: Mario Cart & FIFA 20 for switch,2 video games: Mario Cart & FIFA 20 for switch,8/6,5f3e189bd95d06627dc8e931,ent,,USD,biz,biz,-$32.73,$0.00,,-$32.73
+13,5ab055eae67be20014ca5284,Hyperice,Hyperice,RETURNED. massage tools,RETURNED. massage tools,8/6,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$484.02,$484.02,$484.02,"-$2,153.96"
+14,5ab055eae67be20014ca5284,SAFE,SAFE,"kubaton, pepper spray","kubaton, pepper spray",8/7,5f3e189bd95d06627dc8e937,tools,,USD,cash,cash,-$40.00,$0.00,,"-$2,193.96"
+15,5ab055eae67be20014ca5284,eBay,eBay,massage tools,massage tools,8/7,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$118.97,$0.00,,"-$2,312.93"
+16,5ab055eae67be20014ca5284,Hot Pot Caribbean Cuisine,Hot Pot Caribbean Cuisine,dinner for Christina and I,dinner for Christina and I,8/7,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$28.34,$0.00,,-$48.72
+17,5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,8/8,5f3e189bd95d06627dc8e932,food,,USD,personal & Frys gift card from previous refunded purchase,personal & Frys gift card from previous refunded purchase,-$19.77,$9.89,$9.89,-$58.60
+18,5ab055eae67be20014ca5284,Christina,Christina,other expenses,other expenses,8/8,5f3e189bd95d06627dc8e933,maintenance,,USD,personal,personal,-$43.20,$0.00,,-$45.37
+19,5ab055eae67be20014ca5284,Christina,Christina,cox,cox,8/8,5f3e189bd95d06627dc8e93a,utilities,,USD,personal,personal,-$80.61,$0.00,,-$80.61
+20,5ab055eae67be20014ca5284,Christina,Christina,srp,srp,8/8,5f3e189bd95d06627dc8e93a,utilities,,USD,personal,personal,-$81.37,$0.00,,-$161.98
+21,5ab055eae67be20014ca5284,Christina,Christina,rent,rent,8/8,5f3e189bd95d06627dc8e935,rent,,USD,personal,personal,-$681.45,$0.00,,-$681.45
+22,5ab055eae67be20014ca5284,Frys,Frys,groceries ,groceries ,8/12,food ,food ,,USD,personal,personal,-$13.83,$6.92,$6.92,-$65.52
+23,5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,8/12,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$15.98,$0.00,,-$81.50
+24,5ab055eae67be20014ca5284,CostCo,CostCo,gas,gas,8/14,5f3e189bd95d06627dc8e938,transportation,,USD,personal,personal,-$17.70,$0.00,,-$17.70
+25,5ab055eae67be20014ca5284,Mad Greens,Mad Greens,lunch,lunch,8/14,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$10.86,$0.00,,-$92.36
+26,5ab055eae67be20014ca5284,Christina,Christina,Meds,Meds,8/14,5f3e189bd95d06627dc8e931,ent,,USD,cash ,cash ,-$40.00,$0.00,,-$72.73
+27,5ab055eae67be20014ca5284,Tidal,Tidal,tidal subscription,tidal subscription,8/15,5f3e189bd95d06627dc8e931,ent,,USD,paypal,paypal,-$9.99,$0.00,,-$82.72
+28,5ab055eae67be20014ca5284,Malcolm Pitts,Malcolm Pitts,"box braids by Janice, $10 tip","box braids by Janice, $10 tip",8/14,5f3e189bd95d06627dc8e936,selfcare,,USD,cash,cash,-$70.00,$0.00,,-$462.28
+29,5ab055eae67be20014ca5284,Cheba Hut,Cheba Hut,lunch w/ Christina,lunch w/ Christina,8/16,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$20.61,$10.31,$10.31,-$102.66
+30,5ab055eae67be20014ca5284,Jersey Mikes,Jersey Mikes,lunch w/ Christina,lunch w/ Christina,8/18,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$27.88,$10.88,$10.88,-$119.66
+31,5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,8/19,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$15.81,$7.91,$7.91,-$127.57
+32,5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,8/20,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-3.52,$1.76,1.76,-$129.33

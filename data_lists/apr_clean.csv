@@ -1,0 +1,42 @@
+,participant_id,vendor_id,vendor,tranx_event,note_text,occurrence_string,budget_id,budget,currency_id,currency,fin_acc_id,fin_acc,tranx_debit,tranx_credit,tranx_credit_old,balance
+0,5ab055eae67be20014ca5284,Petro #390,Petro #390,"gas, trip from SF to Phx","gas, trip from SF to Phx",4/1,5f3e189bd95d06627dc8e939,travel,,USD,credit_card_mamma,credit_card_mamma,-$36.80,$0.00,,$463.20
+1,5ab055eae67be20014ca5284,Firehouse Subs,Firehouse Subs,"sandwich, on road trip","sandwich, on road trip",4/1,5f3e189bd95d06627dc8e939,travel,,USD,cash,cash,-$9.65,$0.00,,$453.55
+2,5ab055eae67be20014ca5284,In-N-Out,In-N-Out,"dinner, snack","dinner, snack",4/1,5f3e189bd95d06627dc8e939,travel,,USD,cash,cash,-$4.81,$0.00,,$448.74
+3,5ab055eae67be20014ca5284,Carl's Jr 1100769,Carl's Jr 1100769,"dinner, roadtrip","dinner, roadtrip",4/1,5f3e189bd95d06627dc8e939,travel,,USD,cash,cash,-$6.99,$0.00,,$441.75
+4,5ab055eae67be20014ca5284,"VP Racing of Blythe, 301","VP Racing of Blythe, 301","gas, trip from SF to Phx","gas, trip from SF to Phx",4/1,5f3e189bd95d06627dc8e939,travel,,USD,cash,cash,-$20.00,$0.00,,$421.75
+5,5ab055eae67be20014ca5284,Budget Rental Car,Budget Rental Car,rent car for road trip,rent car for road trip,4/1,5f3e189bd95d06627dc8e939,travel,,USD,credit_card_mamma,credit_card_mamma,-$92.00,$0.00,,$329.75
+6,5ab055eae67be20014ca5284,CostCo,CostCo,supplements,supplements,4/7,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$80.38,$0.00,,$419.62
+7,5ab055eae67be20014ca5284,CostCo,CostCo,groceries for Christina & I,groceries for Christina & I,4/7,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$55.18,$27.59,$27.59,$392.03
+8,5ab055eae67be20014ca5284,DoorDash,DoorDash,The Porch-Dinner,The Porch-Dinner,4/5,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$54.24,$27.12,$27.12,$364.91
+9,5ab055eae67be20014ca5284,Frys,Frys,batteries & food,batteries & food,4/9,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$34.27,$17.14,$17.14,$347.78
+10,5ab055eae67be20014ca5284,Frys,Frys,snacks,snacks,4/11,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$8.62,$0.00,,$339.16
+11,5ab055eae67be20014ca5284,Frys ,Frys ,Chips ,Chips ,4/10,food ,food ,,USD,cash ,cash ,-$1.62,$0.00,,$337.54
+12,5ab055eae67be20014ca5284,CostCo,CostCo,groceries for Christina & I,groceries for Christina & I,4/21,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$74.89,$37.44,$37.44,$300.09
+13,5ab055eae67be20014ca5284,CostCo,CostCo,protein,protein,4/21,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$16.14,$0.00,,283.953125
+14,5ab055eae67be20014ca5284,DoorDash,DoorDash,Native Grill & Wings,Native Grill & Wings,4/17,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$44.43,$22.22,$22.22,$261.74
+15,5ab055eae67be20014ca5284,Tidal,Tidal,music,music,4/14,5f3e189bd95d06627dc8e931,entertainment,,USD,personal,personal,-$9.99,$0.00,,390.01
+16,5ab055eae67be20014ca5284,Chompies,Chompies,breakfast for Christina and I,breakfast for Christina and I,4/19,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$15.30,$7.65,$7.65,254.088125
+17,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,"book, ""People Powered: How Communities Can Supercharge Your Business, Brand, and Teams"" building communities","book, ""People Powered: How Communities Can Supercharge Your Business, Brand, and Teams"" building communities",4/7,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$18.18,$18.18,$18.18,"$2,881.77"
+18,5ab055eae67be20014ca5284,Audible,Audible,membership,membership,4/8,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$16.00,$0.00,,"$2,865.77"
+19,5ab055eae67be20014ca5284,MeetEdgar,MeetEdgar,membership,membership,4/12,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$49.00,$0.00,,"$2,816.77"
+20,5ab055eae67be20014ca5284,Kindle,Kindle,"book, ""The African Trilogy: Things Fall Apart; Arrow of God; No Longer at Ease (Penguin Classics Deluxe Edition)""","book, ""The African Trilogy: Things Fall Apart; Arrow of God; No Longer at Ease (Penguin Classics Deluxe Edition)""",4/12,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$13.90,$0.00,,"$2,802.87"
+21,5ab055eae67be20014ca5284,Kindle,Kindle,"book, ""From Superman to Man""","book, ""From Superman to Man""",4/16,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$1.06,$0.00,,"$2,801.81"
+22,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,prime membership,prime membership,4/16,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$6.49,$0.00,,"$2,795.32"
+23,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,camera and lens covers,camera and lens covers,4/12,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$14.15,$0.00,,"$2,781.17"
+24,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,RFID card protectors,RFID card protectors,4/12,5f3e189bd95d06627dc8e937,tools,,USD,credit_card,credit_card,-$10.77,$0.00,,"$2,770.40"
+25,5ab055eae67be20014ca5284,Patreon,Patreon,js tutor,js tutor,4/1,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$1.00,$0.00,,"$2,769.40"
+26,5ab055eae67be20014ca5284,DoorDash,DoorDash,San Tan Brewery,San Tan Brewery,4/24,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$37.88,$0.00,,$216.21
+27,5ab055eae67be20014ca5284,Chompies,Chompies,breakfast for Christina and I,breakfast for Christina and I,4/25,5f3e189bd95d06627dc8e932,food,,USD,cash,cash,-$15.97,$7.99,$7.99,$208.22
+28,5ab055eae67be20014ca5284,Namecheap,Namecheap,"domain renewal: mygorgeousman.com,awesomewebstore.com","domain renewal: mygorgeousman.com,awesomewebstore.com",4/25,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$26.32,$0.00,,"$2,743.08"
+29,5ab055eae67be20014ca5284,Visible,Visible,phone,phone,4/25,5f3e189bd95d06627dc8e934,phone,,USD,biz,biz,-$40.00,$0.00,,$0.00
+30,5ab055eae67be20014ca5284,Namecheap,Namecheap,domain renewal: 11thrp.com,domain renewal: 11thrp.com,4/26,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$13.16,$0.00,,"$2,729.92"
+31,5ab055eae67be20014ca5284,Frys,Frys,groceries for Christina & I,groceries for Christina & I,4/26,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$12.39,$6.20,$6.20,$202.03
+32,5ab055eae67be20014ca5284,Frys ,Frys ,Chips ,Chips ,4/10,food ,food ,,USD,cash ,cash ,-$1.62,$0.00,,$200.41
+33,5ab055eae67be20014ca5284,Frys,Frys,white vinegar,white vinegar,4/27,5f3e189bd95d06627dc8e932,food,,USD,personal,personal,-$2.03,$1.02,$1.02,$199.39
+34,5ab055eae67be20014ca5284,Libro .fm,Libro .fm,"book, ""It's About Damn Time."" audiobook","book, ""It's About Damn Time."" audiobook",4/27,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$24.50,$0.00,,"$2,705.42"
+35,5ab055eae67be20014ca5284,Bookshop .org,Bookshop .org,"book, ""It's About Damn Time."" hardcover for mamma","book, ""It's About Damn Time."" hardcover for mamma",4/27,5f3e189bd95d06627dc8e931,entertainment,,USD,biz,biz,-$27.80,$0.00,,$362.21
+36,5ab055eae67be20014ca5284,ArlanWasHere,ArlanWasHere,"teachable class ""How to Raise Capital for Your Company from Scratch""","teachable class ""How to Raise Capital for Your Company from Scratch""",4/27,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$60.00,$0.00,,"$2,645.42"
+37,5ab055eae67be20014ca5284,Chompies,Chompies,Lunch for Christina & I ,Lunch for Christina & I ,4/28,food ,food ,,USD,Personal ,Personal ,-$34.16,$17.08,$17.08,$182.31
+38,5ab055eae67be20014ca5284,Amazon Smiles,Amazon Smiles,RETURNED. mhl hdmi connector,RETURNED. mhl hdmi connector,4/30,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$15.08,$15.08,$15.08,"$2,645.42"
+39,5ab055eae67be20014ca5284,Vilros LLC,Vilros LLC,bluetooth keyboard for raspberry pi,bluetooth keyboard for raspberry pi,4/29,5f3e189bd95d06627dc8e937,tools,,USD,biz,biz,-$14.99,$0.00,,"$2,630.43"
+40,5ab055eae67be20014ca5284,Flexispot,Flexispot,bike chair/desk,bike chair/desk,4/30,5f3e189bd95d06627dc8e937,tools,,USD,paypal,paypal,-$325.10,$0.00,,"$2,305.33"

@@ -1,0 +1,43 @@
+participant_id,vendor_id,vendor,tranx_event,note_text,occurrence_string,budget_id,budget,currency_id,currency,fin_acc_id,fin_acc,tranx_debit,tranx_credit,tranx_credit_old,balance
+5ab055eae67be20014ca5284,CostCo,CostCo,groceries,groceries,7/1,food,food,,USD,personal,personal,-$236.68,$134.08,$134.08,$397.40
+5ab055eae67be20014ca5284,Christina,Christina,June Balance of bills,June Balance of bills,7/3,utilities,utilities,,USD,personal,personal,-$55.86,$0.00,,$44.14
+5ab055eae67be20014ca5284,Salad & Go,Salad & Go,dinner,dinner,7/2,food,food,,USD,personal,personal,-$6.20,$0.00,,$391.20
+5ab055eae67be20014ca5284,Nintendo,Nintendo,online membership,online membership,7/3,ent,ent,,USD,paypal,paypal,-$21.39,$0.00,,$378.61
+5ab055eae67be20014ca5284,Namecheap,Namecheap,7 domain renewals,7 domain renewals,7/3,tools,tools,,USD,paypal,paypal,-$110.02,$0.00,,"$2,181.95"
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/4,food,food,,USD,personal,personal,-$26.23,$13.12,$13.12,$378.09
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/6,food,food,,USD,personal,personal,-$18.75,$9.38,$9.38,$368.71
+5ab055eae67be20014ca5284,Wetzels Pretzel,Wetzels Pretzel,snack,snack,7/7,food,food,,USD,personal,personal,-$7.92,$0.00,,$360.79
+5ab055eae67be20014ca5284,TJ Maxx,TJ Maxx,belt,belt,7/8,maintenance,maintenance,,USD,personal,personal,-$18.32,$0.00,,$81.68
+5ab055eae67be20014ca5284,SAFE,SAFE,ccw class,ccw class,7/9,selfcare,selfcare,,USD,biz,biz,-$5.00,$0.00,,$95.00
+5ab055eae67be20014ca5284,CostCo,CostCo,pillow,pillow,7/9,tools,tools,,USD,personal,personal,-$21.56,$10.78,$10.78,"$2,171.17"
+5ab055eae67be20014ca5284,CostCo,CostCo,refund pillow from 7/1 line 5,refund pillow from 7/1 line 5,7/9,tools,tools,,USD,personal,personal,-$16.17,$32.33,$32.33,"$2,187.34"
+5ab055eae67be20014ca5284,Buffalo Wild Wings,Buffalo Wild Wings,dinner,dinner,7/9,food,food,,USD,cash,cash,-$11.00,$0.00,,$349.79
+5ab055eae67be20014ca5284,Red Robin,Red Robin,dinner,dinner,7/11,food,food,,USD,personal,personal,-$20.00,$10.00,$10.00,$339.79
+5ab055eae67be20014ca5284,Flavors of Lousiana,Flavors of Lousiana,dinner,dinner,7/12,food,food,,USD,personal,personal,-$15.00,$0.00,,$324.79
+5ab055eae67be20014ca5284,Play It Again Sports,Play It Again Sports,soccer ball size 5,soccer ball size 5,7/14,ent,ent,,USD,personal,personal,-$12.96,$0.00,,$365.65
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/14,food,food,,USD,personal,personal,-$16.77,$8.39,$8.39,$316.41
+5ab055eae67be20014ca5284,USPS Dianes,USPS Dianes,ship 50 masks to mamma,ship 50 masks to mamma,7/14,maintenance,maintenance,,USD,personal,personal,-$8.40,$0.00,,$73.28
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/17,food,food,,USD,personal,personal,-$13.62,$6.81,$6.81,$309.60
+5ab055eae67be20014ca5284,KO8 straps,KO8 straps,exercise equipment for indoors,exercise equipment for indoors,7/16,tools,tools,,USD,paypal,paypal,-$197.10,$0.00,,"$1,990.24"
+5ab055eae67be20014ca5284,CostCo,CostCo,groceries,groceries,7/18,food,food,,USD,personal,personal,-$94.60,$47.30,$47.30,$262.30
+5ab055eae67be20014ca5284,Christina,Christina,rent,rent,7/18,rent,rent,,USD,personal,personal,-$681.26,$0.00,,$18.74
+5ab055eae67be20014ca5284,Christina,Christina,"utilities, cox cable/internet","utilities, cox cable/internet",7/18,utilities,utilities,,USD,personal,personal,-$80.58,$0.00,,-$36.44
+5ab055eae67be20014ca5284,Christina,Christina,"utilitiels, SRP","utilitiels, SRP",7/18,utilities,utilities,,USD,personal,personal,-$61.59,$0.00,,-$98.03
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/21,food,food,,USD,personal,personal,-$8.12,$4.06,$4.06,$258.24
+5ab055eae67be20014ca5284,Joann,Joann,green fabric and hooks for green screen,green fabric and hooks for green screen,7/21,tools,tools,,USD,biz,biz,-$41.22,$0.00,,"$1,949.02"
+5ab055eae67be20014ca5284,Joann,Joann,green fabric for green screen,green fabric for green screen,7/21,tools,tools,,USD,paypal,paypal,-$24.23,$0.00,,"$1,924.79"
+5ab055eae67be20014ca5284,Halal Guys,Halal Guys,"late lunch, early dinner","late lunch, early dinner",7/21,food,food,,USD,personal,personal,-$8.65,$0.00,,$249.59
+5ab055eae67be20014ca5284,CostCo,CostCo,gas,gas,7/21,transportation,transportation,,USD,personal,personal,-$17.20,$0.00,,$82.80
+5ab055eae67be20014ca5284,Tronus LLC,Tronus LLC,shoes for Christina,shoes for Christina,7/21,maintenance,maintenance,,USD,personal,personal,-$135.00,$0.00,,-$61.72
+5ab055eae67be20014ca5284,Tidal,Tidal,music subscription,music subscription,7/17,ent,ent,,USD,paypal,paypal,-$9.99,$0.00,,$355.66
+5ab055eae67be20014ca5284,System76,System76,RETURNED. laptop for streaming and gaming,RETURNED. laptop for streaming and gaming,7/22,tools,tools,,USD,biz,biz,"-$2,222.53","$2,193.00","$2,193.00","$1,895.26"
+5ab055eae67be20014ca5284,casedealer.com,casedealer.com,pelican case for ar-15,pelican case for ar-15,7/23,tools,tools,,USD,biz,biz,-$182.88,$0.00,,"-$2,405.41"
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/24,food,food,,USD,personal,personal,-$9.68,$4.84,$4.84,$244.75
+5ab055eae67be20014ca5284,gumroad,gumroad,black illustrations graphics,black illustrations graphics,7/23,tools,tools,,USD,paypal,paypal,-$10.00,$0.00,,"-$2,415.41"
+5ab055eae67be20014ca5284,Viible,Viible,phone bill,phone bill,7/26,phone,phone,,USD,biz,biz,-$40.00,$0.00,,$0.00
+5ab055eae67be20014ca5284,CostCo,CostCo,air fryer for Jean and pops,air fryer for Jean and pops,7/27,maintenance,maintenance,,USD,personal,personal,-$64.19,$0.00,,-$125.91
+5ab055eae67be20014ca5284,Frys,Frys,RETURNED. groceries and shoes,RETURNED. groceries and shoes,7/28,food,food,,USD,personal,personal,-$20.28,$16.22,$16.22,$240.69
+5ab055eae67be20014ca5284,Heroes In Color,Heroes In Color,1st half of payment for widgetry social media design,1st half of payment for widgetry social media design,7/29,ent,ent,,USD,paypal,paypal,-$40.00,$0.00,,$315.66
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/30,food,food,,USD,personal,personal,-$17.11,$8.56,$8.56,$232.13
+5ab055eae67be20014ca5284,Einstein Bros Bagels,Einstein Bros Bagels,breakfast,breakfast,7/30,food,food,,USD,personal,personal,-$6.48,$0.00,,$225.65
+5ab055eae67be20014ca5284,Frys,Frys,groceries,groceries,7/31,food,food,,USD,personal,personal,-$17.97,$8.99,$8.99,$216.67
