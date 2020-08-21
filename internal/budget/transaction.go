@@ -68,7 +68,8 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 		BudgetID:           newTranx.BudgetID,
 		CurrencyID:         newTranx.CurrencyID,
 		FinancialAccountID: finAcctObjectIDs,
-		// Occurrence:         now.UTC(),
+		// Occurrence:         now.Date(),
+		OccurrenceString:  newTranx.OccurrenceString,
 		TransactionEvent:  newTranx.TransactionEvent,
 		TransactionCredit: newTranx.TransactionCredit,
 		TransactionDebit:  newTranx.TransactionDebit,
@@ -156,6 +157,10 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	// if updateTranx.Occurrence != nil {
 	// 	transaction.Occurrence = *updateTranx.Occurrence
 	// }
+
+	if updateTranx.OccurrenceString != nil {
+		transaction.OccurrenceString = *updateTranx.OccurrenceString
+	}
 
 	if updateTranx.TransactionEvent != nil {
 		transaction.TransactionEvent = *updateTranx.TransactionEvent
