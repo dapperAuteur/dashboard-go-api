@@ -89,6 +89,26 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 	return &tranx, nil
 }
 
+// CreateManyTransaction takes data from the client to create more than one transaction in the db
+// func CreateManyTransaction(ctx context.Context, db *mongo.Collection, user auth.Claims, newTranxArray []NewTransaction, now time.Time) (*[]Transaction, error) {
+
+// 	var newTranxSlice []Transaction
+// 	for i, s := range newTranxArray {
+// 		fmt.Println(i, s)
+// 		// newTranx, err := CreateTransaction(ctx, db, user, s, now)
+// 		// if err != nil {
+// 		// 	switch err {
+// 		// 	case apierror.ErrForbidden:
+// 		// 		return nil, apierror.ErrForbidden
+// 		// 	default:
+// 		// 		return nil, errors.Wrapf(err, "creating transaction %q", s)
+// 		// 	}
+// 		// }
+// 		// newTranxSlice = append(newTranxSlice, *newTranx)
+// 	}
+// 	return &newTranxSlice, nil
+// }
+
 // RetrieveTransaction finds a single Transaction by _id
 func RetrieveTransaction(ctx context.Context, db *mongo.Collection, _id string) (*Transaction, error) {
 

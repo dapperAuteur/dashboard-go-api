@@ -65,6 +65,34 @@ func (t Transaction) CreateTransaction(ctx context.Context, w http.ResponseWrite
 	return web.Respond(ctx, w, tranxCreated, http.StatusCreated)
 }
 
+// CreateManyTransaction decodes the body of a request to create many new transactions.
+// The full array of transactions with generated fields is sent back in the response.
+// func (t Transaction) CreateManyTransaction(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+// 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+// 	if !ok {
+// 		return web.NewShutdownError("auth claims missing from context")
+// 	}
+
+// 	var newTranxSlice []budget.NewTransaction
+
+// 	if err := web.Decode(r, &newTranxSlice); err != nil {
+// 		fmt.Println("Decode CreateManyTransaction Handler called")
+// 		return err
+// 	}
+
+// 	tranxSliceCreated, err := budget.CreateManyTransaction(ctx, t.DB, claims, newTranxSlice, time.Now())
+// 	if err != nil {
+// 		switch err {
+// 		case apierror.ErrForbidden:
+// 			return web.NewRequestError(err, http.StatusForbidden)
+// 		default:
+// 			return errors.Wrapf(err, "creating transaction %q", newTranxSlice)
+// 		}
+// 	}
+// 	return web.Respond(ctx, w, tranxSliceCreated, http.StatusCreated)
+// }
+
 // RetrieveTransaction will get the tranx from the db identified by an _id in the request URL, then encodes it in a response client.
 func (t Transaction) RetrieveTransaction(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
