@@ -39,41 +39,44 @@ func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Clai
 	tranx := Transaction{}
 
 	var (
-		finAcctObjectIDs, participantObjectIDs []primitive.ObjectID
+		// finAcctObjectIDs, participantObjectIDs []primitive.ObjectID
+		finAcctIDsSlice, participantIDsSlice []string
 	)
 
 	// check if prop is provided
 	if newTranx.FinancialAccountID != nil {
 		// convert []newTranx.FinancialAccountID (ObjectID) to []string
-		objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.FinancialAccountID)
-		if err != nil {
-			return nil, err
-		}
-		objIDs = append(objIDs, objIDs...)
-		finAcctObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+		// objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.FinancialAccountID)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		objIDs := append(*newTranx.FinancialAccountID, *newTranx.FinancialAccountID...)
+		finAcctIDsSlice = utility.RemoveDuplicateStringValues(objIDs)
 	}
 
 	// check if prop is provided
 	if newTranx.ParticipantID != nil {
 		// convert []newTranx.ParticipantID (ObjectID) to []string
-		objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.ParticipantID)
-		if err != nil {
-			return nil, err
-		}
-		objIDs = append(objIDs, objIDs...)
-		participantObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+		// objIDs, err := utility.SliceStringsToObjectIDs(*newTranx.ParticipantID)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		objIDs := append(*newTranx.ParticipantID, *newTranx.ParticipantID...)
+		// participantObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+		participantIDsSlice = utility.RemoveDuplicateStringValues(objIDs)
 	}
 
 	tranx = Transaction{
 		BudgetID:           newTranx.BudgetID,
 		CurrencyID:         newTranx.CurrencyID,
-		FinancialAccountID: finAcctObjectIDs,
+		FinancialAccountID: finAcctIDsSlice,
 		// Occurrence:         now.UTC(),
+		OccurrenceString:  newTranx.OccurrenceString,
 		TransactionEvent:  newTranx.TransactionEvent,
 		TransactionCredit: newTranx.TransactionCredit,
 		TransactionDebit:  newTranx.TransactionDebit,
 		VendorID:          newTranx.VendorID,
-		ParticipantID:     participantObjectIDs,
+		ParticipantID:     participantIDsSlice,
 		CreatedAt:         now.UTC(),
 		UpdatedAt:         now.UTC(),
 	}
@@ -143,9 +146,9 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	if updateTranx.FinancialAccountID != nil {
 		// take *updateTranx.FinancialAccountID.
 		// convert to []primitive.ObjectID and return
-		finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.FinancialAccountID)
-		objectIDs := append(finAcctObjectIDs, foundTranx.FinancialAccountID...)
-		uniqueFinAccObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		// finAcctObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.FinancialAccountID)
+		objectIDs := append(*updateTranx.FinancialAccountID, foundTranx.FinancialAccountID...)
+		uniqueFinAccObjIDs := utility.RemoveDuplicateStringValues(objectIDs)
 		if err != nil {
 			return err
 		}
@@ -156,6 +159,10 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	// if updateTranx.Occurrence != nil {
 	// 	transaction.Occurrence = *updateTranx.Occurrence
 	// }
+
+	if updateTranx.OccurrenceString != nil {
+		transaction.OccurrenceString = *updateTranx.OccurrenceString
+	}
 
 	if updateTranx.TransactionEvent != nil {
 		transaction.TransactionEvent = *updateTranx.TransactionEvent
@@ -174,9 +181,9 @@ func UpdateOneTransaction(ctx context.Context, db *mongo.Collection, user auth.C
 	}
 
 	if updateTranx.ParticipantID != nil {
-		participantObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.ParticipantID)
-		objectIDs := append(participantObjectIDs, foundTranx.ParticipantID...)
-		uniquePartObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
+		// participantObjectIDs, err := utility.SliceStringsToObjectIDs(*updateTranx.ParticipantID)
+		objectIDs := append(*updateTranx.ParticipantID, foundTranx.ParticipantID...)
+		uniquePartObjIDs := utility.RemoveDuplicateStringValues(objectIDs)
 		if err != nil {
 			return err
 		}
