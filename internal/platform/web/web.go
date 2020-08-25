@@ -9,9 +9,10 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
-	"go.opencensus.io/trace"
+	"github.com/go-chi/cors"
 	"go.opencensus.io/plugin/ochttp"
 	"go.opencensus.io/plugin/ochttp/propagation/tracecontext"
+	"go.opencensus.io/trace"
 )
 
 // ctxKey represents the type of value for the context key.
@@ -22,7 +23,7 @@ const KeyValues ctxKey = 1
 
 // Values carries information about each request.
 type Values struct {
-	TraceID string
+	TraceID    string
 	StatusCode int
 	Start      time.Time
 }
@@ -32,10 +33,10 @@ type Handler func(context.Context, http.ResponseWriter, *http.Request) error
 
 // App is the entrypoint for all web applications; http package for entire project
 type App struct {
-	mux *chi.Mux
-	log *log.Logger
-	mw  []Middleware
-	och *ochttp.Handler
+	mux      *chi.Mux
+	log      *log.Logger
+	mw       []Middleware
+	och      *ochttp.Handler
 	shutdown chan os.Signal
 }
 
@@ -43,19 +44,21 @@ type App struct {
 // Any Middleware provided will be ran for every request.
 func NewApp(shutdown chan os.Signal, logger *log.Logger, mw ...Middleware) *App {
 	app := App{
-		mux: chi.NewRouter(),
-		log: logger,
-		mw:  mw,
+		mux:      chi.NewRouter(),
+		log:      logger,
+		mw:       mw,
 		shutdown: shutdown,
 	}
 
+	app.mux.Use(cors.Handler(cors.Options{AllowedOrigins: []string{"*"}}))
+
 	// Create an OpenCensus HTTP Handler which wraps the router.
 	// This will start the initial span and annotate it with information about the request/response.
-	// 
+	//
 	// This is configured to use the W3C TraceContext standard to set the remote parent if a client request includes the appropriate headers.
 	// https://w3c.github.io/trace-context/
 	app.och = &ochttp.Handler{
-		Handler: app.mux,
+		Handler:     app.mux,
 		Propagation: &tracecontext.HTTPFormat{},
 	}
 
@@ -85,7 +88,7 @@ func (a *App) Handle(method, pattern string, h Handler, mw ...Middleware) {
 		// address in the request's context so it is sent down the call chain.
 		v := Values{
 			TraceID: span.SpanContext().TraceID.String(),
-			Start: time.Now(),
+			Start:   time.Now(),
 		}
 
 		ctx = context.WithValue(ctx, KeyValues, &v) // commenting out this line will cause an integrity shutdown. used to test self-shutdown works when app integrity is compromised
