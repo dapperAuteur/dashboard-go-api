@@ -50,7 +50,14 @@ func NewApp(shutdown chan os.Signal, logger *log.Logger, mw ...Middleware) *App 
 		shutdown: shutdown,
 	}
 
-	app.mux.Use(cors.Handler(cors.Options{AllowedOrigins: []string{"*"}}))
+	// add CORS to all all Origins "*"
+	app.mux.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+	}))
 
 	// Create an OpenCensus HTTP Handler which wraps the router.
 	// This will start the initial span and annotate it with information about the request/response.
