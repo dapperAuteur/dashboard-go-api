@@ -72,6 +72,12 @@ func RetrieveWord(ctx context.Context, db *mongo.Collection, wd string) (*Word, 
 // It returns the created Word with fields populated, NOT the ID field tho'. FIX LATER.
 func CreateWord(ctx context.Context, db *mongo.Collection, user auth.Claims, newWord NewWord, now time.Time) (*Word, error) {
 
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return nil, apierror.ErrForbidden
+	}
+
 	word := Word{
 		Meaning:          newWord.Meaning,
 		Tongue:           newWord.Tongue,
@@ -92,4 +98,80 @@ func CreateWord(ctx context.Context, db *mongo.Collection, user auth.Claims, new
 	fmt.Println("wordResult : ", wordResult)
 
 	return &word, nil
+}
+
+// UpdateOneWord modifies data about one Word.
+// It will ERROR if the specified wordID is invalid or does NOT reference an existing Word.
+func UpdateOneWord(ctx context.Context, db *mongo.Collection, user auth.Claims, wordID string, updateWord UpdateWord, now time.Time) error {
+
+	wordObjectID, err := primitive.ObjectIDFromHex(wordID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundWord, err := RetrieveWordByID(ctx, db, wordID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("word to update found %+v : \n", foundWord)
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	word := Word{}
+
+	if updateWord.Meaning != nil {
+		word.Meaning = *updateWord.Meaning
+	}
+
+	if updateWord.Tongue != nil {
+		word.Tongue = *updateWord.Tongue
+	}
+
+	if updateWord.Tier != nil {
+		word.Tier = *updateWord.Tier
+	}
+
+	if updateWord.Word != nil {
+		word.Word = *updateWord.Word
+	}
+
+	if updateWord.InGame != nil {
+		word.InGame = *updateWord.InGame
+	}
+
+	if updateWord.SPoints != nil {
+		word.SPoints = *updateWord.SPoints
+	}
+
+	if updateWord.FPoints != nil {
+		word.FPoints = *updateWord.FPoints
+	}
+
+	if updateWord.IsFourLetterWord != nil {
+		word.IsFourLetterWord = *updateWord.IsFourLetterWord
+	}
+
+	word.ID = wordObjectID
+
+	word.UpdatedAt = now
+
+	updateW := bson.M{
+		"$set": word,
+	}
+
+	fmt.Printf("word changes set %v : \n", updateW)
+
+	wordResult, err := db.UpdateOne(ctx, bson.M{"_id": wordObjectID}, updateW)
+	if err != nil {
+		return errors.Wrap(err, "updating word")
+	}
+
+	fmt.Printf("wordResult updated %v : \n", wordResult)
+
+	return nil
 }
