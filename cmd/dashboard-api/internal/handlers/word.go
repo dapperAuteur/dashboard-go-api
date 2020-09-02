@@ -4,7 +4,9 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/word"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -30,4 +32,29 @@ func (wd Word) WordList(ctx context.Context, w http.ResponseWriter, r *http.Requ
 	}
 
 	return web.Respond(ctx, w, wordList, http.StatusOK)
+}
+
+// RetrieveWord gets the Word from the db identified by an _id in the request URL, then encodes it in a response client.
+
+// CreateWord decodes the body of a request to create a new Word.
+// The full Word with generated fields is sent back in the response.
+func (wd Word) CreateWord(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return web.NewShutdownError("auth claims missing from context")
+	}
+
+	var newWord word.NewWord
+
+	if err := web.Decode(r, &newWord); err != nil {
+		return err
+	}
+
+	word, err := word.CreateWord(ctx, wd.DB, claims, newWord, time.Now())
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(ctx, w, word, http.StatusCreated)
 }
