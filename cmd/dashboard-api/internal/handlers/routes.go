@@ -139,6 +139,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	// Word Routes
 	app.Handle(http.MethodGet, "/v1/words", word.WordList)
+	app.Handle(http.MethodPost, "/v1/words", word.CreateWord, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	return app
 }
