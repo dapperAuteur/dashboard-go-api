@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
@@ -58,7 +59,36 @@ func (u *Users) Token(ctx context.Context, w http.ResponseWriter, r *http.Reques
 		return errors.Wrap(err, "generating token")
 	}
 
-	// fmt.Printf("%+v\n", claims)
-
 	return web.Respond(ctx, w, tkn, http.StatusOK)
+}
+
+// CreateUserAndLogin inserts a new user into the database. Then runs Token to generate an authentication token fur the NewUser.
+// The client must include an email, name, and password for the request using HTTP Basic Auth.
+// The NewUser will be identified by email and authenticated by their password.
+func (u Users) CreateUserAndLogin(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	ctx, span := trace.StartSpan(ctx, "Handlers.Users.CreateUserAndLogin")
+	defer span.End()
+
+	var newUser user.NewUser
+
+	if err := web.Decode(r, &newUser); err != nil {
+		return err
+	}
+
+	userCreated, err := user.CreateUser(ctx, u.DB, newUser, time.Now())
+	if err != nil {
+		return errors.Wrapf(err, "creating user %q", newUser)
+	}
+
+	return web.Respond(ctx, w, userCreated, http.StatusCreated)
+
+	// createUser := User{
+	// 	Name: n.Name,
+	// 	Email: n.Email,
+	// 	PasswordHash: hash,
+	// 	Roles: []string{auth.RoleUser},
+	// 	CreatedAt: now.UTC(),
+	// 	UpdatedAt: now.UTC(),
+	// }
 }
