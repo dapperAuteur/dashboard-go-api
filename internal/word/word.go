@@ -13,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// WordList gets all the Words form the db then encodes them in a response client.
+// WordList gets all the Words from the db then encodes them in a response client.
 func WordList(ctx context.Context, db *mongo.Collection) ([]Word, error) {
 
 	wordList := []Word{}
