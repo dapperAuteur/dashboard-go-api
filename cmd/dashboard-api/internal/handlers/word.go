@@ -131,3 +131,29 @@ func (wd *Word) UpdateOneWord(ctx context.Context, w http.ResponseWriter, r *htt
 
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
+
+// DeleteWord removes a single Word identified by a wordID in the request URL.
+func (wd *Word) DeleteWord(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	wordID := chi.URLParam(r, "_id")
+
+	if err := word.DeleteWord(ctx, wd.DB, claims, wordID); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "deleting word %q", wordID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
+}
