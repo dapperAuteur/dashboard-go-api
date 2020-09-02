@@ -138,7 +138,7 @@ func (p *Podcast) UpdateOnePodcast(ctx context.Context, w http.ResponseWriter, r
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
 
-// DeletePodcast removes a single podcast identified by an podcastID in the request URL
+// DeletePodcast removes a single podcast identified by a podcastID in the request URL
 func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
@@ -157,7 +157,7 @@ func (p *Podcast) DeletePodcast(ctx context.Context, w http.ResponseWriter, r *h
 		case apierror.ErrForbidden:
 			return web.NewRequestError(err, http.StatusForbidden)
 		default:
-			return errors.Wrapf(err, "updating podcast %q", podcastID)
+			return errors.Wrapf(err, "deleting podcast %q", podcastID)
 		}
 	}
 
