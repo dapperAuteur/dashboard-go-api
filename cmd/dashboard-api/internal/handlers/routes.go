@@ -143,6 +143,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/words/{_id}", word.RetrieveWordByID)
 	// app.Handle(http.MethodGet, "/v1/words/{word}", word.RetrieveWord)
 	app.Handle(http.MethodPut, "/v1/words/{_id}", word.UpdateOneWord, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/words/{_id}", word.DeleteWord, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	return app
 }
