@@ -81,6 +81,8 @@ func (u Users) CreateUserAndLogin(ctx context.Context, w http.ResponseWriter, r 
 		return errors.Wrapf(err, "creating user %q", newUser)
 	}
 
+	// token, err := user.Token(ctx, w, r)
+
 	return web.Respond(ctx, w, userCreated, http.StatusCreated)
 
 	// createUser := User{
