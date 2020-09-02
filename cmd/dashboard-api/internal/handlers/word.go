@@ -6,9 +6,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/word"
+	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
 )
@@ -34,7 +37,45 @@ func (wd Word) WordList(ctx context.Context, w http.ResponseWriter, r *http.Requ
 	return web.Respond(ctx, w, wordList, http.StatusOK)
 }
 
-// RetrieveWord gets the Word from the db identified by an _id in the request URL, then encodes it in a response client.
+// RetrieveWordByID gets the Word from the db identified by an _id in the request URL, then encodes it in a response client.
+func (wd Word) RetrieveWordByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	wordFound, err := word.RetrieveWordByID(ctx, wd.DB, _id)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for word %q", _id)
+		}
+	}
+
+	return web.Respond(ctx, w, wordFound, http.StatusOK)
+}
+
+// RetrieveWord gets the Word from the db identified by an word string in the request URL, then encodes it in a response client.
+// func (wd Word) RetrieveWord(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+// 	word := chi.URLParam(r, "word")
+
+// 	wordFound, err := word.RetrieveWord(ctx, wd.DB, word)
+// 	if err != nil {
+// 		switch err {
+// 		case apierror.ErrNotFound:
+// 			return web.NewRequestError(err, http.StatusNotFound)
+// 		case apierror.ErrInvalidID:
+// 			return web.NewRequestError(err, http.StatusBadRequest)
+// 		default:
+// 			return errors.Wrapf(err, "looking for word %q", word)
+// 		}
+// 	}
+
+// 	return web.Respond(ctx, w, wordFound, http.StatusOK)
+// }
 
 // CreateWord decodes the body of a request to create a new Word.
 // The full Word with generated fields is sent back in the response.
