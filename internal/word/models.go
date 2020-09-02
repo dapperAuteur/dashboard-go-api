@@ -48,3 +48,43 @@ type UpdateWord struct {
 	FPoints          *int               `bson:"f_points,omitempty" json:"f_points,omitempty"`
 	IsFourLetterWord *bool              `bson:"is_four_letter_word,omitempty" json:"is_four_letter_word,omitempty"`
 }
+
+// Affix type is a group of related Affixes
+type Affix struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	Morpheme  string             `bson:"morpheme,omitempty" json:"morpheme,omitempty"`
+	Meaning   []string           `bson:"meaning,omitempty" json:"meaning,omitempty"`
+	Tongue    string             `bson:"tongue,omitempty" json:"tongue,omitempty"`
+	Example   []string           `bson:"example,omitempty" json:"example,omitempty"`
+	AffixType []string           `bson:"affix_type,omitempty" json:"affix_type,omitempty"`
+	Media     []string           `bson:"media,omitempty" json:"media,omitempty"`
+	Note      []string           `bson:"note,omitempty" json:"note,omitempty"`
+	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty" validate:"datetime"`
+	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty" validate:"datetime"`
+}
+
+// NewAffix type is what's required from the client to create a new Affix.
+type NewAffix struct {
+	Morpheme  string   `bson:"morpheme,omitempty" json:"morpheme,omitempty"`
+	Meaning   []string `bson:"meaning,omitempty" json:"meaning,omitempty"`
+	Tongue    string   `bson:"tongue,omitempty" json:"tongue,omitempty"`
+	Example   []string `bson:"example,omitempty" json:"example,omitempty"`
+	AffixType []string `bson:"affix_type,omitempty" json:"affix_type,omitempty"`
+	Media     []string `bson:"media,omitempty" json:"media,omitempty"`
+	Note      []string `bson:"note,omitempty" json:"note,omitempty"`
+}
+
+// UpdateAffix defines what information may be provided to modify an existing Word.
+// All fields are optional so clients can send just the fields they want changed.
+// It uses pointer fields so we can differentiate between a field that was NOT provided and a field that was provided as explicitly blank.
+// Normally we do NOT want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
+type UpdateAffix struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	Morpheme  *string            `bson:"morpheme,omitempty" json:"morpheme,omitempty"`
+	Meaning   *[]string          `bson:"meaning,omitempty" json:"meaning,omitempty"`
+	Tongue    *string            `bson:"tongue,omitempty" json:"tongue,omitempty"`
+	Example   *[]string          `bson:"example,omitempty" json:"example,omitempty"`
+	AffixType *[]string          `bson:"affix_type,omitempty" json:"affix_type,omitempty"`
+	Media     *[]string          `bson:"media,omitempty" json:"media,omitempty"`
+	Note      *[]string          `bson:"note,omitempty" json:"note,omitempty"`
+}
