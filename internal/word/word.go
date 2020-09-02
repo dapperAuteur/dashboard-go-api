@@ -175,3 +175,36 @@ func UpdateOneWord(ctx context.Context, db *mongo.Collection, user auth.Claims, 
 
 	return nil
 }
+
+// DeleteWord removes the Word identified by a given ID
+func DeleteWord(ctx context.Context, db *mongo.Collection, user auth.Claims, wordID string) error {
+
+	fmt.Printf("************** looking for wordID %s : ", wordID)
+
+	wordObjectID, err := primitive.ObjectIDFromHex(wordID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	fmt.Printf("************** looking for wordID %v : ", wordObjectID)
+
+	_, err = RetrieveWordByID(ctx, db, wordID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": wordObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting word %s", wordID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
