@@ -99,3 +99,35 @@ func (wd Word) CreateWord(ctx context.Context, w http.ResponseWriter, r *http.Re
 
 	return web.Respond(ctx, w, word, http.StatusCreated)
 }
+
+// UpdateOneWord decodes the body of a request to update an existing Word.
+// The ID of the Word is part of the request URL
+func (wd *Word) UpdateOneWord(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	wordID := chi.URLParam(r, "_id")
+
+	var wordUpdate word.UpdateWord
+	if err := web.Decode(r, &wordUpdate); err != nil {
+		return errors.Wrap(err, "decoding word update")
+	}
+
+	if err := word.UpdateOneWord(ctx, wd.DB, claims, wordID, wordUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating word %q", wordID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
