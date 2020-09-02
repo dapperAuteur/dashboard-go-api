@@ -23,6 +23,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	u := Users{DB: db.Collection("users"), authenticator: authenticator}
 
 	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
+	app.Handle(http.MethodPost, "/v1/users/token", u.CreateUserAndLogin)
 
 	// Blog Related
 	notesCollection := db.Collection("notes")
