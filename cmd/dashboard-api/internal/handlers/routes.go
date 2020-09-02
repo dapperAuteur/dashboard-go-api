@@ -38,6 +38,9 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
 
+	// Word Related
+	wordCollection := db.Collection("words")
+
 	// Note Related
 	note := Note{
 		DB:  notesCollection,
@@ -74,6 +77,12 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	episode := Episode{
 		DB:  episodesCollection,
+		Log: logger,
+	}
+
+	// Word Related
+	word := Word{
+		DB:  wordCollection,
 		Log: logger,
 	}
 
@@ -127,6 +136,9 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/podcasts/{title}", podcast.Retrieve)
 	app.Handle(http.MethodPut, "/v1/podcasts/{_id}", podcast.UpdateOnePodcast, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/podcasts/{_id}", podcast.DeletePodcast, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Word Routes
+	app.Handle(http.MethodGet, "/v1/words", word.WordList)
 
 	return app
 }
