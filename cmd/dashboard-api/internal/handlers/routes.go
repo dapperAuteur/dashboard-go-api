@@ -153,6 +153,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	// Affix Routes
 	app.Handle(http.MethodGet, "/v1/affixes", affix.AffixList)
+	app.Handle(http.MethodPost, "/v1/affixes", affix.CreateAffix, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodGet, "/v1/affixes/{_id}", affix.RetrieveAffixByID)
 
 	return app
