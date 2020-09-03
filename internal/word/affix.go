@@ -3,8 +3,10 @@ package word
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -43,6 +45,37 @@ func RetrieveAffixByID(ctx context.Context, db *mongo.Collection, _id string) (*
 	}
 
 	fmt.Println("affix found : ", affix)
+
+	return &affix, nil
+}
+
+// CreateAffix adds a Affix to the database.
+// It returns the created Affix with the fields populated, NOT the ID field tho'.
+func CreateAffix(ctx context.Context, db *mongo.Collection, user auth.Claims, newAffix NewAffix, now time.Time) (*Affix, error) {
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+	if !isAdmin {
+		return nil, apierror.ErrForbidden
+	}
+
+	affix := Affix{
+		AffixType: newAffix.AffixType,
+		Example:   newAffix.Example,
+		Meaning:   newAffix.Meaning,
+		Media:     newAffix.Media,
+		Morpheme:  newAffix.Morpheme,
+		Note:      newAffix.Note,
+		Tongue:    newAffix.Tongue,
+		CreatedAt: now.UTC(),
+		UpdatedAt: now.UTC(),
+	}
+
+	affixResult, err := db.InsertOne(ctx, affix)
+	if err != nil {
+		return nil, errors.Wrapf(err, "inserting Affix: %v", newAffix)
+	}
+
+	fmt.Println("affixResult : ", affixResult)
 
 	return &affix, nil
 }
