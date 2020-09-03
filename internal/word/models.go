@@ -122,12 +122,12 @@ type NewVerbo struct {
 // Normally we do NOT want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateVerbo struct {
 	ID                   primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	English              string             `bson:"english,omitempty" json:"english,omitempty"`
-	Reflexive            bool               `bson:"reflexive,omitempty" json:"reflexive,omitempty"`
-	Irregular            bool               `bson:"irregular,omitempty" json:"irregular,omitempty"`
-	CategoriaDeIrregular string             `bson:"categoría_de_irregular,omitempty" json:"categoría_de_irregular,omitempty"`
-	CambiarDeIrregular   string             `bson:"cambiar_de_irregular,omitempty" json:"cambiar_de_irregular,omitempty"`
-	Terminacion          string             `bson:"terminación,omitempty" json:"terminación,omitempty"`
-	Grupo                float64            `bson:"grupo,omitempty" json:"grupo,omitempty"`
-	Spanish              string             `bson:"spanish,omitempty" json:"spanish,omitempty"`
+	English              *string            `bson:"english,omitempty" json:"english,omitempty"`
+	Reflexive            *bool              `bson:"reflexive,omitempty" json:"reflexive,omitempty"`
+	Irregular            *bool              `bson:"irregular,omitempty" json:"irregular,omitempty"`
+	CategoriaDeIrregular *string            `bson:"categoría_de_irregular,omitempty" json:"categoría_de_irregular,omitempty"`
+	CambiarDeIrregular   *string            `bson:"cambiar_de_irregular,omitempty" json:"cambiar_de_irregular,omitempty"`
+	Terminacion          *string            `bson:"terminación,omitempty" json:"terminación,omitempty"`
+	Grupo                *float64           `bson:"grupo,omitempty" json:"grupo,omitempty"`
+	Spanish              *string            `bson:"spanish,omitempty" json:"spanish,omitempty"`
 }
