@@ -8,6 +8,7 @@ import (
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/net/context"
 )
@@ -27,6 +28,25 @@ func VerboList(ctx context.Context, db *mongo.Collection) ([]Verbo, error) {
 	}
 
 	return verboList, nil
+}
+
+// RetrieveVerboByID gets the first Verbo in the db with the provided ID.
+func RetrieveVerboByID(ctx context.Context, db *mongo.Collection, _id string) (*Verbo, error) {
+
+	var verbo Verbo
+
+	id, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+		return nil, apierror.ErrInvalidID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&verbo); err != nil {
+		return nil, apierror.ErrNotFound
+	}
+
+	fmt.Println("verbo found : ", verbo)
+
+	return &verbo, nil
 }
 
 // CreateVerbo adds a Verbo to the database.
