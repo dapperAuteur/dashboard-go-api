@@ -79,3 +79,35 @@ func (v Verbo) CreateVerbo(ctx context.Context, w http.ResponseWriter, r *http.R
 
 	return web.Respond(ctx, w, verbo, http.StatusCreated)
 }
+
+// UpdateOneVerbo decodes the body of a request to update an existing Verbo.
+// The ID of the Verbo is part of the request URL.
+func (v *Verbo) UpdateOneVerbo(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	verboID := chi.URLParam(r, "_id")
+
+	var verboUpdate word.UpdateVerbo
+	if err := web.Decode(r, &verboUpdate); err != nil {
+		return errors.Wrap(err, "decoding verbo update")
+	}
+
+	if err := word.UpdateOneVerbo(ctx, v.DB, claims, verboID, verboUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating verbo %q", verboID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
