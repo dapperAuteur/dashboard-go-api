@@ -169,6 +169,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/verbos/{_id}", verbo.RetrieveVerboByID)
 	app.Handle(http.MethodPost, "/v1/verbos", verbo.CreateVerbo, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodPut, "/v1/verbos/{_id}", verbo.UpdateOneVerbo, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/verbos/{_id}", verbo.DeleteVerboByID, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	return app
 }
