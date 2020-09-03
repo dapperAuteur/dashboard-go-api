@@ -79,7 +79,7 @@ type NewAffix struct {
 // It uses pointer fields so we can differentiate between a field that was NOT provided and a field that was provided as explicitly blank.
 // Normally we do NOT want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateAffix struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Morpheme  *string            `bson:"morpheme,omitempty" json:"morpheme,omitempty"`
 	Meaning   *[]string          `bson:"meaning,omitempty" json:"meaning,omitempty"`
 	Tongue    *string            `bson:"tongue,omitempty" json:"tongue,omitempty"`
