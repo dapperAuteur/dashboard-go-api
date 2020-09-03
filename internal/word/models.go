@@ -88,3 +88,46 @@ type UpdateAffix struct {
 	Media     *[]string          `bson:"media,omitempty" json:"media,omitempty"`
 	Note      *[]string          `bson:"note,omitempty" json:"note,omitempty"`
 }
+
+// Verbo type is a group of related Spanish verbos.
+type Verbo struct {
+	ID                   primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	English              string             `bson:"english,omitempty" json:"english,omitempty"`
+	Reflexive            bool               `bson:"reflexive,omitempty" json:"reflexive,omitempty"`
+	Irregular            bool               `bson:"irregular,omitempty" json:"irregular,omitempty"`
+	CategoriaDeIrregular string             `bson:"categoría_de_irregular,omitempty" json:"categoría_de_irregular,omitempty"`
+	CambiarDeIrregular   string             `bson:"cambiar_de_irregular,omitempty" json:"cambiar_de_irregular,omitempty"`
+	Terminacion          string             `bson:"terminación,omitempty" json:"terminación,omitempty"`
+	Grupo                float64            `bson:"grupo,omitempty" json:"grupo,omitempty"`
+	Spanish              string             `bson:"spanish,omitempty" json:"spanish,omitempty"`
+	CreatedAt            time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty" validate:"datetime"`
+	UpdatedAt            time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty" validate:"datetime"`
+}
+
+// NewVerbo type is what's required from client to create a new Verbo.
+type NewVerbo struct {
+	English              string  `bson:"english,omitempty" json:"english,omitempty"`
+	Reflexive            bool    `bson:"reflexive,omitempty" json:"reflexive,omitempty"`
+	Irregular            bool    `bson:"irregular,omitempty" json:"irregular,omitempty"`
+	CategoriaDeIrregular string  `bson:"categoría_de_irregular,omitempty" json:"categoría_de_irregular,omitempty"`
+	CambiarDeIrregular   string  `bson:"cambiar_de_irregular,omitempty" json:"cambiar_de_irregular,omitempty"`
+	Terminacion          string  `bson:"terminación,omitempty" json:"terminación,omitempty"`
+	Grupo                float64 `bson:"grupo,omitempty" json:"grupo,omitempty"`
+	Spanish              string  `bson:"spanish,omitempty" json:"spanish,omitempty"`
+}
+
+// UpdateVerbo defines what information may be provided to modify an existing Verbo.
+// All fields are optional so clients can send just the fields they want changed.
+// It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided explicitly blank.
+// Normally we do NOT want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
+type UpdateVerbo struct {
+	ID                   primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	English              string             `bson:"english,omitempty" json:"english,omitempty"`
+	Reflexive            bool               `bson:"reflexive,omitempty" json:"reflexive,omitempty"`
+	Irregular            bool               `bson:"irregular,omitempty" json:"irregular,omitempty"`
+	CategoriaDeIrregular string             `bson:"categoría_de_irregular,omitempty" json:"categoría_de_irregular,omitempty"`
+	CambiarDeIrregular   string             `bson:"cambiar_de_irregular,omitempty" json:"cambiar_de_irregular,omitempty"`
+	Terminacion          string             `bson:"terminación,omitempty" json:"terminación,omitempty"`
+	Grupo                float64            `bson:"grupo,omitempty" json:"grupo,omitempty"`
+	Spanish              string             `bson:"spanish,omitempty" json:"spanish,omitempty"`
+}
