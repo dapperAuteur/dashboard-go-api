@@ -6,9 +6,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/word"
+	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
 )
@@ -32,6 +35,26 @@ func (v Verbo) VerboList(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	return web.Respond(ctx, w, verboList, http.StatusOK)
+}
+
+// RetrieveVerboByID gets the Affix from the db identified by an _id in the request URL, then encodes it in a response client.
+func (v Verbo) RetrieveVerboByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	verboFound, err := word.RetrieveVerboByID(ctx, v.DB, _id)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for verbo %q", _id)
+		}
+	}
+
+	return web.Respond(ctx, w, verboFound, http.StatusOK)
 }
 
 // CreateVerbo decodes the body of a request to create a new Verbo.
