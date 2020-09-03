@@ -155,6 +155,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/affixes", affix.AffixList)
 	app.Handle(http.MethodPost, "/v1/affixes", affix.CreateAffix, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodGet, "/v1/affixes/{_id}", affix.RetrieveAffixByID)
+	app.Handle(http.MethodPut, "/v1/affixes/{_id}", affix.UpdateOneAffix, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	return app
 }
