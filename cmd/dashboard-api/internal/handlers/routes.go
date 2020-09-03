@@ -166,6 +166,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	// Verbo Routes
 	app.Handle(http.MethodGet, "/v1/verbos", verbo.VerboList)
+	app.Handle(http.MethodPost, "/v1/verbos", verbo.CreateVerbo, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	return app
 }
