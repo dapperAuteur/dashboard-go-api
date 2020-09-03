@@ -177,3 +177,32 @@ func UpdateOneAffix(ctx context.Context, db *mongo.Collection, user auth.Claims,
 
 	return nil
 }
+
+// DeleteAffixByID removes the Affix identified by a give ID.
+func DeleteAffixByID(ctx context.Context, db *mongo.Collection, user auth.Claims, affixID string) error {
+
+	affixObjectID, err := primitive.ObjectIDFromHex(affixID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	_, err = RetrieveAffixByID(ctx, db, affixID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": affixObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting affix %s", affixID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
