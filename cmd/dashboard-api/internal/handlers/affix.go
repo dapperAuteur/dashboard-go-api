@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -61,7 +60,6 @@ func (a Affix) RetrieveAffixByID(ctx context.Context, w http.ResponseWriter, r *
 // CreateAffix decodes the body of a request to create a new Affix.
 // The full Affix with generated fields is sent back in the response.
 func (a Affix) CreateAffix(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-	fmt.Println("ctx : ", ctx)
 
 	claims, ok := ctx.Value(auth.Key).(auth.Claims)
 	if !ok {
