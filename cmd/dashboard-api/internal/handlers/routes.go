@@ -41,6 +41,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	// Word Related
 	wordCollection := db.Collection("words")
 	affixCollection := db.Collection("affixes")
+	verboCollection := db.Collection("verbos")
 
 	// Note Related
 	note := Note{
@@ -89,6 +90,11 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	affix := Affix{
 		DB:  affixCollection,
+		Log: logger,
+	}
+
+	verbo := Verbo{
+		DB:  verboCollection,
 		Log: logger,
 	}
 
@@ -157,6 +163,9 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/affixes/{_id}", affix.RetrieveAffixByID)
 	app.Handle(http.MethodPut, "/v1/affixes/{_id}", affix.UpdateOneAffix, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/affixes/{_id}", affix.DeleteAffixByID, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Verbo Routes
+	app.Handle(http.MethodGet, "/v1/verbos", verbo.VerboList)
 
 	return app
 }
