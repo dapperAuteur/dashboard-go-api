@@ -156,3 +156,32 @@ func UpdateOneVerbo(ctx context.Context, db *mongo.Collection, user auth.Claims,
 
 	return nil
 }
+
+// DeleteVerboByID removes the Verbo identified by a given ID.
+func DeleteVerboByID(ctx context.Context, db *mongo.Collection, user auth.Claims, verboID string) error {
+
+	verboObjectID, err := primitive.ObjectIDFromHex(verboID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	_, err = RetrieveVerboByID(ctx, db, verboID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": verboObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting verbo %s", verboID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
