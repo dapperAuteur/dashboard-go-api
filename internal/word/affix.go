@@ -7,6 +7,7 @@ import (
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
+	"github.com/dapperAuteur/dashboard-go-api/internal/utility"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -78,4 +79,101 @@ func CreateAffix(ctx context.Context, db *mongo.Collection, user auth.Claims, ne
 	fmt.Println("affixResult : ", affixResult)
 
 	return &affix, nil
+}
+
+// UpdateOneAffix modifies data about one Affix.
+// It will ERROR if the specified affixID is invalid or does NOT reference an existing Affix.
+func UpdateOneAffix(ctx context.Context, db *mongo.Collection, user auth.Claims, affixID string, updateAffix UpdateAffix, now time.Time) error {
+
+	affixObjectID, err := primitive.ObjectIDFromHex(affixID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundAffix, err := RetrieveAffixByID(ctx, db, affixID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("affix to update found %+v : \n", foundAffix)
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	affix := Affix{}
+
+	if updateAffix.AffixType != nil {
+		objectIDs := append(*updateAffix.AffixType, foundAffix.AffixType...)
+		uniqueAffixTypeIds := utility.RemoveDuplicateStringValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		affix.AffixType = uniqueAffixTypeIds
+	}
+
+	if updateAffix.Meaning != nil {
+		objectIDs := append(*updateAffix.Meaning, foundAffix.Meaning...)
+		uniqueMeaning := utility.RemoveDuplicateStringValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		affix.Meaning = uniqueMeaning
+	}
+
+	if updateAffix.Example != nil {
+		objectIDs := append(*updateAffix.Example, foundAffix.Example...)
+		uniqueExample := utility.RemoveDuplicateStringValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		affix.Example = uniqueExample
+	}
+
+	if updateAffix.Media != nil {
+		objectIDs := append(*updateAffix.Media, foundAffix.Media...)
+		uniqueMediaIds := utility.RemoveDuplicateStringValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		affix.Media = uniqueMediaIds
+	}
+
+	if updateAffix.Note != nil {
+		objectIDs := append(*updateAffix.Note, foundAffix.Note...)
+		uniqueNoteIds := utility.RemoveDuplicateStringValues(objectIDs)
+		if err != nil {
+			return err
+		}
+		affix.Note = uniqueNoteIds
+	}
+
+	if updateAffix.Morpheme != nil {
+		affix.Morpheme = *updateAffix.Morpheme
+	}
+
+	if updateAffix.Tongue != nil {
+		affix.Tongue = *updateAffix.Tongue
+	}
+
+	affix.ID = affixObjectID
+
+	affix.UpdatedAt = now
+
+	updateA := bson.M{
+		"$set": affix,
+	}
+
+	fmt.Printf("affix changes set %v : \n", updateA)
+
+	affixResult, err := db.UpdateOne(ctx, bson.M{"_id": affixObjectID}, updateA)
+	if err != nil {
+		return errors.Wrap(err, "updating affix")
+	}
+
+	fmt.Printf("affixResult updated %v : \n", affixResult)
+
+	return nil
 }
