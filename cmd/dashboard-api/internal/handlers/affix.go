@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/word"
 	"github.com/go-chi/chi"
@@ -53,4 +56,28 @@ func (a Affix) RetrieveAffixByID(ctx context.Context, w http.ResponseWriter, r *
 	}
 
 	return web.Respond(ctx, w, affixFound, http.StatusOK)
+}
+
+// CreateAffix decodes the body of a request to create a new Affix.
+// The full Affix with generated fields is sent back in the response.
+func (a Affix) CreateAffix(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	fmt.Println("ctx : ", ctx)
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return web.NewShutdownError("auth claims missing from context")
+	}
+
+	var newAffix word.NewAffix
+
+	if err := web.Decode(r, &newAffix); err != nil {
+		return err
+	}
+
+	affix, err := word.CreateAffix(ctx, a.DB, claims, newAffix, time.Now())
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(ctx, w, affix, http.StatusCreated)
 }
