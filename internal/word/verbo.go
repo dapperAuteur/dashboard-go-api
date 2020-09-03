@@ -80,3 +80,79 @@ func CreateVerbo(ctx context.Context, db *mongo.Collection, user auth.Claims, ne
 
 	return &verbo, nil
 }
+
+// UpdateOneVerbo modifies data about one Verbo.
+// It will ERROR if the specified verboID is invalid or does NOT reference an existing Verbo.
+func UpdateOneVerbo(ctx context.Context, db *mongo.Collection, user auth.Claims, verboID string, updateVerbo UpdateVerbo, now time.Time) error {
+
+	verboObjectID, err := primitive.ObjectIDFromHex(verboID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundVerbo, err := RetrieveVerboByID(ctx, db, verboID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("verbo to update found %+v : \n", foundVerbo)
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	verbo := Verbo{}
+
+	if updateVerbo.CambiarDeIrregular != nil {
+		verbo.CambiarDeIrregular = *updateVerbo.CambiarDeIrregular
+	}
+
+	if updateVerbo.CategoriaDeIrregular != nil {
+		verbo.CategoriaDeIrregular = *updateVerbo.CategoriaDeIrregular
+	}
+
+	if updateVerbo.English != nil {
+		verbo.English = *updateVerbo.English
+	}
+
+	if updateVerbo.Grupo != nil {
+		verbo.Grupo = *updateVerbo.Grupo
+	}
+
+	if updateVerbo.Irregular != nil {
+		verbo.Irregular = *updateVerbo.Irregular
+	}
+
+	if updateVerbo.Reflexive != nil {
+		verbo.Reflexive = *updateVerbo.Reflexive
+	}
+
+	if updateVerbo.Spanish != nil {
+		verbo.Spanish = *updateVerbo.Spanish
+	}
+
+	if updateVerbo.Terminacion != nil {
+		verbo.Terminacion = *updateVerbo.Terminacion
+	}
+
+	verbo.ID = verboObjectID
+
+	verbo.UpdatedAt = now
+
+	updateV := bson.M{
+		"$set": verbo,
+	}
+
+	fmt.Printf("verbo changes set %v : \n", updateV)
+
+	verboResult, err := db.UpdateOne(ctx, bson.M{"_id": verboObjectID}, updateV)
+	if err != nil {
+		return errors.Wrap(err, "updating verbo")
+	}
+
+	fmt.Printf("verboResult updated %v : \n", verboResult)
+
+	return nil
+}
