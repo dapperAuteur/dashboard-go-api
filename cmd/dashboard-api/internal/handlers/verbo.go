@@ -4,7 +4,9 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/dapperAuteur/dashboard-go-api/internal/word"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -30,4 +32,27 @@ func (v Verbo) VerboList(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	return web.Respond(ctx, w, verboList, http.StatusOK)
+}
+
+// CreateVerbo decodes the body of a request to create a new Verbo.
+// The full Verbo with the generated fields is sent back in the response.
+func (v Verbo) CreateVerbo(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return web.NewShutdownError("auth claims missing from context")
+	}
+
+	var newVerbo word.NewVerbo
+
+	if err := web.Decode(r, &newVerbo); err != nil {
+		return err
+	}
+
+	verbo, err := word.CreateVerbo(ctx, v.DB, claims, newVerbo, time.Now())
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(ctx, w, verbo, http.StatusCreated)
 }
