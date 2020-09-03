@@ -81,3 +81,35 @@ func (a Affix) CreateAffix(ctx context.Context, w http.ResponseWriter, r *http.R
 
 	return web.Respond(ctx, w, affix, http.StatusCreated)
 }
+
+// UpdateOneAffix decodes the body of a request to update an existing Affix.
+// The ID of the Affix is part of the request URL.
+func (a *Affix) UpdateOneAffix(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	affixID := chi.URLParam(r, "_id")
+
+	var affixUpdate word.UpdateAffix
+	if err := web.Decode(r, &affixUpdate); err != nil {
+		return errors.Wrap(err, "decoding affix update")
+	}
+
+	if err := word.UpdateOneAffix(ctx, a.DB, claims, affixID, affixUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating affix %q", affixID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
