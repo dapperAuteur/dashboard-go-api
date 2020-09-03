@@ -38,6 +38,11 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	episodesCollection := db.Collection("episodes")
 	podcastsCollection := db.Collection("podcasts")
 
+	// Word Related
+	wordCollection := db.Collection("words")
+	affixCollection := db.Collection("affixes")
+	verboCollection := db.Collection("verbos")
+
 	// Note Related
 	note := Note{
 		DB:  notesCollection,
@@ -74,6 +79,22 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 
 	episode := Episode{
 		DB:  episodesCollection,
+		Log: logger,
+	}
+
+	// Word Related
+	word := Word{
+		DB:  wordCollection,
+		Log: logger,
+	}
+
+	affix := Affix{
+		DB:  affixCollection,
+		Log: logger,
+	}
+
+	verbo := Verbo{
+		DB:  verboCollection,
 		Log: logger,
 	}
 
@@ -127,6 +148,28 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/podcasts/{title}", podcast.Retrieve)
 	app.Handle(http.MethodPut, "/v1/podcasts/{_id}", podcast.UpdateOnePodcast, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/podcasts/{_id}", podcast.DeletePodcast, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Word Routes
+	app.Handle(http.MethodGet, "/v1/words", word.WordList)
+	app.Handle(http.MethodPost, "/v1/words", word.CreateWord, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodGet, "/v1/words/{_id}", word.RetrieveWordByID)
+	// app.Handle(http.MethodGet, "/v1/words/{word}", word.RetrieveWord)
+	app.Handle(http.MethodPut, "/v1/words/{_id}", word.UpdateOneWord, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/words/{_id}", word.DeleteWord, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Affix Routes
+	app.Handle(http.MethodGet, "/v1/affixes", affix.AffixList)
+	app.Handle(http.MethodPost, "/v1/affixes", affix.CreateAffix, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodGet, "/v1/affixes/{_id}", affix.RetrieveAffixByID)
+	app.Handle(http.MethodPut, "/v1/affixes/{_id}", affix.UpdateOneAffix, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/affixes/{_id}", affix.DeleteAffixByID, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Verbo Routes
+	app.Handle(http.MethodGet, "/v1/verbos", verbo.VerboList)
+	app.Handle(http.MethodGet, "/v1/verbos/{_id}", verbo.RetrieveVerboByID)
+	app.Handle(http.MethodPost, "/v1/verbos", verbo.CreateVerbo, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodPut, "/v1/verbos/{_id}", verbo.UpdateOneVerbo, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/verbos/{_id}", verbo.DeleteVerboByID, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	return app
 }

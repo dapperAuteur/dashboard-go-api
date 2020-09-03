@@ -20,7 +20,7 @@ func List(ctx context.Context, db *mongo.Collection) ([]Podcast, error) {
 
 	podcastCursor, err := db.Find(ctx, bson.M{})
 	if err != nil {
-		return nil, errors.Wrapf(err, "getting podcastCursor. retrieving podcast list")
+		return nil, errors.Wrapf(err, "getting podcastCursor retrieving podcast list")
 	}
 
 	if err = podcastCursor.All(ctx, &podcastList); err != nil {
