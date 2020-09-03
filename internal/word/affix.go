@@ -178,7 +178,7 @@ func UpdateOneAffix(ctx context.Context, db *mongo.Collection, user auth.Claims,
 	return nil
 }
 
-// DeleteAffixByID removes the Affix identified by a give ID.
+// DeleteAffixByID removes the Affix identified by a given ID.
 func DeleteAffixByID(ctx context.Context, db *mongo.Collection, user auth.Claims, affixID string) error {
 
 	affixObjectID, err := primitive.ObjectIDFromHex(affixID)
