@@ -111,3 +111,29 @@ func (v *Verbo) UpdateOneVerbo(ctx context.Context, w http.ResponseWriter, r *ht
 
 	return web.Respond(ctx, w, nil, http.StatusOK)
 }
+
+// DeleteVerboByID removes a single Verbo identified by a verboID in the request URL.
+func (v *Verbo) DeleteVerboByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	verboID := chi.URLParam(r, "_id")
+
+	if err := word.DeleteVerboByID(ctx, v.DB, claims, verboID); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "deleting verbo %q", verboID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
+}
