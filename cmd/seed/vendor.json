@@ -1,0 +1,616 @@
+[{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e93b"
+  },
+  "vendor_name": "Adorama"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e93c"
+  },
+  "vendor_name": "Albertsons"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e93d"
+  },
+  "vendor_name": "Amazon Smiles"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e93e"
+  },
+  "vendor_name": "Arizona Firearms"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e93f"
+  },
+  "vendor_name": "ArlanWasHere"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e940"
+  },
+  "vendor_name": "Audible"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e941"
+  },
+  "vendor_name": "AWS"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e942"
+  },
+  "vendor_name": "B8TA"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e943"
+  },
+  "vendor_name": "Barbary Coast"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e944"
+  },
+  "vendor_name": "BART"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e945"
+  },
+  "vendor_name": "Best Buy"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e946"
+  },
+  "vendor_name": "Bookshop .org"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e947"
+  },
+  "vendor_name": "Brendas French Soul Food"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e948"
+  },
+  "vendor_name": "Brownells"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e949"
+  },
+  "vendor_name": "Budget Rental Car"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e94a"
+  },
+  "vendor_name": "Buffalo Wild Wings"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e94b"
+  },
+  "vendor_name": "C2 Tactical"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e94c"
+  },
+  "vendor_name": "Carl's Jr 1100769"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e94d"
+  },
+  "vendor_name": "casedealer.com"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e94e"
+  },
+  "vendor_name": "Century Theatre"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e94f"
+  },
+  "vendor_name": "Cheba Hut"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e950"
+  },
+  "vendor_name": "Chompies"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e951"
+  },
+  "vendor_name": "Christina"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e952"
+  },
+  "vendor_name": "Cole Hardware Russian Hill"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e953"
+  },
+  "vendor_name": "comforttac"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e954"
+  },
+  "vendor_name": "CostCo"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e955"
+  },
+  "vendor_name": "Crab Shop Pier 39"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e956"
+  },
+  "vendor_name": "Culvers"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e957"
+  },
+  "vendor_name": "CVS"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e958"
+  },
+  "vendor_name": "derrickgracetwo"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e959"
+  },
+  "vendor_name": "Dicks Sporting Good"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e95a"
+  },
+  "vendor_name": "Dillys Deli"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e95b"
+  },
+  "vendor_name": "Donatos/Red Robin"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e95c"
+  },
+  "vendor_name": "DoorDash"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e95d"
+  },
+  "vendor_name": "Dunkin Donuts"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e95e"
+  },
+  "vendor_name": "eBay"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e95f"
+  },
+  "vendor_name": "Eddy"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e960"
+  },
+  "vendor_name": "eFax"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e961"
+  },
+  "vendor_name": "Einstein Bros Bagels"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e962"
+  },
+  "vendor_name": "Fermentation Lab"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e963"
+  },
+  "vendor_name": "Firehouse Subs"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e964"
+  },
+  "vendor_name": "First Watch"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e965"
+  },
+  "vendor_name": "firstbankcard"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e966"
+  },
+  "vendor_name": "Flavors of Lousiana"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e967"
+  },
+  "vendor_name": "Flexispot"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e968"
+  },
+  "vendor_name": "Frys"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e969"
+  },
+  "vendor_name": "Golden Farmers"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e96a"
+  },
+  "vendor_name": "Google Play"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e96b"
+  },
+  "vendor_name": "gumroad"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e96c"
+  },
+  "vendor_name": "Halal Guys"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e96d"
+  },
+  "vendor_name": "Heroes In Color"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e96e"
+  },
+  "vendor_name": "HighTimes"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e96f"
+  },
+  "vendor_name": "Hot Cookie"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e970"
+  },
+  "vendor_name": "Hot Pot Caribbean Cuisine"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e971"
+  },
+  "vendor_name": "Hyperice"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e972"
+  },
+  "vendor_name": "Ike's Love & Sandwiches"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e973"
+  },
+  "vendor_name": "In-N-Out"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e974"
+  },
+  "vendor_name": "Intuit Turbo Tax"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e975"
+  },
+  "vendor_name": "iOS Store"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e976"
+  },
+  "vendor_name": "itch.io game sight"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e977"
+  },
+  "vendor_name": "Jersey Mikes"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e978"
+  },
+  "vendor_name": "Joann"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e979"
+  },
+  "vendor_name": "JS Tutor"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e97a"
+  },
+  "vendor_name": "Kindle"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e97b"
+  },
+  "vendor_name": "KO8 straps"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e97c"
+  },
+  "vendor_name": "La Playa Taqueria"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e97d"
+  },
+  "vendor_name": "Libro .fm"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e97e"
+  },
+  "vendor_name": "Lo-Los"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e97f"
+  },
+  "vendor_name": "Lowaunz"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e980"
+  },
+  "vendor_name": "Lyft"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e981"
+  },
+  "vendor_name": "Mad Greens"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e982"
+  },
+  "vendor_name": "Malcolm Pitts"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e983"
+  },
+  "vendor_name": "Market Street Cycles"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e984"
+  },
+  "vendor_name": "MeetEdgar"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e985"
+  },
+  "vendor_name": "NAAGA"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e986"
+  },
+  "vendor_name": "namecheap"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e987"
+  },
+  "vendor_name": "Nintendo"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e988"
+  },
+  "vendor_name": "OpenDoor"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e989"
+  },
+  "vendor_name": "Palmetto State Armory"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e98a"
+  },
+  "vendor_name": "Patreon"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e98b"
+  },
+  "vendor_name": "PayPal"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e98c"
+  },
+  "vendor_name": "Petro #390"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e98d"
+  },
+  "vendor_name": "Piccadilly Fish & Chips"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e98e"
+  },
+  "vendor_name": "Play It Again Sports"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e98f"
+  },
+  "vendor_name": "Post Office"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e990"
+  },
+  "vendor_name": "Real Food Company"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e991"
+  },
+  "vendor_name": "Red Robin"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e992"
+  },
+  "vendor_name": "Red Robin/Donatos"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e993"
+  },
+  "vendor_name": "Reds"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e994"
+  },
+  "vendor_name": "Ritual"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e995"
+  },
+  "vendor_name": "SAFE"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e996"
+  },
+  "vendor_name": "Salad & Go"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e997"
+  },
+  "vendor_name": "San Brisas"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e998"
+  },
+  "vendor_name": "SF Civic Center Famers Market"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e999"
+  },
+  "vendor_name": "Shady Rays"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e99a"
+  },
+  "vendor_name": "Spice Monkey Restaurant & Bar"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e99b"
+  },
+  "vendor_name": "Split"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e99c"
+  },
+  "vendor_name": "Sprouts"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e99d"
+  },
+  "vendor_name": "Square Pie Guys"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e99e"
+  },
+  "vendor_name": "Stand For Kentucky: Charles Booker"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e99f"
+  },
+  "vendor_name": "Stellas Stellar Hair"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a0"
+  },
+  "vendor_name": "Subway"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a1"
+  },
+  "vendor_name": "Sweetwater"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a2"
+  },
+  "vendor_name": "System76"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a3"
+  },
+  "vendor_name": "T & L Laundry Cafe"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a4"
+  },
+  "vendor_name": "Target"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a5"
+  },
+  "vendor_name": "Teakwoods"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a6"
+  },
+  "vendor_name": "Tidal"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a7"
+  },
+  "vendor_name": "TJ Maxx"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a8"
+  },
+  "vendor_name": "Tronus LLC"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9a9"
+  },
+  "vendor_name": "U-Haul"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9aa"
+  },
+  "vendor_name": "Urban Intellectuals"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9ab"
+  },
+  "vendor_name": "USCCA"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9ac"
+  },
+  "vendor_name": "USPS"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9ad"
+  },
+  "vendor_name": "USPS Dianes"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9ae"
+  },
+  "vendor_name": "Viible"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9af"
+  },
+  "vendor_name": "Vilros LLC"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9b0"
+  },
+  "vendor_name": "Visible"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9b1"
+  },
+  "vendor_name": "VP Racing of Blythe, 301"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9b2"
+  },
+  "vendor_name": "Walgreens"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9b3"
+  },
+  "vendor_name": "Western Union"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9b4"
+  },
+  "vendor_name": "Wetzels Pretzel"
+},{
+  "_id": {
+    "$oid": "5f3e18f8d95d06627dc8e9b5"
+  },
+  "vendor_name": "Woods Polk Station"
+}]
