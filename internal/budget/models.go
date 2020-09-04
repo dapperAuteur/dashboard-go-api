@@ -68,11 +68,11 @@ type UpdateFinancialAccount struct {
 
 // Vendor type is a group of vendors that process transactions
 type Vendor struct {
-	ID             primitive.ObjectID   `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
-	TransactionIDs []primitive.ObjectID `bson:"tranx_id,omitempty" json:"tranx_id,omitempty"`
-	VendorName     string               `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
-	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
-	UpdatedAt      time.Time            `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
+	ID             primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	TransactionIDs []string           `bson:"tranx_id,omitempty" json:"tranx_id,omitempty"`
+	VendorName     string             `bson:"vendor_name,omitempty" json:"vendor_name,omitempty"`
+	CreatedAt      time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt      time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
 }
 
 // NewVendor type is what's required from the client to create a new vendor

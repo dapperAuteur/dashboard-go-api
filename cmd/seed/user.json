@@ -1,0 +1,63 @@
+[{
+  "_id": {
+    "$oid": "5f332f1c70b2ec320bc219d0"
+  },
+  "email": "awe@awews.com",
+  "roles": [
+    "ADMIN",
+    "USER"
+  ],
+  "password_hash": {
+    "$binary": {
+      "base64": "JDJhJDEwJFc0YzFtbVJMYXRsRm5FTk5DU2dCck9uSi9YdWg3TnhneXlTbUJCUzRzV1ZiVUt4UkI2SDhT",
+      "subType": "00"
+    }
+  },
+  "createdAt": {
+    "$date": "2020-08-11T23:51:56.135Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-11T23:51:56.135Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f34a20cfc6526c63dcba87a"
+  },
+  "email": "user@awews.com",
+  "roles": [
+    "USER"
+  ],
+  "password_hash": {
+    "$binary": {
+      "base64": "JDJhJDEwJGxXODZMWXBQLzQwS0VNaWRoMlNXUC5KcmJubmtCQmpwWVliWXc0V09GbEtXZXdaZ2hXeXRT",
+      "subType": "00"
+    }
+  },
+  "createdAt": {
+    "$date": "2020-08-13T02:14:36.172Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-13T02:14:36.172Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f34aa6148d5d7e0a4116027"
+  },
+  "email": "admin@awews.com",
+  "roles": [
+    "ADMIN",
+    "USER"
+  ],
+  "password_hash": {
+    "$binary": {
+      "base64": "JDJhJDEwJHcuL0JDOUlYUkZVbkVMeGxlNTFzLi5IL3BtTXRyTVY0YzhXZ3kvbm5oN1VnZEVBVFMyN1pL",
+      "subType": "00"
+    }
+  },
+  "createdAt": {
+    "$date": "2020-08-13T02:50:08.989Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-13T02:50:08.989Z"
+  }
+}]
