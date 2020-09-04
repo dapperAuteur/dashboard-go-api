@@ -38,6 +38,9 @@ func run() error {
 	// ==
 	// Configuration
 
+	dbCredentials := os.Getenv("DATABASE_CRED")
+	fmt.Printf("************\n dbCredentials", dbCredentials)
+	a := `conf:"default:mongodb+srv://` + dbCredentials + `@localhost/palabras-express-api?retryWrites=true&w=majority"`
 	var cfg struct {
 		Web struct {
 			Address         string        `conf:"default:localhost:8080"`
@@ -47,7 +50,7 @@ func run() error {
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"` // connection string for Mongo Atlas Connection
+			AtlasURI string `a` // connection string for docker Mongo image
 			// AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@localhost/palabras-express-api?retryWrites=true&w=majority"` // connection string for docker Mongo image
 		}
 		Auth struct {
