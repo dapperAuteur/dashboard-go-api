@@ -40,22 +40,23 @@ func CreateVendor(ctx context.Context, db *mongo.Collection, user auth.Claims, n
 		return nil, apierror.ErrForbidden
 	}
 
-	var tranxObjectIDs []primitive.ObjectID
+	// var tranxObjectIDs []primitive.ObjectID
+	var tranxStringIDs []string
 
 	// check if prop is provided
 	if newVendor.TransactionIDs != nil {
 		// convert []newVendor.TransactionIDs (ObjectID) to []string
-		objIDs, err := utility.SliceStringsToObjectIDs(*newVendor.TransactionIDs)
-		if err != nil {
-			return nil, err
-		}
-		objIDs = append(objIDs, objIDs...)
-		tranxObjectIDs = utility.RemoveDuplicateObjectIDValues(objIDs)
+		// objIDs, err := utility.SliceStringsToObjectIDs(*newVendor.TransactionIDs)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		tranxIDs := append(*newVendor.TransactionIDs, *newVendor.TransactionIDs...)
+		tranxStringIDs = utility.RemoveDuplicateStringValues(tranxIDs)
 	}
 
 	vendor := Vendor{
 		VendorName:     newVendor.VendorName,
-		TransactionIDs: tranxObjectIDs,
+		TransactionIDs: tranxStringIDs,
 		CreatedAt:      now.UTC(),
 		UpdatedAt:      now.UTC(),
 	}
@@ -118,13 +119,13 @@ func UpdateOneVendor(ctx context.Context, db *mongo.Collection, user auth.Claims
 	if updateVendor.TransactionIDs != nil {
 		// take *updateVendor.TransactionIDs
 		// convert to []primitive.ObjectID and return
-		vendorObjIDs, err := utility.SliceStringsToObjectIDs(*updateVendor.TransactionIDs)
-		if err != nil {
-			return err
-		}
-		objectIDs := append(vendorObjIDs, foundVendor.TransactionIDs...)
-		uniqueVendorTranxObjIDs := utility.RemoveDuplicateObjectIDValues(objectIDs)
-		vendor.TransactionIDs = uniqueVendorTranxObjIDs
+		// vendorObjIDs, err := utility.SliceStringsToObjectIDs(*updateVendor.TransactionIDs)
+		// if err != nil {
+		// 	return err
+		// }
+		stringIDs := append(*updateVendor.TransactionIDs, foundVendor.TransactionIDs...)
+		uniqueVendorTranxStringIDs := utility.RemoveDuplicateStringValues(stringIDs)
+		vendor.TransactionIDs = uniqueVendorTranxStringIDs
 	}
 
 	vendor.ID = vObjectID
