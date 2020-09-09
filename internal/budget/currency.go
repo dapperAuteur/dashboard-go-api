@@ -3,8 +3,10 @@ package budget
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -43,6 +45,33 @@ func RetrieveCurrencyByID(ctx context.Context, db *mongo.Collection, _id string)
 	}
 
 	fmt.Println("currency found : ", currency)
+
+	return &currency, nil
+}
+
+// CreateCurrency adds a Currency to the database.
+// It returns the created Currency with the fields populated.
+func CreateCurrency(ctx context.Context, db *mongo.Collection, user auth.Claims, newCurrency NewCurrency, now time.Time) (*Currency, error) {
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+	if !isAdmin {
+		return nil, apierror.ErrForbidden
+	}
+
+	currency := Currency{
+		CurrencyName: newCurrency.CurrencyName,
+		CurrencyType: newCurrency.CurrencyType,
+		Symbol:       newCurrency.Symbol,
+		CreatedAt:    now.UTC(),
+		UpdatedAt:    now.UTC(),
+	}
+
+	currencyResult, err := db.InsertOne(ctx, currency)
+	if err != nil {
+		return nil, errors.Wrapf(err, "inserting Currency: %v", newCurrency)
+	}
+
+	fmt.Println("currencyResult : ", currencyResult)
 
 	return &currency, nil
 }
