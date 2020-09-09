@@ -144,7 +144,7 @@ type UpdateTransaction struct {
 // Currency type is a group of currencies
 type Currency struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
-	CurrencyName string             `bson:"curr_name,omitempty" json:"curr_name,omitempty"`
+	CurrencyName string             `bson:"currency,omitempty" json:"currency,omitempty"`
 	CurrencyType string             `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
 	Symbol       string             `bson:"symbol,omitempty" json:"symbol,omitempty"`
 	CreatedAt    time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
@@ -153,7 +153,7 @@ type Currency struct {
 
 // NewCurrency type is what's required from the client to create a new Currency
 type NewCurrency struct {
-	CurrencyName string `bson:"curr_name,omitempty" json:"curr_name,omitempty"`
+	CurrencyName string `bson:"currency,omitempty" json:"currency,omitempty"`
 	CurrencyType string `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
 	Symbol       string `bson:"symbol,omitempty" json:"symbol,omitempty"`
 }
@@ -164,7 +164,7 @@ type NewCurrency struct {
 // Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateCurrency struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
-	CurrencyName *string            `bson:"curr_name,omitempty" json:"curr_name,omitempty"`
+	CurrencyName *string            `bson:"currency,omitempty" json:"currency,omitempty"`
 	CurrencyType *string            `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
 	Symbol       string             `bson:"symbol,omitempty" json:"symbol,omitempty"`
 }
