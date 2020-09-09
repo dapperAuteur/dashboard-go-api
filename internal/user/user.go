@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -70,4 +71,26 @@ func Authenticate(ctx context.Context, db *mongo.Collection, now time.Time, emai
 	// Create some claims for the user and generate their token.
 	claims := auth.NewClaims(u.ID, u.Roles, now, time.Hour)
 	return claims, nil
+}
+
+// ListUsers gets all the Users from the database then encodes them in a response client.
+func ListUsers(ctx context.Context, db *mongo.Collection, user auth.Claims) ([]User, error) {
+
+	isUser := user.HasRole(auth.RoleUser)
+	if !isUser {
+		return nil, apierror.ErrForbidden
+	}
+
+	list := []User{}
+
+	cursor, err := db.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, errors.Wrapf(err, "getting cursor from User collection when retrieving user list")
+	}
+
+	if err = cursor.All(ctx, &list); err != nil {
+		return nil, errors.Wrapf(err, "retrieving user list")
+	}
+
+	return list, nil
 }
