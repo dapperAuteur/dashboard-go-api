@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -19,6 +21,7 @@ import (
 type Users struct {
 	DB            *mongo.Collection
 	authenticator *auth.Authenticator
+	Log           *log.Logger
 }
 
 // Token generates an authentication token for a user.
@@ -93,4 +96,25 @@ func (u Users) CreateUserAndLogin(ctx context.Context, w http.ResponseWriter, r 
 	// 	CreatedAt: now.UTC(),
 	// 	UpdatedAt: now.UTC(),
 	// }
+}
+
+// ListUsers gets all the Users from the service layer.
+func (u Users) ListUsers(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	fmt.Printf("\n ************\n ctx: \n", ctx)
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return web.NewShutdownError("auth claims missing from context")
+	}
+
+	ctx, span := trace.StartSpan(ctx, "handlers.User.List")
+	defer span.End()
+
+	list, err := user.ListUsers(ctx, u.DB, claims)
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(ctx, w, list, http.StatusOK)
 }
