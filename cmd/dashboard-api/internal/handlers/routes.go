@@ -21,9 +21,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodGet, "/v1/health", c.Health)
 
 	u := Users{DB: db.Collection("users"), authenticator: authenticator}
-
-	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
-	app.Handle(http.MethodPost, "/v1/users/token", u.CreateUserAndLogin)
+	usersCollection := db.Collection("users")
 
 	// Blog Related
 	notesCollection := db.Collection("notes")
@@ -42,6 +40,12 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	wordCollection := db.Collection("words")
 	affixCollection := db.Collection("affixes")
 	verboCollection := db.Collection("verbos")
+
+	// User Related
+	user := Users{
+		DB:  usersCollection,
+		Log: logger,
+	}
 
 	// Note Related
 	note := Note{
@@ -97,6 +101,11 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 		DB:  verboCollection,
 		Log: logger,
 	}
+
+	// User Routes
+	app.Handle(http.MethodGet, "/v1/users/token", u.Token)
+	app.Handle(http.MethodPost, "/v1/users/token", u.CreateUserAndLogin)
+	app.Handle(http.MethodGet, "/v1/users", user.ListUsers)
 
 	// Budget Routes
 	app.Handle(http.MethodGet, "/v1/budgets", budget.List)
