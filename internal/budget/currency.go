@@ -2,9 +2,12 @@ package budget
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -23,4 +26,23 @@ func CurrencyList(ctx context.Context, db *mongo.Collection) ([]Currency, error)
 	}
 
 	return currencyList, nil
+}
+
+// RetrieveCurrencyByID gets the first Currency in the db with the provided ID.
+func RetrieveCurrencyByID(ctx context.Context, db *mongo.Collection, _id string) (*Currency, error) {
+
+	var currency Currency
+
+	id, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+		return nil, apierror.ErrInvalidID
+	}
+
+	if err := db.FindOne(ctx, bson.M{"_id": id}).Decode(&currency); err != nil {
+		return nil, apierror.ErrNotFound
+	}
+
+	fmt.Println("currency found : ", currency)
+
+	return &currency, nil
 }
