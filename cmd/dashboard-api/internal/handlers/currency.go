@@ -5,8 +5,11 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/budget"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
+	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opencensus.io/trace"
 )
@@ -30,4 +33,25 @@ func (c Currency) CurrencyList(ctx context.Context, w http.ResponseWriter, r *ht
 	}
 
 	return web.Respond(ctx, w, currencyList, http.StatusOK)
+}
+
+// RetrieveCurrencyByID gets the Currency from the db identified by an _id in the request URL.
+// Then encodes it in a response client.
+func (c Currency) RetrieveCurrencyByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	_id := chi.URLParam(r, "_id")
+
+	currencyFound, err := budget.RetrieveCurrencyByID(ctx, c.DB, _id)
+	if err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		default:
+			return errors.Wrapf(err, "looking for currency %q", _id)
+		}
+	}
+
+	return web.Respond(ctx, w, currencyFound, http.StatusOK)
 }
