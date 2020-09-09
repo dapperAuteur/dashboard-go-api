@@ -4,9 +4,11 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/dapperAuteur/dashboard-go-api/internal/apierror"
 	"github.com/dapperAuteur/dashboard-go-api/internal/budget"
+	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/web"
 	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
@@ -54,4 +56,27 @@ func (c Currency) RetrieveCurrencyByID(ctx context.Context, w http.ResponseWrite
 	}
 
 	return web.Respond(ctx, w, currencyFound, http.StatusOK)
+}
+
+// CreateCurrency decodes the body of a request to create a new Currency.
+// The full Currency with the generated fields is sent back in the response.
+func (c Currency) CreateCurrency(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return web.NewShutdownError("auth claims missing from context")
+	}
+
+	var newCurrency budget.NewCurrency
+
+	if err := web.Decode(r, &newCurrency); err != nil {
+		return err
+	}
+
+	currency, err := budget.CreateCurrency(ctx, c.DB, claims, newCurrency, time.Now())
+	if err != nil {
+		return err
+	}
+
+	return web.Respond(ctx, w, currency, http.StatusCreated)
 }
