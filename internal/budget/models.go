@@ -146,6 +146,7 @@ type Currency struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
 	CurrencyName string             `bson:"curr_name,omitempty" json:"curr_name,omitempty"`
 	CurrencyType string             `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
+	Symbol       string             `bson:"symbol,omitempty" json:"symbol,omitempty"`
 	CreatedAt    time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
 	UpdatedAt    time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
 }
@@ -154,6 +155,7 @@ type Currency struct {
 type NewCurrency struct {
 	CurrencyName string `bson:"curr_name,omitempty" json:"curr_name,omitempty"`
 	CurrencyType string `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
+	Symbol       string `bson:"symbol,omitempty" json:"symbol,omitempty"`
 }
 
 // UpdateCurrency defines what information may be provided to modify an existing Currency.
@@ -164,4 +166,5 @@ type UpdateCurrency struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
 	CurrencyName *string            `bson:"curr_name,omitempty" json:"curr_name,omitempty"`
 	CurrencyType *string            `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
+	Symbol       string             `bson:"symbol,omitempty" json:"symbol,omitempty"`
 }
