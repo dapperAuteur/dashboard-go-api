@@ -33,6 +33,7 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	financialAccountsCollection := db.Collection("financialaccounts")
 	vendorsCollection := db.Collection("vendors")
 	transactionsCollection := db.Collection("transactions")
+	currenciesCollection := db.Collection("allowedCurrency")
 
 	// Podcast Related
 	episodesCollection := db.Collection("episodes")
@@ -52,6 +53,11 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	// Finance Related
 	budget := Budget{
 		DB:  budgetsCollection,
+		Log: logger,
+	}
+
+	currency := Currency{
+		DB:  currenciesCollection,
 		Log: logger,
 	}
 
@@ -105,6 +111,13 @@ func API(shutdown chan os.Signal, logger *log.Logger, db *mongo.Database, authen
 	app.Handle(http.MethodPost, "/v1/budgets", budget.Create, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodPut, "/v1/budgets/{_id}", budget.UpdateOne, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 	app.Handle(http.MethodDelete, "/v1/budgets/{_id}", budget.Delete, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+
+	// Currency Routes
+	app.Handle(http.MethodGet, "/v1/currencies", currency.CurrencyList)
+	app.Handle(http.MethodGet, "/v1/currencies/{_id}", currency.RetrieveCurrencyByID)
+	app.Handle(http.MethodPost, "/v1/currencies", currency.CreateCurrency, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodPut, "/v1/currencies/{_id}", currency.UpdateOneCurrency, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
+	app.Handle(http.MethodDelete, "/v1/currencies/{_id}", currency.DeleteCurrencyByID, mid.Authenticate(authenticator), mid.HasRole(auth.RoleAdmin))
 
 	// FinancialAccount Routes
 	app.Handle(http.MethodGet, "/v1/financial-accounts", financialAccount.ListFinancialAccounts)

@@ -140,3 +140,31 @@ type UpdateTransaction struct {
 	VendorID          *string   `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
 	ParticipantID     *[]string `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
 }
+
+// Currency type is a group of currencies
+type Currency struct {
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	CurrencyName string             `bson:"currency,omitempty" json:"currency,omitempty"`
+	CurrencyType string             `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
+	Symbol       string             `bson:"symbol,omitempty" json:"symbol,omitempty"`
+	CreatedAt    time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt    time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
+}
+
+// NewCurrency type is what's required from the client to create a new Currency
+type NewCurrency struct {
+	CurrencyName string `bson:"currency,omitempty" json:"currency,omitempty"`
+	CurrencyType string `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
+	Symbol       string `bson:"symbol,omitempty" json:"symbol,omitempty"`
+}
+
+// UpdateCurrency defines what information may be provided to modify an existing Currency.
+// All fields are optional so clients can send just the fields they want changed.
+// It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided as explicitly blank.
+// Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
+type UpdateCurrency struct {
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	CurrencyName *string            `bson:"currency,omitempty" json:"currency,omitempty"`
+	CurrencyType *string            `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
+	Symbol       *string            `bson:"symbol,omitempty" json:"symbol,omitempty"`
+}

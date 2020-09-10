@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "5f381f30f815d062fb9da8f1"
+  },
+  "currency": "USD",
+  "symbol": "$"
+},{
+  "_id": {
+    "$oid": "5f381f30f815d062fb9da8f2"
+  },
+  "currency": "ETHEREUM",
+  "symbol": ""
+},{
+  "_id": {
+    "$oid": "5f381f30f815d062fb9da8f5"
+  },
+  "currency": "BITCOIN",
+  "symbol": ""
+},{
+  "_id": {
+    "$oid": "5f381f30f815d062fb9da8f3"
+  },
+  "currency": "SPANK",
+  "symbol": ""
+},{
+  "_id": {
+    "$oid": "5f381f30f815d062fb9da8f4"
+  },
+  "currency": "BOOTY",
+  "symbol": ""
+}]
