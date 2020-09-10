@@ -75,3 +75,57 @@ func CreateCurrency(ctx context.Context, db *mongo.Collection, user auth.Claims,
 
 	return &currency, nil
 }
+
+// UpdateOneCurrency modifies data about one Currency.
+// It will ERROR if the specified currencyID is invalid or does NOT reference existing currency.
+func UpdateOneCurrency(ctx context.Context, db *mongo.Collection, user auth.Claims, currencyID string, updateCurrency UpdateCurrency, now time.Time) error {
+
+	currencyObjectID, err := primitive.ObjectIDFromHex(currencyID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	foundCurrency, err := RetrieveCurrencyByID(ctx, db, currencyID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	fmt.Printf("currency to update found %+v : \n", foundCurrency)
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	currency := Currency{}
+
+	if updateCurrency.CurrencyName != nil {
+		currency.CurrencyName = *updateCurrency.CurrencyName
+	}
+
+	if updateCurrency.CurrencyType != nil {
+		currency.CurrencyType = *updateCurrency.CurrencyType
+	}
+
+	if updateCurrency.Symbol != nil {
+		currency.Symbol = *updateCurrency.Symbol
+	}
+
+	currency.ID = currencyObjectID
+
+	currency.UpdatedAt = now
+
+	updateC := bson.M{
+		"$set": currency,
+	}
+
+	currencyResult, err := db.UpdateOne(ctx, bson.M{"_id": currencyObjectID}, updateC)
+	if err != nil {
+		return errors.Wrap(err, "updating currency")
+	}
+
+	fmt.Printf("currencyResult updated %v : \n", currencyResult)
+
+	return nil
+}
