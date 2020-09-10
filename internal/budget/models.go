@@ -163,8 +163,8 @@ type NewCurrency struct {
 // It uses pointer fields so we can differentiate between a field that was not provided and a field that was provided as explicitly blank.
 // Normally we do not want to use pointers to basic types but we make exceptions around marshalling/unmarshalling.
 type UpdateCurrency struct {
-	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	CurrencyName *string            `bson:"currency,omitempty" json:"currency,omitempty"`
 	CurrencyType *string            `bson:"curr_type,omitempty" json:"curr_type,omitempty"`
-	Symbol       string             `bson:"symbol,omitempty" json:"symbol,omitempty"`
+	Symbol       *string            `bson:"symbol,omitempty" json:"symbol,omitempty"`
 }
