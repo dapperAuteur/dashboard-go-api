@@ -129,3 +129,32 @@ func UpdateOneCurrency(ctx context.Context, db *mongo.Collection, user auth.Clai
 
 	return nil
 }
+
+// DeleteCurrencyByID removes the Currency identified by a given ID.
+func DeleteCurrencyByID(ctx context.Context, db *mongo.Collection, user auth.Claims, currencyID string) error {
+
+	currencyObjectID, err := primitive.ObjectIDFromHex(currencyID)
+	if err != nil {
+		return apierror.ErrInvalidID
+	}
+
+	_, err = RetrieveCurrencyByID(ctx, db, currencyID)
+	if err != nil {
+		return apierror.ErrNotFound
+	}
+
+	isAdmin := user.HasRole(auth.RoleAdmin)
+
+	if !isAdmin {
+		return apierror.ErrForbidden
+	}
+
+	result, err := db.DeleteOne(ctx, bson.M{"_id": currencyObjectID})
+	if err != nil {
+		return errors.Wrapf(err, "deleting currency %s", currencyID)
+	}
+
+	fmt.Print("result of deleting : ", result)
+
+	return nil
+}
