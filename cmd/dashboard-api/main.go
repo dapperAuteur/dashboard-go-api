@@ -36,7 +36,7 @@ func run() error {
 	log := log.New(os.Stdout, "DASHBOARD : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 
 	// ==
-	// Configuration
+	// Configuration of app
 
 	mongoDbURI := os.Getenv("MONGODB_URI")
 
