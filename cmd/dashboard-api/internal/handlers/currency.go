@@ -80,3 +80,35 @@ func (c Currency) CreateCurrency(ctx context.Context, w http.ResponseWriter, r *
 
 	return web.Respond(ctx, w, currency, http.StatusCreated)
 }
+
+// UpdateOneCurrency decodes the body of a request to update an existing Currency.
+// The ID of the Currency is part of the request URL.
+func (c *Currency) UpdateOneCurrency(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	claims, ok := ctx.Value(auth.Key).(auth.Claims)
+	if !ok {
+		return errors.New("claims missing from context")
+	}
+
+	currencyID := chi.URLParam(r, "_id")
+
+	var currencyUpdate budget.UpdateCurrency
+	if err := web.Decode(r, &currencyUpdate); err != nil {
+		return errors.Wrap(err, "decoding currency update")
+	}
+
+	if err := budget.UpdateOneCurrency(ctx, c.DB, claims, currencyID, currencyUpdate, time.Now()); err != nil {
+		switch err {
+		case apierror.ErrNotFound:
+			return web.NewRequestError(err, http.StatusNotFound)
+		case apierror.ErrInvalidID:
+			return web.NewRequestError(err, http.StatusBadRequest)
+		case apierror.ErrForbidden:
+			return web.NewRequestError(err, http.StatusForbidden)
+		default:
+			return errors.Wrapf(err, "updating currency %q", currencyID)
+		}
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusOK)
+}
