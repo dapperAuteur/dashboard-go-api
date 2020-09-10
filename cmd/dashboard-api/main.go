@@ -38,6 +38,10 @@ func run() error {
 	// ==
 	// Configuration
 
+	mongoDbURI := os.Getenv("MONGODB_URI")
+
+	fmt.Println(mongoDbURI)
+
 	var cfg struct {
 		Web struct {
 			Address         string        `conf:"default:localhost:8080"`
@@ -48,7 +52,6 @@ func run() error {
 		}
 		DB struct {
 			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"` // connection string for Mongo Atlas Connection
-			// AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@localhost/palabras-express-api?retryWrites=true&w=majority"` // connection string for docker Mongo image
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`
@@ -108,6 +111,7 @@ func run() error {
 	// Start Database
 
 	client, err := database.Open(database.Config{
+		// AtlasURI: mongoDbURI,
 		AtlasURI: cfg.DB.AtlasURI,
 	})
 	if err != nil {
@@ -146,8 +150,8 @@ func run() error {
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
 	// send the db to the handler and let the router determine which collection to use
-	myDatabase := client.Database(("quickstart")) // development database
-	// myDatabase := client.Database(("palabras-express-api")) // production database
+	// myDatabase := client.Database(("quickstart")) // development database
+	myDatabase := client.Database(("palabras-express-api")) // production database
 
 	// service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
