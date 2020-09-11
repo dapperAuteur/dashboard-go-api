@@ -39,6 +39,7 @@ func run() error {
 	// Configuration of app
 
 	mongoDbURI := os.Getenv("MONGODB_URI")
+	port := os.Getenv("PORT")
 
 	fmt.Println(mongoDbURI)
 
@@ -124,7 +125,8 @@ func run() error {
 
 	closer, err := registerTracer(
 		cfg.Trace.Service,
-		cfg.Web.Address,
+		// cfg.Web.Address,
+		port,
 		cfg.Trace.URL,
 		cfg.Trace.Probability,
 	)
@@ -236,32 +238,3 @@ func registerTracer(service, httpAddr, traceURL string, probabilty float64) (fun
 	return reporter.Close, nil
 
 }
-
-// // Transaction is a line item on a balance sheet.
-// type Transaction struct {
-// 	Budget           string  `json:"budget,omitempty"`
-// 	Currency         string  `json:"currency,omitempty"`
-// 	FinancialAccount string  `json:"financial_account,omitempty"`
-// 	Media            string  `json:"media,omitempty"`
-// 	Note             string  `json:"note,omitempty"`
-// 	Occurrence       string  `json:"occurrence,omitempty"`
-// 	Participant      string  `json:"participant,omitempty"`
-// 	Tag              string  `json:"tag,omitempty"`
-// 	TransactionEvent string  `json:"transaction_event,omitempty"`
-// 	TransactionValue float64 `json:"transaction_value,omitempty"`
-// 	Vendor           string  `json:"vendor,omitempty"`
-// }
-
-// // Verbo is a Spanish verb
-// type Verbo struct {
-// 	CambiarDeIrregular   string  `json:"cambiar_de_irregular,omitempty"`
-// 	CategoriaDeIrregular string  `json:"categoria_de_irregular,omitempty"`
-// 	English              string  `json:"english,omitempty"`
-// 	Grupo                float64 `json:"grupo,omitempty"`
-// 	Irregular            bool    `json:"irregular,omitempty"`
-// 	Media                string  `json:"media,omitempty"`
-// 	Note                 string  `json:"note,,omitempty"`
-// 	Reflexive            bool    `json:"reflexive,omitempty"`
-// 	Spanish              string  `json:"spanish,omitempty"`
-// 	Terminacion          string  `json:"terminacion,omitempty"`
-// }
