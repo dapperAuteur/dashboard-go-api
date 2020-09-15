@@ -39,9 +39,9 @@ func run() error {
 	// Configuration of app
 
 	mongoDbURI := os.Getenv("MONGODB_URI")
-	port := os.Getenv("PORT")
+	// port := os.Getenv("PORT")
 
-	fmt.Println(mongoDbURI)
+	fmt.Println("**********************mongoDbURI", mongoDbURI)
 
 	var cfg struct {
 		Web struct {
@@ -125,8 +125,8 @@ func run() error {
 
 	closer, err := registerTracer(
 		cfg.Trace.Service,
-		// cfg.Web.Address,
-		port,
+		cfg.Web.Address,
+		// port,
 		cfg.Trace.URL,
 		cfg.Trace.Probability,
 	)
@@ -152,8 +152,8 @@ func run() error {
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
 	// send the db to the handler and let the router determine which collection to use
-	// myDatabase := client.Database(("quickstart")) // development database
-	myDatabase := client.Database(("palabras-express-api")) // production database
+	myDatabase := client.Database(("quickstart")) // development database
+	// myDatabase := client.Database(("palabras-express-api")) // production database
 
 	// service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
