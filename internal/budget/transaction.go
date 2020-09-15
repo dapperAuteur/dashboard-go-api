@@ -27,6 +27,65 @@ func ListTransactions(ctx context.Context, db *mongo.Collection) ([]Transaction,
 	return list, nil
 }
 
+// FilterTransactions gets all the Transactions from the database that filter the filter criteria.
+// The encodes them in a response client. It returns an empty array if none fit the criteria.
+// func FilterTransactions(ctx context.Context, db *mongo.Collection, filterTranx FilterTransaction) ([]Transaction, error) {
+
+// 	list := []Transaction{}
+// 	filter := FilterTransaction{}
+
+// 	if filterTranx.BudgetID != nil {
+// 		filter.BudgetID = filterTranx.BudgetID
+// 	}
+
+// 	if filterTranx.CurrencyID != nil {
+// 		filter.CurrencyID = filterTranx.CurrencyID
+// 	}
+
+// 	if filterTranx.FinancialAccountID != nil {
+// 		filter.FinancialAccountID = filterTranx.FinancialAccountID
+// 	}
+
+// 	if filterTranx.OccurrenceString != nil {
+// 		filter.OccurrenceString = filterTranx.OccurrenceString
+// 	}
+
+// 	if filterTranx.TransactionEvent != nil {
+// 		filter.TransactionEvent = filterTranx.TransactionEvent
+// 	}
+
+// 	if filterTranx.TransactionCredit != nil {
+// 		filter.TransactionCredit = filterTranx.TransactionCredit
+// 	}
+
+// 	if filterTranx.TransactionDebit != nil {
+// 		filter.TransactionDebit = filterTranx.TransactionDebit
+// 	}
+
+// 	if filterTranx.VendorID != nil {
+// 		filter.VendorID = filterTranx.VendorID
+// 	}
+
+// 	if filterTranx.ParticipantID != nil {
+// 		filter.ParticipantID = filterTranx.ParticipantID
+// 	}
+
+//	if filterTranx.CreatedAt != nil {
+//		filter.CreatedAt = filterTranx.CreatedAt
+//	}
+
+//	if filterTranx.UpdatedAt != nil {
+//		filter.UpdatedAt = filterTranx.UpdatedAt
+//	}
+
+// 	cursor, err := db.Find(ctx, bson.M{filter})
+// 	if err = cursor.All(ctx, &list); err != nil {
+// 		return nil, errors.Wrapf(err, "filtering transactions")
+// 	}
+
+// 	return list, nil
+// }
+
 // CreateTransaction takes data from the client to create a transaction in the db
 func CreateTransaction(ctx context.Context, db *mongo.Collection, user auth.Claims, newTranx NewTransaction, now time.Time) (*Transaction, error) {
 
