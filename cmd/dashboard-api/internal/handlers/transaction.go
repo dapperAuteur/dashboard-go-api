@@ -37,6 +37,26 @@ func (t Transaction) ListTransactions(ctx context.Context, w http.ResponseWriter
 	return web.Respond(ctx, w, list, http.StatusOK)
 }
 
+// FilterTransactions gets all filtered transactions from the service layer.
+// func (t Transaction) FilterTransactions(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+// 	ctx, span := trace.StartSpan(ctx, "handlers.Transaction.FilterTransactions")
+// 	defer span.End()
+
+// 	var filterTranx budget.FilterTransaction
+
+// 	if err := web.Decode(r, &filterTranx); err != nil {
+// 		return err
+// 	}
+
+// 	list, err := budget.FilterTransactions(ctx, t.DB, filterTranx)
+// 	if err != nil {
+// 		return errors.Wrapf(err, "filtering transaction %q", filterTranx)
+// 	}
+
+// 	return web.Respond(ctx, w, list, http.StatusOK)
+// }
+
 // CreateTransaction decodes the body of a request to create a new transaction.
 // The full transaction with generated fields is sent back in the response.
 func (t Transaction) CreateTransaction(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
