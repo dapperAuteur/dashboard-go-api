@@ -141,6 +141,22 @@ type UpdateTransaction struct {
 	ParticipantID     *[]string `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
 }
 
+// FilterTransaction type is used to retrieve a filtered list of transactions.
+type FilterTransaction struct {
+	BudgetID           *string `bson:"budget_id,omitempty" json:"budget_id,omitempty"`
+	CurrencyID         *string `bson:"currency_id,omitempty" json:"currency_id,omitempty"`
+	FinancialAccountID *string `bson:"fin_acc_id,omitempty" json:"fin_acc_id,omitempty"`
+	// Occurrence         time.Time            `bson:"occurrence,omitempty" json:"occurrence,omitempty" validate:"datetime"`
+	OccurrenceString  *string    `bson:"occurrence_string,omitempty" json:"occurrence_string,omitempty"`
+	TransactionEvent  *string    `bson:"tranx_event,omitempty" json:"tranx_event,omitempty"`
+	TransactionCredit *string    `bson:"tranx_credit,omitempty" json:"tranx_credit,omitempty"`
+	TransactionDebit  *string    `bson:"tranx_debit,omitempty" json:"tranx_debit,omitempty"`
+	VendorID          *string    `bson:"vendor_id,omitempty" json:"vendor_id,omitempty"`
+	ParticipantID     *string    `bson:"participant_id,omitempty" json:"participant_id,omitempty"`
+	CreatedAt         *time.Time `bson:"created_at,omitempty" json:"created_at,omitempty" validate:"datetime"`
+	UpdatedAt         *time.Time `bson:"updated_at,omitempty" json:"updated_at,omitempty" validate:"datetime"`
+}
+
 // Currency type is a group of currencies
 type Currency struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" validate:"required"`
