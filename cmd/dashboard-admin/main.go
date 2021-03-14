@@ -32,7 +32,8 @@ func run() error {
 
 	var cfg struct {
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+			// AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+			AtlasURI string `conf:"default:mongodb+srv://awe:u0SveL53iQSk3pmN@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
 		}
 		Args conf.Args
 	}
