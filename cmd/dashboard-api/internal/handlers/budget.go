@@ -40,6 +40,8 @@ func (b Budget) List(ctx context.Context, w http.ResponseWriter, r *http.Request
 // Retrieve get the Budget from the db identified by an _id in the request URL, then encodes it in a response client.
 func (b Budget) Retrieve(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
+	ctx, span := trace.StartSpan(ctx, "handlers.Budget.Retrieve")
+	defer span.End()
 	_id := chi.URLParam(r, "_id")
 
 	budgetFound, err := budget.Retrieve(ctx, b.DB, _id)
