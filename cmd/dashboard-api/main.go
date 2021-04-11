@@ -16,6 +16,7 @@ import (
 
 	"contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
+	"github.com/dapperAuteur/dashboard-go-api/environment"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
@@ -47,7 +48,7 @@ func run() error {
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"` // connection string for Mongo Atlas Connection
+			AtlasURI string `conf:"default:"` // connection string for Mongo Atlas Connection
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`
@@ -107,7 +108,7 @@ func run() error {
 	// Start Database
 
 	client, err := database.Open(database.Config{
-		AtlasURI: cfg.DB.AtlasURI,
+		AtlasURI: environment.MongoDBURI,
 	})
 	if err != nil {
 		panic(err)
@@ -145,8 +146,8 @@ func run() error {
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
 	// send the db to the handler and let the router determine which collection to use
-	myDatabase := client.Database(("quickstart")) // development database
-	// myDatabase := client.Database(("palabras-express-api")) // production database
+	// myDatabase := client.Database(("quickstart")) // development database
+	myDatabase := client.Database(("palabras-express-api")) // production database
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
