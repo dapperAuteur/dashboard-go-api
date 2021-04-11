@@ -44,10 +44,14 @@ func (t Transaction) ListTransactions(ctx context.Context, w http.ResponseWriter
 // 	defer span.End()
 
 // 	var filterTranx budget.FilterTransaction
+// 	fmt.Println("println")
+// 	fmt.Print("print")
 
 // 	if err := web.Decode(r, &filterTranx); err != nil {
 // 		return err
 // 	}
+// 	fmt.Println("println", filterTranx)
+// 	fmt.Print("print", filterTranx)
 
 // 	list, err := budget.FilterTransactions(ctx, t.DB, filterTranx)
 // 	if err != nil {
