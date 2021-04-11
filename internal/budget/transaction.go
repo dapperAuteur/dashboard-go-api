@@ -32,7 +32,7 @@ func ListTransactions(ctx context.Context, db *mongo.Collection) ([]Transaction,
 // func FilterTransactions(ctx context.Context, db *mongo.Collection, filterTranx FilterTransaction) ([]Transaction, error) {
 
 // 	list := []Transaction{}
-// 	filter := FilterTransaction{}
+// 	filter := bson.M{}
 
 // 	if filterTranx.BudgetID != nil {
 // 		filter.BudgetID = filterTranx.BudgetID
@@ -70,15 +70,15 @@ func ListTransactions(ctx context.Context, db *mongo.Collection) ([]Transaction,
 // 		filter.ParticipantID = filterTranx.ParticipantID
 // 	}
 
-//	if filterTranx.CreatedAt != nil {
-//		filter.CreatedAt = filterTranx.CreatedAt
-//	}
+// 	if filterTranx.CreatedAt != nil {
+// 		filter.CreatedAt = filterTranx.CreatedAt
+// 	}
 
-//	if filterTranx.UpdatedAt != nil {
-//		filter.UpdatedAt = filterTranx.UpdatedAt
-//	}
+// 	if filterTranx.UpdatedAt != nil {
+// 		filter.UpdatedAt = filterTranx.UpdatedAt
+// 	}
 
-// 	cursor, err := db.Find(ctx, bson.M{filter})
+// 	cursor, err := db.Find(ctx, filter)
 // 	if err = cursor.All(ctx, &list); err != nil {
 // 		return nil, errors.Wrapf(err, "filtering transactions")
 // 	}

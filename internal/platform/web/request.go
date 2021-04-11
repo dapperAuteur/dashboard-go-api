@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"reflect"
 	"strings"
@@ -47,6 +48,8 @@ func init() {
 //
 // If the provided value is a struct then it is checked for validation tags.
 func Decode(r *http.Request, val interface{}) error {
+	fmt.Println("\n ************** \n val", val)
+	fmt.Println("\n ************** \n r.Body", r.Body)
 
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
