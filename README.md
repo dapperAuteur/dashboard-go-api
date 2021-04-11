@@ -10,6 +10,19 @@ The goal is to build a tool that adds value to the users life, mine. And to help
 
 - track and manage expenses
 
-##
-to run mongodb locally 
+## Run App Locally
+
+#### Start Docker First
+docker-compose up -d --remove-orphans
+(shut down with this command) docker-compose down
+
+
+to run mongodb locally (this command isn't needed because Docker starts the db)
 `sudo mongod --dbpath /System/Volumes/Data/data/db`
+
+<!-- local ports to use -->
+zipkin to trace requests
+http://localhost:9411/zipkin/
+
+server
+http://localhost:8080/v1
