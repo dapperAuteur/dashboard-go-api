@@ -148,8 +148,8 @@ func run() error {
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
 	// send the db to the handler and let the router determine which collection to use
-	myDatabase := client.Database(("quickstart")) // development database
-	// myDatabase := client.Database(("palabras-express-api")) // production database
+	// myDatabase := client.Database(("quickstart")) // development database
+	myDatabase := client.Database(("palabras-express-api")) // production database
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
