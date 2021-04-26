@@ -11,6 +11,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/dapperAuteur/dashboard-go-api/environment"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
@@ -32,7 +33,8 @@ func run() error {
 
 	var cfg struct {
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"`
+			// AtlasURI string `conf:"default:"`
+			AtlasURI string `conf:"default:"`
 		}
 		Args conf.Args
 	}
@@ -54,7 +56,7 @@ func run() error {
 
 	// This is used for multiple commands below.
 	dbConfig := database.Config{
-		AtlasURI: cfg.DB.AtlasURI,
+		AtlasURI: environment.MongoDBURI,
 	}
 
 	var err error

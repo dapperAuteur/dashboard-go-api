@@ -16,6 +16,7 @@ import (
 
 	"contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
+	"github.com/dapperAuteur/dashboard-go-api/environment"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
@@ -36,23 +37,18 @@ func run() error {
 	log := log.New(os.Stdout, "DASHBOARD : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 
 	// ==
-	// Configuration of app
-
-	mongoDbURI := os.Getenv("MONGODB_URI")
-	// port := os.Getenv("PORT")
-
-	fmt.Println("**********************mongoDbURI", mongoDbURI)
+	// Configuration
 
 	var cfg struct {
 		Web struct {
-			Address         string        `conf:"default:localhost:8080"`
+			Address         string        `conf:"default:localhost:8080,env:PORT"`
 			Debug           string        `conf:"default:localhost:6060"`
 			ReadTimeout     time.Duration `conf:"default:5s"`
 			WriteTimeout    time.Duration `conf:"default:5s"`
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:mongodb+srv://awe:XjtsRQPAjyDbokQE@palabras-express-api.whbeh.mongodb.net/palabras-express-api?retryWrites=true&w=majority"` // connection string for Mongo Atlas Connection
+			AtlasURI string `conf:"default:environment.MONGO_DB_URI,env:MONGO_DB_URI"` // connection string for Mongo Atlas Connection
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`
@@ -110,10 +106,10 @@ func run() error {
 	}
 	// =
 	// Start Database
-
+	// port := environment.MONGO_DB_URI
+	// fmt.Println("port: ", port)
 	client, err := database.Open(database.Config{
-		// AtlasURI: mongoDbURI,
-		AtlasURI: cfg.DB.AtlasURI,
+		AtlasURI: environment.MONGO_DB_URI,
 	})
 	if err != nil {
 		panic(err)
@@ -154,8 +150,6 @@ func run() error {
 	// send the db to the handler and let the router determine which collection to use
 	myDatabase := client.Database(("quickstart")) // development database
 	// myDatabase := client.Database(("palabras-express-api")) // production database
-
-	// service := handlers.Podcast{DB: podcastsCollection, Log: log}
 
 	api := http.Server{
 		Addr:         cfg.Web.Address,
