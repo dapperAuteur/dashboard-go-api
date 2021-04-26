@@ -16,7 +16,6 @@ import (
 
 	"contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
-	"github.com/dapperAuteur/dashboard-go-api/environment"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
@@ -41,14 +40,14 @@ func run() error {
 
 	var cfg struct {
 		Web struct {
-			Address         string        `conf:"default:localhost:8080"`
+			Address         string        `conf:"default:localhost:8080,env:PORT"`
 			Debug           string        `conf:"default:localhost:6060"`
 			ReadTimeout     time.Duration `conf:"default:5s"`
 			WriteTimeout    time.Duration `conf:"default:5s"`
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:"` // connection string for Mongo Atlas Connection
+			AtlasURI string `conf:"default:environtment.MONGO_DB_URI,env:MONGO_DB_URI"` // connection string for Mongo Atlas Connection
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`
@@ -108,7 +107,7 @@ func run() error {
 	// Start Database
 
 	client, err := database.Open(database.Config{
-		AtlasURI: environment.MongoDBURI,
+		AtlasURI: cfg.DB.AtlasURI,
 	})
 	if err != nil {
 		panic(err)
@@ -230,32 +229,3 @@ func registerTracer(service, httpAddr, traceURL string, probabilty float64) (fun
 	return reporter.Close, nil
 
 }
-
-// // Transaction is a line item on a balance sheet.
-// type Transaction struct {
-// 	Budget           string  `json:"budget,omitempty"`
-// 	Currency         string  `json:"currency,omitempty"`
-// 	FinancialAccount string  `json:"financial_account,omitempty"`
-// 	Media            string  `json:"media,omitempty"`
-// 	Note             string  `json:"note,omitempty"`
-// 	Occurrence       string  `json:"occurrence,omitempty"`
-// 	Participant      string  `json:"participant,omitempty"`
-// 	Tag              string  `json:"tag,omitempty"`
-// 	TransactionEvent string  `json:"transaction_event,omitempty"`
-// 	TransactionValue float64 `json:"transaction_value,omitempty"`
-// 	Vendor           string  `json:"vendor,omitempty"`
-// }
-
-// // Verbo is a Spanish verb
-// type Verbo struct {
-// 	CambiarDeIrregular   string  `json:"cambiar_de_irregular,omitempty"`
-// 	CategoriaDeIrregular string  `json:"categoria_de_irregular,omitempty"`
-// 	English              string  `json:"english,omitempty"`
-// 	Grupo                float64 `json:"grupo,omitempty"`
-// 	Irregular            bool    `json:"irregular,omitempty"`
-// 	Media                string  `json:"media,omitempty"`
-// 	Note                 string  `json:"note,,omitempty"`
-// 	Reflexive            bool    `json:"reflexive,omitempty"`
-// 	Spanish              string  `json:"spanish,omitempty"`
-// 	Terminacion          string  `json:"terminacion,omitempty"`
-// }
