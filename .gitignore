@@ -7,3 +7,5 @@ go.sum
 private.pem
 
 cmd/.DS_Store
+
+environment/
