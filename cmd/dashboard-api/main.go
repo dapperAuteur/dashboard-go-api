@@ -16,6 +16,7 @@ import (
 
 	"contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/dapperAuteur/dashboard-go-api/cmd/dashboard-api/internal/handlers"
+	"github.com/dapperAuteur/dashboard-go-api/environment"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/auth"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/conf"
 	"github.com/dapperAuteur/dashboard-go-api/internal/platform/database"
@@ -47,7 +48,7 @@ func run() error {
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
 		DB struct {
-			AtlasURI string `conf:"default:environtment.MONGO_DB_URI,env:MONGO_DB_URI"` // connection string for Mongo Atlas Connection
+			AtlasURI string `conf:"default:environment.MONGO_DB_URI,env:MONGO_DB_URI"` // connection string for Mongo Atlas Connection
 		}
 		Auth struct {
 			KeyID          string `conf:"default:1"`
@@ -105,9 +106,10 @@ func run() error {
 	}
 	// =
 	// Start Database
-
+	// port := environment.MONGO_DB_URI
+	// fmt.Println("port: ", port)
 	client, err := database.Open(database.Config{
-		AtlasURI: cfg.DB.AtlasURI,
+		AtlasURI: environment.MONGO_DB_URI,
 	})
 	if err != nil {
 		panic(err)
