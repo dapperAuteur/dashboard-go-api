@@ -1,6 +1,7 @@
 module github.com/dapperAuteur/dashboard-go-api
 
 go 1.14
+// +heroku goVersion 1.14
 
 require (
 	contrib.go.opencensus.io/exporter/zipkin v0.1.1
