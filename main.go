@@ -23,7 +23,7 @@ func main() {
 	// Start API Service
 
 	api := http.Server{
-		Addr:         "localhost:8080",
+		Addr:         `conf:"default:localhost:8080,env:PORT"`,
 		Handler:      http.HandlerFunc(ListTransactions),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
