@@ -24,5 +24,5 @@ to run mongodb locally (this command isn't needed because Docker starts the db)
 zipkin to trace requests
 http://localhost:9411/zipkin/
 
-server
+server/service
 http://localhost:8080/v1
