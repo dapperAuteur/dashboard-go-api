@@ -64,7 +64,7 @@ func run() error {
 
 	// ==
 	// Get Configuration
-	// Helpful info in case of error
+	// Helpful info in case of error(s)
 
 	if err := conf.Parse(os.Args[1:], "DASHBOARD", &cfg); err != nil {
 		if err == conf.ErrHelpWanted {
